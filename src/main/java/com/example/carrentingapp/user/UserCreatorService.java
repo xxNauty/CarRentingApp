@@ -19,13 +19,14 @@ public class UserCreatorService {
     ){}
 
     private final UserRepository userRepository;
+    private final UserPasswordService passwordService;
 
     public void createUser(UserCreationData data){
         BaseUser user = new BaseUser(
                 data.firstName,
                 data.lastName,
                 data.email,
-                data.password, //todo haszowanie haseł
+                passwordService.encodePassword(data.password),
                 data.dateOfBirth
         );
 
@@ -37,7 +38,7 @@ public class UserCreatorService {
                 data.firstName,
                 data.lastName,
                 data.email,
-                data.password, //todo haszowanie haseł
+                passwordService.encodePassword(data.password),
                 data.dateOfBirth
         );
         user.setRole(Role.ADMIN);

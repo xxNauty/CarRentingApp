@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.util.Locale;
 
 @SpringBootApplication
 public class CarRentingAppApplication {

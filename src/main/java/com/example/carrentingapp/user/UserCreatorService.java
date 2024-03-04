@@ -1,5 +1,6 @@
 package com.example.carrentingapp.user;
 
+import com.example.carrentingapp.car.BaseCar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,41 +10,48 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class UserCreatorService {
 
-    //todo skontrolować czy nie wystarczy package-private
-    public record UserCreationData(
+    private final UserRepository userRepository;
+    private final UserPasswordService passwordService;
+
+    public BaseUser createUser(
             String firstName,
             String lastName,
             String email,
             String password,
             LocalDate dateOfBirth
-    ){}
-
-    private final UserRepository userRepository;
-    private final UserPasswordService passwordService;
-
-    public void createUser(UserCreationData data){
+    ){
         BaseUser user = new BaseUser(
-                data.firstName,
-                data.lastName,
-                data.email,
-                passwordService.encodePassword(data.password),
-                data.dateOfBirth
+                firstName,
+                lastName,
+                email,
+                passwordService.encodePassword(password),
+                dateOfBirth
         );
 
         userRepository.save(user);
+
+        return user;
     }
 
-    public void createAdmin(UserCreationData data){
+    public BaseUser createAdmin(
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            LocalDate dateOfBirth
+    ){
         BaseUser user = new BaseUser(
-                data.firstName,
-                data.lastName,
-                data.email,
-                passwordService.encodePassword(data.password),
-                data.dateOfBirth
+                firstName,
+                lastName,
+                email,
+                passwordService.encodePassword(password),
+                dateOfBirth
         );
         user.setRole(Role.ADMIN);
 
         userRepository.save(user);
+
+        return user;
     }
 
 }

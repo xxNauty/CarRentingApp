@@ -14,7 +14,7 @@ public class CarCreationTest {
     private CarCreatorService carCreatorService;
 
     @Test
-    void testCarCreatorService(){
+    void CarCreatorService(){
         BaseCar car = carCreatorService.createCar(
                 "Opel",
                 "Corsa",

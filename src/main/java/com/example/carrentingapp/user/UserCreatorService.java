@@ -2,6 +2,7 @@ package com.example.carrentingapp.user;
 
 import com.example.carrentingapp.car.BaseCar;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 public class UserCreatorService {
 
     private final UserRepository userRepository;
-    private final UserPasswordService passwordService;
+    private final PasswordEncoder passwordEncoder;
 
     public BaseUser createUser(
             String firstName,
@@ -24,7 +25,7 @@ public class UserCreatorService {
                 firstName,
                 lastName,
                 email,
-                passwordService.encodePassword(password),
+                passwordEncoder.encode(password),
                 dateOfBirth
         );
 
@@ -44,7 +45,7 @@ public class UserCreatorService {
                 firstName,
                 lastName,
                 email,
-                passwordService.encodePassword(password),
+                passwordEncoder.encode(password),
                 dateOfBirth
         );
         user.setRole(Role.ADMIN);

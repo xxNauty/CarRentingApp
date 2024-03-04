@@ -11,7 +11,7 @@ public class CarMileageUpdaterTest {
     private CarRepository carRepository;
 
     @Test
-    void testCarMileageUpdater(){
+    void CarMileageUpdater(){
 
     }
 }

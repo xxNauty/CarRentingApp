@@ -1,4 +1,4 @@
-package com.example.carrentingapp.configuration;
+package com.example.carrentingapp.configuration.bean_provider;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

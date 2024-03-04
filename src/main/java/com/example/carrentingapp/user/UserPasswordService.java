@@ -11,7 +11,8 @@ public class UserPasswordService {
     private final PasswordEncoder passwordEncoder;
 
     public String encodePassword(String plainPassword){
-        return passwordEncoder.encode(plainPassword);
+        return passwordEncoder
+                .encode(plainPassword);
     }
 
     public Boolean passwordMatches(String plainPassword, BaseUser user){

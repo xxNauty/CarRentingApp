@@ -22,9 +22,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {
-            "/api/v1/auth/**",
+    private static final String[] SECURED_URL = {
+            "/api/v1/auth/register",
+            "/api/v1/auth/login"
     };
+
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 //    private final LogoutHandler logoutHandler;
@@ -34,10 +36,11 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers(WHITE_LIST_URL)
-                                .permitAll()
-                                .anyRequest()
+                        req -> req
+                                .requestMatchers(SECURED_URL)
                                 .authenticated()
+                                .anyRequest()
+                                .permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)

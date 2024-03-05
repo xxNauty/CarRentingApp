@@ -61,7 +61,7 @@ public class BaseUser implements UserDetails {
         this.dateOfBirth = dateOfBirth;
         this.rank = 5.0F;
         this.isLocked = false;
-        this.isEnabled = false;
+        this.isEnabled = true; //todo zmienić na false po dodaniu weryfikacji adresu email
         this.role = Role.USER;
     }
 

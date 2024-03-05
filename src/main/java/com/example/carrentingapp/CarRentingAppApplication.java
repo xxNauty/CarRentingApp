@@ -17,20 +17,20 @@ public class CarRentingAppApplication {
         SpringApplication.run(CarRentingAppApplication.class, args);
     }
 
-    @Bean //Rozwiązanie na czas tworzenia aplikacji
-    public CommandLineRunner commandLineRunner(UserCreatorService service){
-        return args -> {
-            BaseUser user = service.createAdmin(
-                    "Adam",
-                    "Kowalski",
-                    "adam@kowalski.pl",
-                    "Qwerty123",
-                    LocalDate.now()
-            );
-            System.out.println("Admin created");
-            System.out.println("Login: " + user.getEmail());
-            System.out.println("Password: Qwerty123");
-        };
-    }
+//    @Bean //Rozwiązanie na czas tworzenia aplikacji
+//    public CommandLineRunner commandLineRunner(UserCreatorService service){
+//        return args -> {
+//            BaseUser user = service.createAdmin(
+//                    "Adam",
+//                    "Kowalski",
+//                    "adam@kowalski.pl",
+//                    "Qwerty123",
+//                    LocalDate.now()
+//            );
+//            System.out.println("Admin created");
+//            System.out.println("Login: " + user.getEmail());
+//            System.out.println("Password: Qwerty123");
+//        };
+//    }
 
 }

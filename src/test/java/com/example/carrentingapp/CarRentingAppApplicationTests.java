@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CarRentingAppApplicationTests {
 
     @Test
-    void contextLoads() {
-        assertTrue(true);
-    }
+    void contextLoads() {}
 
 }

@@ -14,6 +14,8 @@ import java.time.LocalDate;
 //todo: naprawić security, wszystkie url mają domyślnie wymagać autoryzacji,
 // tylko wybrane mogą być dostępne publicznie (odwrócić aktualną sytuację)
 
+//todo: dodać obsługę 404 error w przypadku braku znalezionego entity
+
 @SpringBootApplication
 public class CarRentingAppApplication {
 
@@ -24,6 +26,8 @@ public class CarRentingAppApplication {
     @Bean //Rozwiązanie na czas tworzenia aplikacji
     public CommandLineRunner commandLineRunner(UserCreatorService service){
         return args -> {
+            System.out.println("\n--------------------------------\n");
+
             BaseUser admin = service.createAdmin(
                     "Adam",
                     "Kowalski",
@@ -35,7 +39,9 @@ public class CarRentingAppApplication {
             System.out.println("Login: " + admin.getEmail());
             System.out.println("Password: Qwerty123");
 
-            BaseUser user = service.createAdmin(
+            System.out.println("\n--------------------------------\n");
+
+            BaseUser user = service.createUser(
                     "Jan",
                     "Nowak",
                     "jan@nowak.pl",

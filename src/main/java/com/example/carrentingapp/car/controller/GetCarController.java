@@ -1,11 +1,11 @@
 package com.example.carrentingapp.car.controller;
 
-import com.example.carrentingapp.car.CarRepository;
 import com.example.carrentingapp.car.response.GetCarListResponse;
 import com.example.carrentingapp.car.response.GetCarResponse;
 import com.example.carrentingapp.car.service.GetCarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/car/get")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class GetCarController {
 
     private final GetCarService service;

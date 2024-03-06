@@ -3,13 +3,13 @@ package com.example.carrentingapp.user;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
+
+import static com.example.carrentingapp.user.Role.USER;
 
 @Entity
 @AllArgsConstructor
@@ -62,12 +62,12 @@ public class BaseUser implements UserDetails {
         this.rank = 5.0F;
         this.isLocked = false;
         this.isEnabled = true; //todo zmienić na false po dodaniu weryfikacji adresu email
-        this.role = Role.USER;
+        this.role = USER;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role.name()));
+        return role.getAuthorities();
     }
 
     @Override

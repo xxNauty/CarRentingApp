@@ -22,8 +22,15 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] SECURED_URL = {
-            "/api/v1/car/create"
+    private static final String[] SECURED_URL_FOR_USER = {
+            "/api/v1/car/get/{id}",
+            "/api/v1/car/get/all"
+    };
+
+    private static final String[] SECURED_URL_FOR_ADMIN = {
+            "/api/v1/car/create/base",
+            "/api/v1/car/update/mileage",
+            "/api/v1/car/update/data"
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -34,13 +41,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        req -> req
-                                .requestMatchers(SECURED_URL)
-                                .authenticated()
-                                .anyRequest()
-                                .permitAll()
-                )
+//                .authorizeHttpRequests(
+//                        req -> req
+//                                .requestMatchers(SECURED_URL_FOR_ADMIN).hasAnyRole(ADMIN.name())
+//                                .requestMatchers(SECURED_URL_FOR_USER).hasAnyRole(USER.name())
+//                                .anyRequest().permitAll()
+//                )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

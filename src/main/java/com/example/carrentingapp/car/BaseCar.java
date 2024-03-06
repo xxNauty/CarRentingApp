@@ -42,4 +42,6 @@ public class BaseCar {
     private Float pricePerDay;
 
     private Boolean hasActiveSale;
+
+    private Boolean isAvailable;
 }

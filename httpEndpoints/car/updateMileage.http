@@ -1,0 +1,9 @@
+### Update mileage
+POST http://localhost:8080/api/v1/car/update/mileage
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carId": "123116bb-8a93-4081-bc5c-12879cee9f56",
+  "mileageToAdd": 500.7
+}

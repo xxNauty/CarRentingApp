@@ -1,0 +1,17 @@
+### Update car data
+POST http://localhost:8080/api/v1/car/update/data
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "id": "b1a15967-95b9-4085-bb7a-9768529c7eba",
+  "brand": "Lotus",
+  "model": "Omega",
+  "yearOfProduction": 2000,
+  "power": 423,
+  "torque": 500,
+  "engineSize": 3.2,
+  "averageFuelConsumption": 12.5,
+  "minRankOfUser": 6.5,
+  "pricePerDay": 230
+}

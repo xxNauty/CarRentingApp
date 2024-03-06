@@ -23,8 +23,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
 
     private static final String[] SECURED_URL = {
-            "/api/v1/auth/register",
-            "/api/v1/auth/login"
+            "/api/v1/car/create"
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;

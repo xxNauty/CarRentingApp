@@ -24,7 +24,7 @@ public class CarRentingAppApplication {
     @Bean //Rozwiązanie na czas tworzenia aplikacji
     public CommandLineRunner commandLineRunner(UserCreatorService service){
         return args -> {
-            BaseUser user = service.createAdmin(
+            BaseUser admin = service.createAdmin(
                     "Adam",
                     "Kowalski",
                     "adam@kowalski.pl",
@@ -32,6 +32,17 @@ public class CarRentingAppApplication {
                     LocalDate.now()
             );
             System.out.println("Admin created");
+            System.out.println("Login: " + admin.getEmail());
+            System.out.println("Password: Qwerty123");
+
+            BaseUser user = service.createAdmin(
+                    "Jan",
+                    "Nowak",
+                    "jan@nowak.pl",
+                    "Qwerty123",
+                    LocalDate.now()
+            );
+            System.out.println("User created");
             System.out.println("Login: " + user.getEmail());
             System.out.println("Password: Qwerty123");
         };

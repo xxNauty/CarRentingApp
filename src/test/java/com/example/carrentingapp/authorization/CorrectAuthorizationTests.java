@@ -38,10 +38,6 @@ public class CorrectAuthorizationTests {
 
         int userCountBefore = repository.findAll().size();
 
-        //throw new Exception(String.valueOf(randomServerPort));
-        // za każdym uruchomieniem testów aplikacja dostępna
-        // jest pod innym portem
-
         final String baseURL = "http://localhost:"+randomServerPort+"/api/v1/auth/register";
 
         URI uri = new URI(baseURL);

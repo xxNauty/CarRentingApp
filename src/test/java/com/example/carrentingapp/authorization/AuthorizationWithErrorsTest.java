@@ -32,8 +32,8 @@ public class AuthorizationWithErrorsTest {
     @LocalServerPort
     int randomServerPort;
 
-    @Test //todo: dorobić jak naprawiona zostanie obsługa kodów błędów HTTP
-    public void invalidCredentials() throws URISyntaxException {
+//    @Test //todo: dorobić jak naprawiona zostanie obsługa kodów błędów HTTP
+//    public void invalidCredentials() throws URISyntaxException {
 //        final String baseURL = "http://localhost:"+randomServerPort+"/api/v1/auth/login";
 //
 //        URI uri = new URI(baseURL);
@@ -55,5 +55,5 @@ public class AuthorizationWithErrorsTest {
 //        );
 //
 //        Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
-    }
+//    }
 }

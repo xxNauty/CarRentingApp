@@ -1,0 +1,17 @@
+### Create car
+POST http://localhost:8080/api/v1/car/create/base
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "brand": "Opel",
+  "model": "Omega",
+  "yearOfProduction": 2000,
+  "mileage": 200000,
+  "power": 211,
+  "torque": 300,
+  "engineSize": 3.2,
+  "averageFuelConsumption": 12.5,
+  "minRankOfUser": 6.5,
+  "pricePerDay": 230
+}

@@ -1,9 +1,8 @@
 package com.example.carrentingapp.authentication.service;
 
-import com.example.carrentingapp.exception.InvalidDataException;
-import com.example.carrentingapp.exception.InvalidEmailAddressException;
-import com.example.carrentingapp.exception.PasswordNotSafeException;
-import jakarta.mail.internet.InternetAddress;
+import com.example.carrentingapp.exception.exception.InvalidDataException;
+import com.example.carrentingapp.exception.exception.InvalidEmailAddressException;
+import com.example.carrentingapp.exception.exception.PasswordNotSafeException;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,5 +1,6 @@
 package com.example.carrentingapp.user;
 
+import com.example.carrentingapp.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static com.example.carrentingapp.user.Role.USER;
@@ -27,6 +29,7 @@ public class BaseUser implements UserDetails {
 
     private String lastName;
 
+    @Column(unique=true)
     private String email;
 
     private String password;
@@ -41,6 +44,9 @@ public class BaseUser implements UserDetails {
     private Boolean isLocked;
 
     private Boolean isEnabled;
+
+    @OneToMany(targetEntity = Token.class)
+    private List<Token> tokens;
 
 //    private List<CarRental> rentedCars;
 //

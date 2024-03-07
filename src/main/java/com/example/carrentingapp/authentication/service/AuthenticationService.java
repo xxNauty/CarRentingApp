@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,13 +29,14 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserDataValidationService validationService;
 
-    public AuthenticationResponse register(RegistrationRequest request) {
+    public AuthenticationResponse  register(RegistrationRequest request) {
         var user = new BaseUser(
-                request.getFirstName(),
-                request.getLastName(),
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
+                validationService.dataMatchesRequirements(request.getFirstName(), "first name"),
+                validationService.dataMatchesRequirements(request.getLastName(), "last name"),
+                validationService.isEmailCorrect(request.getEmail()),
+                passwordEncoder.encode(validationService.isPasswordStrongEnough(request.getPassword())),
                 request.getDateOfBirth()
                 );
         var savedUser = repository.save(user);

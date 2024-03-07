@@ -32,12 +32,12 @@ public class CarRentingAppApplication {
                     "Adam",
                     "Kowalski",
                     "adam@kowalski.pl",
-                    "Qwerty123",
+                    "Qwerty123!",
                     LocalDate.now()
             );
             System.out.println("Admin created");
             System.out.println("Login: " + admin.getEmail());
-            System.out.println("Password: Qwerty123");
+            System.out.println("Password: Qwerty123!");
 
             System.out.println("\n--------------------------------\n");
 
@@ -45,12 +45,12 @@ public class CarRentingAppApplication {
                     "Jan",
                     "Nowak",
                     "jan@nowak.pl",
-                    "Qwerty123",
+                    "Qwerty123!",
                     LocalDate.now()
             );
             System.out.println("User created");
             System.out.println("Login: " + user.getEmail());
-            System.out.println("Password: Qwerty123");
+            System.out.println("Password: Qwerty123!");
         };
     }
 

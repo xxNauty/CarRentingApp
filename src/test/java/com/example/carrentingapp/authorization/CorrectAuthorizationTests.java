@@ -45,8 +45,8 @@ public class CorrectAuthorizationTests {
         RegistrationRequest request = new RegistrationRequest(
                 "Adam",
                 "Kowalski",
-                "adam@kowalski.pl",
-                "Qwerty123",
+                "adam123@kowalski.pl",
+                "Qwerty123!",
                 LocalDate.now()
         );
 
@@ -75,7 +75,7 @@ public class CorrectAuthorizationTests {
 
         LoginRequest request = new LoginRequest(
                 "adam@kowalski.pl",
-                "Qwerty123"
+                "Qwerty123!"
         );
 
         HttpHeaders headers = new HttpHeaders();

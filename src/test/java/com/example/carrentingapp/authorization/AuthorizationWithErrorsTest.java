@@ -3,7 +3,7 @@ package com.example.carrentingapp.authorization;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.user.UserRepository;
+import com.example.carrentingapp.user.BaseUserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class AuthorizationWithErrorsTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private UserRepository repository;
+    private BaseUserRepository repository;
 
     @LocalServerPort
     int randomServerPort;
@@ -41,8 +41,8 @@ public class AuthorizationWithErrorsTest {
         URI uri = new URI(baseURL);
 
         LoginRequest request = new LoginRequest(
-                "Jan@kowalski.pl",
-                "Qwerty123"
+                "jan@kowalski.pl",
+                "Qwerty123!"
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -158,3 +158,4 @@ public class AuthorizationWithErrorsTest {
         Assertions.assertEquals(userCountAfter, userCountBefore);
     }
 }
+//todo: weryfikacja wieku, minimum 18 lat do założenia konta

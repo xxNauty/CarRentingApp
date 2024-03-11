@@ -7,7 +7,7 @@ import com.example.carrentingapp.configuration.jwt.JwtService;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
 import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.UserRepository;
+import com.example.carrentingapp.user.BaseUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository repository;
+    private final BaseUserRepository repository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;

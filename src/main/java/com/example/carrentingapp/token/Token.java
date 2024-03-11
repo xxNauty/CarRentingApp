@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,18 +24,12 @@ import lombok.NoArgsConstructor;
 public class Token {
     @Id
     @GeneratedValue
-    public Integer id;
-
+    private UUID id;
     @Column(unique = true)
-    public String token;
-
-    public String tokenType = "BEARER";
-
-    public boolean revoked;
-
-    public boolean expired;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-//    @JsonIdentityReference(alwaysAsId = true)
-    public BaseUser user;
+    private String token;
+//    private String tokenType = "BEARER";
+    private boolean revoked;
+    private boolean expired;
+    @ManyToOne
+    private BaseUser user;
 }

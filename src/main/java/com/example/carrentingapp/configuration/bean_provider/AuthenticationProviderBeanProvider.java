@@ -1,6 +1,6 @@
 package com.example.carrentingapp.configuration.bean_provider;
 
-import com.example.carrentingapp.user.UserRepository;
+import com.example.carrentingapp.user.BaseUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class AuthenticationProviderBeanProvider {
 
     private final UserPasswordEncoderBeanProvider encoderBeanProvider;
-    private final UserRepository repository;
+    private final BaseUserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {

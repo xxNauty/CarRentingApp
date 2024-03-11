@@ -45,8 +45,11 @@ public class BaseUser implements UserDetails {
 
     private Boolean isEnabled;
 
-    @OneToMany(targetEntity = Token.class)
+    @OneToMany(targetEntity = Token.class, mappedBy = "user")
     private List<Token> tokens;
+
+    @OneToMany(targetEntity = UserLock.class, mappedBy = "user")
+    private List<UserLock> locks;
 
 //    private List<CarRental> rentedCars;
 //
@@ -81,23 +84,40 @@ public class BaseUser implements UserDetails {
         return email;
     }
 
+    public Boolean isAccountLocked(){ return isLocked; }
+
+    public Boolean isAccountEnabled(){ return isEnabled; }
+
     @Override
+    @Deprecated
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @Deprecated
     public boolean isAccountNonLocked() {
-        return !isLocked;
+        return true;
     }
 
     @Override
+    @Deprecated
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @Deprecated
     public boolean isEnabled() {
-        return isEnabled;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseUser{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

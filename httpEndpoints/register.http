@@ -3,10 +3,10 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "firstName": "Ali123",
-  "lastName": "Bouali",
+  "firstName": "Ali",
+  "lastName": "Bouali213",
   "email":  "alibou@21mail.com",
-  "password": "pa23234ord",
+  "password": "pa23234!Dord",
   "dateOfBirth": "2024-03-04"
 }
 

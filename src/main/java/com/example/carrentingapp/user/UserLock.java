@@ -1,7 +1,5 @@
 package com.example.carrentingapp.user;
 
-import com.example.carrentingapp.user.enums.LockType;
-import com.example.carrentingapp.user.enums.Reason;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,4 +39,21 @@ public class UserLock {
         this.user = user;
         this.isActive = true;
     }
+
+    @RequiredArgsConstructor
+    public enum Reason {
+        FREQUENT_DELAYED_RETURNS("częste-opóźnienia-ze-zwrotami"),
+        DAMAGED_CAR("uszkodzenie-samochodu"),
+        DESTROYED_CAR("zniszczenie-samochodu"),
+        OTHER("inne");
+
+        private final String reason;
+    }
+
+    public enum LockType {
+        TEMPORARY,
+        FOREVER
+    }
+
+
 }

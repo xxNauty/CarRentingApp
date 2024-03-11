@@ -5,7 +5,12 @@ import com.example.carrentingapp.exception.exception.http_error_403.AccountUnloc
 import com.example.carrentingapp.exception.exception.http_error_403.UserNotLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
-import com.example.carrentingapp.user.*;
+import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.UserLock;
+import com.example.carrentingapp.user.UserLockRepository;
+import com.example.carrentingapp.user.enums.LockType;
+import com.example.carrentingapp.user.enums.Reason;
 import com.example.carrentingapp.user.request.LockRequest;
 import com.example.carrentingapp.user.request.UnlockRequest;
 import com.example.carrentingapp.user.response.LockResponse;

@@ -1,5 +1,6 @@
-package com.example.carrentingapp.car;
+package com.example.carrentingapp.integration.car;
 
+import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.car.request.CreateCarRequest;
@@ -29,36 +30,16 @@ public class CreateCarTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private CommonFunctionsProvider provider;
+
     @LocalServerPort
     int randomServerPort;
 
-    private String getBearerToken(String email, String password) throws URISyntaxException {
-        final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
-
-        URI uri = new URI(baseURL);
-
-        LoginRequest request = new LoginRequest(
-                email,
-                password
-        );
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-COM-PERSIST", "true");
-
-        HttpEntity<LoginRequest> httpEntity = new HttpEntity<>(request, headers);
-
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
-                uri,
-                httpEntity,
-                AuthenticationResponse.class
-        );
-
-        return Objects.requireNonNull(response.getBody()).getAccessToken();
-    }
 
     @Test
     public void correctCreateCar() throws URISyntaxException {
-        final String token = getBearerToken("adam@kowalski.pl", "Qwerty123!");
+        final String token = provider.getBearerToken("adam@kowalski.pl", "Qwerty123!", randomServerPort, restTemplate);
         final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
 
         URI uri = new URI(baseURL);
@@ -95,7 +76,7 @@ public class CreateCarTest {
 
     @Test
     public void createCarNotByAdmin() throws URISyntaxException {
-        final String token = getBearerToken("jan@nowak.pl", "Qwerty123!");
+        final String token = provider.getBearerToken("jan@nowak.pl", "Qwerty123!", randomServerPort, restTemplate);
         final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
 
         URI uri = new URI(baseURL);

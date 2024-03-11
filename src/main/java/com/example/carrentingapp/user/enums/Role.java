@@ -1,4 +1,4 @@
-package com.example.carrentingapp.user;
+package com.example.carrentingapp.user.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.example.carrentingapp.user.Permission.*;
+import static com.example.carrentingapp.user.enums.Permission.*;
 
 @Getter
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.example.carrentingapp.user;
+package com.example.carrentingapp.user.enums;
 
 import lombok.RequiredArgsConstructor;
 

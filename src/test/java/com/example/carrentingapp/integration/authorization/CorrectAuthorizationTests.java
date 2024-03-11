@@ -1,4 +1,4 @@
-package com.example.carrentingapp.authorization;
+package com.example.carrentingapp.integration.authorization;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
@@ -38,9 +38,9 @@ public class CorrectAuthorizationTests {
 
         int userCountBefore = repository.findAll().size();
 
-        final String baseURL = "http://localhost:"+randomServerPort+"/api/v1/auth/register";
+        final String url = "http://localhost:"+randomServerPort+"/api/v1/auth/register";
 
-        URI uri = new URI(baseURL);
+        URI uri = new URI(url);
 
         RegistrationRequest request = new RegistrationRequest(
                 "Adam",
@@ -69,9 +69,9 @@ public class CorrectAuthorizationTests {
 
     @Test
     public void login() throws Exception{
-        final String baseURL = "http://localhost:"+randomServerPort+"/api/v1/auth/login";
+        final String url = "http://localhost:"+randomServerPort+"/api/v1/auth/login";
 
-        URI uri = new URI(baseURL);
+        URI uri = new URI(url);
 
         LoginRequest request = new LoginRequest(
                 "adam@kowalski.pl",

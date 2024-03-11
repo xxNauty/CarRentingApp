@@ -1,7 +1,7 @@
 package com.example.carrentingapp.user.service;
 
 import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.Role;
+import com.example.carrentingapp.user.enums.Role;
 import com.example.carrentingapp.user.BaseUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

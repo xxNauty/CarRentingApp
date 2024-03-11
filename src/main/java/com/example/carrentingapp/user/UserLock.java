@@ -1,11 +1,11 @@
 package com.example.carrentingapp.user;
 
+import com.example.carrentingapp.user.enums.LockType;
+import com.example.carrentingapp.user.enums.Reason;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 @Entity

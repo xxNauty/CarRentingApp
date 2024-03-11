@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 
-//todo: usunąć wszystkie var
-
 //todo: naprawić security, wszystkie url mają domyślnie wymagać autoryzacji, tylko wybrane mogą być dostępne publicznie (odwrócić aktualną sytuację)
 
 //todo: dodać obsługę 404 error w przypadku braku znalezionego entity

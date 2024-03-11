@@ -1,6 +1,7 @@
 package com.example.carrentingapp.user;
 
 import com.example.carrentingapp.token.Token;
+import com.example.carrentingapp.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.carrentingapp.user.Role.USER;
+import static com.example.carrentingapp.user.enums.Role.USER;
 
 @Entity
 @AllArgsConstructor

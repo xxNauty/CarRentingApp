@@ -1,18 +1,21 @@
-package com.example.carrentingapp.authorization;
+package com.example.carrentingapp.integration.authorization;
 
+import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.car.response.GetCarListResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.LockType;
-import com.example.carrentingapp.user.Reason;
+import com.example.carrentingapp.user.enums.LockType;
+import com.example.carrentingapp.user.enums.Reason;
 import com.example.carrentingapp.user.request.LockRequest;
 import com.example.carrentingapp.user.request.UnlockRequest;
 import com.example.carrentingapp.user.response.LockResponse;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -23,11 +26,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING) //todo sprawdzić czy jest lepszy sposób na ustalanie kolejności testów
 public class LockUserAccountTest {
 
     @Autowired
@@ -36,41 +39,21 @@ public class LockUserAccountTest {
     @Autowired
     private BaseUserRepository repository;
 
+    @Autowired
+    private CommonFunctionsProvider provider;
+
     @LocalServerPort
     int randomServerPort;
 
-    private String getBearerToken(String email, String password) throws URISyntaxException {
-        final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
+    @Test
+    public void aTestOfLockingUserAccount() throws URISyntaxException {
 
-        URI uri = new URI(baseURL);
-
-        LoginRequest request = new LoginRequest(
-                email,
-                password
-        );
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-COM-PERSIST", "true");
-
-        HttpEntity<LoginRequest> httpEntity = new HttpEntity<>(request, headers);
-
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
-                uri,
-                httpEntity,
-                AuthenticationResponse.class
-        );
-
-        return Objects.requireNonNull(response.getBody()).getAccessToken();
-    }
-
-    @Test //testOfLockingAccount => działa, testOfLockingUserAccount => nie działa
-    public void testOfLockingAccount() throws URISyntaxException { //todo: sprawdzić czemu zmiana nazwy metody powoduje wywalenie się testów
         Assertions.assertFalse(repository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User with given id not found")).getIsLocked());
 
         final String url = "http://localhost:"+randomServerPort+"/api/v1/user/lock";
 
-        // logowanie jako administrator
-        String adminToken = getBearerToken("adam@kowalski.pl", "Qwerty123!");
+        //logowanie jako admin
+        String adminToken = provider.getBearerToken("adam@kowalski.pl", "Qwerty123!", randomServerPort, restTemplate);
 
         //uzyskanie ID usera do zablokowania
         UUID id = repository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User with given id not found")).getId();
@@ -105,12 +88,13 @@ public class LockUserAccountTest {
     }
 
     @Test
-    public void testIfUserCanLogin() throws URISyntaxException {
+    public void bTestIfUserCanLoginAfterLock() throws URISyntaxException {
+
         Assertions.assertTrue(repository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User with given id not found")).getIsLocked());
 
-        final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
+        final String url = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
-        URI uri = new URI(baseURL);
+        URI uri = new URI(url);
 
         LoginRequest request = new LoginRequest(
                 "jan@nowak.pl",
@@ -132,19 +116,20 @@ public class LockUserAccountTest {
     }
 
     @Test
-    public void testApiAfterLock() throws URISyntaxException {
+    public void cTestApiAfterLock() throws URISyntaxException {
+
         Assertions.assertTrue(repository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User with given id not found")).getIsLocked());
 
-        final String testUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/all";
+        final String url = "http://localhost:" + randomServerPort + "/api/v1/car/get/all";
 
-        String token = getBearerToken("jan@nowak.pl", "Qwerty123!");
+        String token = provider.getBearerToken("jan@nowak.pl", "Qwerty123!", randomServerPort, restTemplate);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
         ResponseEntity<GetCarListResponse> response = restTemplate.exchange(
-                testUrl,
+                url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 GetCarListResponse.class
@@ -156,12 +141,13 @@ public class LockUserAccountTest {
     }
 
     @Test
-    public void testOfUnlockingUser() throws URISyntaxException {
+    public void dTestOfUnlockingUser() throws URISyntaxException {
+
         Assertions.assertTrue(repository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User with given id not found")).getIsLocked());
 
         final String url = "http://localhost:"+randomServerPort+"/api/v1/user/unlock";
 
-        String adminToken = getBearerToken("adam@kowalski.pl", "Qwerty123!");
+        String adminToken = provider.getBearerToken("adam@kowalski.pl", "Qwerty123!", randomServerPort, restTemplate);
 
         //uzyskanie ID usera do odblokowania
         UUID id = repository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User with given id not found")).getId();
@@ -193,10 +179,11 @@ public class LockUserAccountTest {
     }
 
     @Test
-    public void testIfUserCanLoginAfterUnlock() throws URISyntaxException {
-        final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
+    public void eTestIfUserCanLoginAfterUnlock() throws URISyntaxException {
 
-        URI uri = new URI(baseURL);
+        final String url = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
+
+        URI uri = new URI(url);
 
         LoginRequest request = new LoginRequest(
                 "jan@nowak.pl",
@@ -218,17 +205,18 @@ public class LockUserAccountTest {
     }
 
     @Test
-    public void testIfUserCanUseAPIAfterUnlock() throws URISyntaxException {
-        final String testUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/all";
+    public void fTestIfUserCanUseAPIAfterUnlock() throws URISyntaxException {
 
-        String token = getBearerToken("jan@nowak.pl", "Qwerty123!");
+        final String url = "http://localhost:" + randomServerPort + "/api/v1/car/get/all";
+
+        String token = provider.getBearerToken("jan@nowak.pl", "Qwerty123!", randomServerPort, restTemplate);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
         ResponseEntity<GetCarListResponse> response = restTemplate.exchange(
-                testUrl,
+                url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 GetCarListResponse.class

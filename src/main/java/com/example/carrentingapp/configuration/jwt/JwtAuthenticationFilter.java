@@ -1,11 +1,15 @@
 package com.example.carrentingapp.configuration.jwt;
 
+import com.example.carrentingapp.exception.exception.http_error_403.UserAccountLockedException;
+import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.token.TokenRepository;
+import com.example.carrentingapp.user.BaseUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -24,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenRepository tokenRepository;
+    private final BaseUserRepository userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -46,6 +52,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         userEmail = jwtService.extractUsername(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+            if(userRepository.findByEmail(userEmail).orElseThrow( //todo: sprawdzić czemu zwraca 500
+                    () -> new UserNotFoundException("User with given email not found")).isAccountLocked()
+            ){
+                throw new UserAccountLockedException("You cannot do it while Your account is locked");
+            }
+
             Boolean isTokenValid = tokenRepository.findByToken(jwt)
                     .map(t -> !t.isExpired() && !t.isRevoked())
                     .orElse(false);

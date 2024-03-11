@@ -1,7 +1,7 @@
 package com.example.carrentingapp;
 
 import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.UserCreatorService;
+import com.example.carrentingapp.user.service.UserCreatorService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,6 +50,8 @@ public class CarRentingAppApplication {
             System.out.println("User created");
             System.out.println("Login: " + user.getEmail());
             System.out.println("Password: Qwerty123!");
+
+            System.out.println("\n--------------------------------\n");
         };
     }
 

@@ -16,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/car/get")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class GetCarController {
 
     private final GetCarService service;

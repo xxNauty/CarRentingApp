@@ -1,0 +1,8 @@
+### Unlock user account
+POST http://localhost:8080/api/v1/user/unlock
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "userid": "f363b8cb-bd39-49d8-b2f2-0b4a2e0ecbd2"
+}

@@ -121,7 +121,7 @@ public class GetCarTest {
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(5 + 2, response.getBody().getCars().size()); //+2 bo z dwóch poprzednich testów zostają
+        Assertions.assertEquals(5 + 3, response.getBody().getCars().size()); //+3 bo z dwóch poprzednich testów zostają
         Assertions.assertInstanceOf(BaseCar.class, response.getBody().getCars().get(0));
     }
 
@@ -145,7 +145,7 @@ public class GetCarTest {
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(7, response.getBody().getCars().size());
+        Assertions.assertEquals(8, response.getBody().getCars().size());
         Assertions.assertInstanceOf(BaseCar.class, response.getBody().getCars().get(0));
     }
 

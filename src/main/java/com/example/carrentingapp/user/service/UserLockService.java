@@ -9,8 +9,6 @@ import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.BaseUserRepository;
 import com.example.carrentingapp.user.UserLock;
 import com.example.carrentingapp.user.UserLockRepository;
-import com.example.carrentingapp.user.enums.LockType;
-import com.example.carrentingapp.user.enums.Reason;
 import com.example.carrentingapp.user.request.LockRequest;
 import com.example.carrentingapp.user.request.UnlockRequest;
 import com.example.carrentingapp.user.response.LockResponse;
@@ -33,9 +31,9 @@ public class UserLockService {
         }
 
         UserLock lock = new UserLock(
-                Reason.valueOf(request.getReason()),
-                LockType.valueOf(request.getLockType()),
-                request.getLockType().equals(LockType.TEMPORARY.name()) ? request.getExpirationDate() : null,
+                UserLock.Reason.valueOf(request.getReason()),
+                UserLock.LockType.valueOf(request.getLockType()),
+                request.getLockType().equals(UserLock.LockType.TEMPORARY.name()) ? request.getExpirationDate() : null,
                 user
         );
 
@@ -58,7 +56,7 @@ public class UserLockService {
         UserLock lock = repository.findAllActiveLockForUser(request.getUserid())
                 .orElseThrow(() -> new UserLockNotFoundException("There is no active locks for this user"));
 
-        if(lock.getType().equals(LockType.FOREVER)){
+        if(lock.getType().equals(UserLock.LockType.FOREVER)){
             throw new AccountUnlockImpossibleException("This account is locked forever");
         }
 

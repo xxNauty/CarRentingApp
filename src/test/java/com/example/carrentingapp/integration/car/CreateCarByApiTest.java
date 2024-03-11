@@ -1,8 +1,6 @@
 package com.example.carrentingapp.integration.car;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
-import com.example.carrentingapp.authentication.request.LoginRequest;
-import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.car.request.CreateCarRequest;
 import com.example.carrentingapp.car.response.CarResponse;
 import org.junit.Test;
@@ -20,12 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Objects;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CreateCarTest {
+public class CreateCarByApiTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

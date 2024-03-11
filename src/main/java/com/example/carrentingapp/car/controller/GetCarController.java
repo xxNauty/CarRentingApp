@@ -2,7 +2,7 @@ package com.example.carrentingapp.car.controller;
 
 import com.example.carrentingapp.car.response.GetCarListResponse;
 import com.example.carrentingapp.car.response.GetCarResponse;
-import com.example.carrentingapp.car.service.GetCarService;
+import com.example.carrentingapp.car.service.CarGetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class GetCarController {
 
-    private final GetCarService service;
+    private final CarGetService service;
 
     @GetMapping("/{id}")
     public ResponseEntity<GetCarResponse> getCarById(@PathVariable UUID id){

@@ -3,7 +3,7 @@ package com.example.carrentingapp.car.controller;
 import com.example.carrentingapp.car.CarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.response.CarResponse;
-import com.example.carrentingapp.car.service.UpdateCarDataService;
+import com.example.carrentingapp.car.service.CarUpdateService;
 import com.example.carrentingapp.car.request.UpdateCarMileageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('ADMIN')")
 public class UpdateCarDataController {
 
-    private final UpdateCarDataService service;
+    private final CarUpdateService service;
 
     private final CarRepository repository;
 

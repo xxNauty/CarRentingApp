@@ -3,7 +3,7 @@ package com.example.carrentingapp;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.car.response.CarResponse;
-import com.example.carrentingapp.car.service.CreateCarService;
+import com.example.carrentingapp.car.service.CarCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class CommonFunctionsProvider {
 
     @Autowired
-    private final CreateCarService service;
+    private final CarCreateService service;
 
     public String getBearerToken(String email, String password, Integer randomServerPort, TestRestTemplate restTemplate) throws URISyntaxException {
         final String url = "http://localhost:" + randomServerPort + "/api/v1/auth/login";

@@ -10,23 +10,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserCreateServiceTest {
 
     @Autowired
-    private UserCreateService service;
+    private UserCreateService userCreateService;
 
     @Autowired
-    private BaseUserRepository repository;
+    private BaseUserRepository baseUserRepository;
 
     @Test
     public void testCreateUser(){
-        BaseUser user = service.createUser(
+        BaseUser user = userCreateService.createUser(
                 "Jan",
                 "Kowalski",
                 "jan@kowalski.pl",
@@ -34,7 +36,7 @@ public class UserCreateServiceTest {
                 LocalDate.now()
         );
 
-        BaseUser userFromDatabase = repository.findByEmail("jan@kowalski.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
+        BaseUser userFromDatabase = baseUserRepository.findByEmail("jan@kowalski.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
         Assertions.assertEquals(Role.USER.name(), userFromDatabase.getRole().name());
@@ -43,15 +45,15 @@ public class UserCreateServiceTest {
 
     @Test
     public void testCreateAdmin(){
-        BaseUser user = service.createAdmin(
+        BaseUser user = userCreateService.createAdmin(
                 "Jan",
                 "Kowalski",
-                "jan123@kowalski.pl",
+                "jan@kowalski.pl",
                 "Qwerty123!",
                 LocalDate.now()
         );
 
-        BaseUser userFromDatabase = repository.findByEmail("jan123@kowalski.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
+        BaseUser userFromDatabase = baseUserRepository.findByEmail("jan@kowalski.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
         Assertions.assertEquals( Role.ADMIN.name(), userFromDatabase.getRole().name());

@@ -14,5 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class GetSimpleCarListResponse {
 
-    private List<CarGetService.SimpleCar> carList;
+    private List<CarGetService.SimpleCar> cars;
 }

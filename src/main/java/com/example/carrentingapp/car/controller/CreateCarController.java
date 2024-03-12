@@ -1,6 +1,6 @@
 package com.example.carrentingapp.car.controller;
 
-import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.car.response.MainCarResponse;
 import com.example.carrentingapp.car.service.CarCreateService;
 import com.example.carrentingapp.car.request.CreateCarRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class CreateCarController {
     private final CarCreateService service;
 
     @PostMapping("/base")
-    public ResponseEntity<CarResponse> createCar(
+    public ResponseEntity<MainCarResponse> createCar(
             @RequestBody CreateCarRequest request
             ){
         return ResponseEntity.ok(service.createCar(

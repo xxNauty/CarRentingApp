@@ -2,7 +2,7 @@ package com.example.carrentingapp.car.controller;
 
 import com.example.carrentingapp.car.CarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
-import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.car.response.MainCarResponse;
 import com.example.carrentingapp.car.service.CarUpdateService;
 import com.example.carrentingapp.car.request.UpdateCarMileageRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class UpdateCarDataController {
     private final CarRepository repository;
 
     @PostMapping("/mileage")
-    public ResponseEntity<CarResponse> updateCarMileage(
+    public ResponseEntity<MainCarResponse> updateCarMileage(
             @RequestBody UpdateCarMileageRequest request
     ) {
         return ResponseEntity.ok(service.updateMileageFromRequest(
@@ -34,7 +34,7 @@ public class UpdateCarDataController {
     }
 
     @PostMapping("/data")
-    public ResponseEntity<CarResponse> updateCarData(
+    public ResponseEntity<MainCarResponse> updateCarData(
             @RequestBody UpdateCarDataRequest request
     ){
         return ResponseEntity.ok(service.updateCarDataResponse(request));

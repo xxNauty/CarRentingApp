@@ -2,8 +2,9 @@ package com.example.carrentingapp.integration.car;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.car.request.CreateCarRequest;
-import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.car.response.MainCarResponse;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
@@ -32,6 +34,14 @@ public class CreateCarByApiTest {
 
     @LocalServerPort
     int randomServerPort;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @AfterEach
+    public void execute() {
+        jdbcTemplate.execute("TRUNCATE TABLE base_car" );
+    }
 
 
     @Test
@@ -60,10 +70,10 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<CarResponse> response = restTemplate.postForEntity(
+        ResponseEntity<MainCarResponse> response = restTemplate.postForEntity(
                 uri,
                 httpEntity,
-                CarResponse.class
+                MainCarResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
@@ -97,10 +107,10 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<CarResponse> response = restTemplate.postForEntity(
+        ResponseEntity<MainCarResponse> response = restTemplate.postForEntity(
                 uri,
                 httpEntity,
-                CarResponse.class
+                MainCarResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -130,10 +140,10 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<CarResponse> response = restTemplate.postForEntity(
+        ResponseEntity<MainCarResponse> response = restTemplate.postForEntity(
                 uri,
                 httpEntity,
-                CarResponse.class
+                MainCarResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());

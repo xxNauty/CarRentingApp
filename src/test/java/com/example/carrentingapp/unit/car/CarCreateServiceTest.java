@@ -10,21 +10,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CarCreateServiceTest {
 
     @Autowired
-    private CarCreateService service;
+    private CarCreateService carCreateService;
 
     @Autowired
-    private CarRepository repository;
+    private CarRepository carRepository;
 
     @Test
     public void testCreateCar(){
-        MainCarResponse car = service.createCar(
+        MainCarResponse car = carCreateService.createCar(
                 "Opel",
                 "Corsa",
                 2000,
@@ -37,7 +39,7 @@ public class CarCreateServiceTest {
                 430.99F
         );
 
-        BaseCar carFromDatabase = repository.findById(car.getId()).orElseThrow(() -> new CarNotFoundException("Car not found"));
+        BaseCar carFromDatabase = carRepository.findById(car.getId()).orElseThrow(() -> new CarNotFoundException("Car not found"));
 
         Assertions.assertDoesNotThrow(() -> new CarNotFoundException("Car not found"));
 

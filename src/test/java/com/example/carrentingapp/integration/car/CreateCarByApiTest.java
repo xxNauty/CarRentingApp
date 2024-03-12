@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
@@ -24,29 +25,21 @@ import java.net.URISyntaxException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CreateCarByApiTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private CommonFunctionsProvider provider;
+    private CommonFunctionsProvider commonFunctionsProvider;
 
     @LocalServerPort
     int randomServerPort;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @AfterEach
-    public void execute() {
-        jdbcTemplate.execute("TRUNCATE TABLE base_car" );
-    }
-
-
     @Test
     public void correctCreateCar() throws URISyntaxException {
-        final String token = provider.getBearerToken("adam@kowalski.pl", "Qwerty123!", randomServerPort, restTemplate);
+        final String token = commonFunctionsProvider.getBearerToken("adam@kowalski.pl", "Qwerty123!", randomServerPort, testRestTemplate);
         final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
 
         URI uri = new URI(baseURL);
@@ -70,7 +63,7 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MainCarResponse> response = restTemplate.postForEntity(
+        ResponseEntity<MainCarResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 MainCarResponse.class
@@ -83,7 +76,7 @@ public class CreateCarByApiTest {
 
     @Test
     public void createCarNotByAdmin() throws URISyntaxException {
-        final String token = provider.getBearerToken("jan@nowak.pl", "Qwerty123!", randomServerPort, restTemplate);
+        final String token = commonFunctionsProvider.getBearerToken("jan@nowak.pl", "Qwerty123!", randomServerPort, testRestTemplate);
         final String baseURL = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
 
         URI uri = new URI(baseURL);
@@ -107,7 +100,7 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MainCarResponse> response = restTemplate.postForEntity(
+        ResponseEntity<MainCarResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 MainCarResponse.class
@@ -140,7 +133,7 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MainCarResponse> response = restTemplate.postForEntity(
+        ResponseEntity<MainCarResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 MainCarResponse.class

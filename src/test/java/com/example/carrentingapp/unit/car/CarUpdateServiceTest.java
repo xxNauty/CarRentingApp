@@ -7,44 +7,36 @@ import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.service.CarUpdateService;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CarUpdateServiceTest {
 
     @Autowired
-    private CarUpdateService service;
+    private CarUpdateService carUpdateService;
 
     @Autowired
-    private CarRepository repository;
+    private CarRepository carRepository;
 
     @Autowired
-    private CommonFunctionsProvider provider;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @AfterEach
-    public void execute() {
-        jdbcTemplate.execute("TRUNCATE TABLE base_car" );
-    }
+    private CommonFunctionsProvider commonFunctionsProvider;
 
     @Test
     public void testUpdateCarMileage(){
-        BaseCar car = repository.findById(provider.createCarForTest()).orElseThrow(() -> new CarNotFoundException("Car not found"));
+        BaseCar car = carRepository.findById(commonFunctionsProvider.createCarForTest()).orElseThrow(() -> new CarNotFoundException("Car not found"));
         Assertions.assertDoesNotThrow(() -> new CarNotFoundException("Car not found"));
 
         Float valueToAdd = 123.45F;
 
         Float mileageBefore = car.getMileage();
-        service.updateMileageFromRequest(car, valueToAdd);
+        carUpdateService.updateMileageFromRequest(car, valueToAdd);
         Float mileageAfter = car.getMileage();
 
         Assertions.assertEquals(mileageBefore + valueToAdd, mileageAfter);
@@ -52,10 +44,10 @@ public class CarUpdateServiceTest {
 
     @Test
     public void testUpdateCar(){
-        BaseCar car = repository.findById(provider.createCarForTest()).orElseThrow(() -> new CarNotFoundException("Car not found"));
+        BaseCar car = carRepository.findById(commonFunctionsProvider.createCarForTest()).orElseThrow(() -> new CarNotFoundException("Car not found"));
         Assertions.assertDoesNotThrow(() -> new CarNotFoundException("Car not found"));
 
-        service.updateCarDataResponse(new UpdateCarDataRequest(
+        carUpdateService.updateCarDataResponse(new UpdateCarDataRequest(
                 car.getId(),
                 car.getBrand(),
                 "Astra",
@@ -68,7 +60,7 @@ public class CarUpdateServiceTest {
                 800.50F
         ));
 
-        BaseCar carFromDatabase = repository.findById(car.getId()).orElseThrow(() -> new CarNotFoundException("Car not found"));
+        BaseCar carFromDatabase = carRepository.findById(car.getId()).orElseThrow(() -> new CarNotFoundException("Car not found"));
 
         Assertions.assertEquals(car.getId(), carFromDatabase.getId());
         Assertions.assertEquals(car.getBrand(), carFromDatabase.getBrand());

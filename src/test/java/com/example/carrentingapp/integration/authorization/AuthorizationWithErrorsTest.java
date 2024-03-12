@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
@@ -23,13 +24,14 @@ import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthorizationWithErrorsTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseUserRepository repository;
+    private BaseUserRepository baseUserRepository;
 
     @LocalServerPort
     int randomServerPort;
@@ -50,7 +52,7 @@ public class AuthorizationWithErrorsTest {
 
         HttpEntity<LoginRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
+        ResponseEntity<AuthenticationResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 AuthenticationResponse.class
@@ -65,7 +67,7 @@ public class AuthorizationWithErrorsTest {
 
         URI uri = new URI(baseURL);
 
-        int userCountBefore = repository.findAll().size();
+        int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
                 "Adam",
@@ -80,13 +82,13 @@ public class AuthorizationWithErrorsTest {
 
         HttpEntity<RegistrationRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
+        ResponseEntity<AuthenticationResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 AuthenticationResponse.class
         );
 
-        int userCountAfter = repository.findAll().size();
+        int userCountAfter = baseUserRepository.findAll().size();
 
         Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
         Assertions.assertEquals(userCountAfter, userCountBefore);
@@ -98,7 +100,7 @@ public class AuthorizationWithErrorsTest {
 
         URI uri = new URI(baseURL);
 
-        int userCountBefore = repository.findAll().size();
+        int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
                 "Adam!@#",
@@ -113,13 +115,13 @@ public class AuthorizationWithErrorsTest {
 
         HttpEntity<RegistrationRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
+        ResponseEntity<AuthenticationResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 AuthenticationResponse.class
         );
 
-        int userCountAfter = repository.findAll().size();
+        int userCountAfter = baseUserRepository.findAll().size();
 
         Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
         Assertions.assertEquals(userCountAfter, userCountBefore);
@@ -131,7 +133,7 @@ public class AuthorizationWithErrorsTest {
 
         URI uri = new URI(baseURL);
 
-        int userCountBefore = repository.findAll().size();
+        int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
                 "Adam",
@@ -146,13 +148,13 @@ public class AuthorizationWithErrorsTest {
 
         HttpEntity<RegistrationRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
+        ResponseEntity<AuthenticationResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
                 AuthenticationResponse.class
         );
 
-        int userCountAfter = repository.findAll().size();
+        int userCountAfter = baseUserRepository.findAll().size();
 
         Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
         Assertions.assertEquals(userCountAfter, userCountBefore);

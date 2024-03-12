@@ -1,7 +1,7 @@
 package com.example.carrentingapp.car.controller;
 
 import com.example.carrentingapp.car.response.CarResponse;
-import com.example.carrentingapp.car.service.CreateCarService;
+import com.example.carrentingapp.car.service.CarCreateService;
 import com.example.carrentingapp.car.request.CreateCarRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CreateCarController {
 
-    private final CreateCarService service;
+    private final CarCreateService service;
 
     @PostMapping("/base")
     public ResponseEntity<CarResponse> createCar(

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class UserCreatorService {
+public class UserCreateService {
 
     private final BaseUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

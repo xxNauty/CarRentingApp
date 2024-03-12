@@ -1,7 +1,7 @@
 package com.example.carrentingapp;
 
 import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.service.UserCreatorService;
+import com.example.carrentingapp.user.service.UserCreateService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +21,7 @@ public class CarRentingAppApplication {
     }
 
     @Bean //Rozwiązanie na czas tworzenia aplikacji
-    public CommandLineRunner commandLineRunner(UserCreatorService service){
+    public CommandLineRunner commandLineRunner(UserCreateService service){
         return args -> {
             System.out.println("\n--------------------------------\n");
 

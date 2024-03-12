@@ -1,4 +1,4 @@
-package com.example.carrentingapp.integration.authorization;
+package com.example.carrentingapp.integration.user;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.authentication.request.LoginRequest;

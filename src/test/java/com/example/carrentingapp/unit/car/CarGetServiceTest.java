@@ -49,10 +49,39 @@ public class CarGetServiceTest {
             commonFunctionsProvider.createCarForTest();
         }
 
-        List<CarGetService.SimpleCar> response = carGetService.getSimpleCarList(false).getCarList();
+        List<CarGetService.SimpleCar> response = carGetService.getSimpleCarList(false).getCars();
         Assertions.assertEquals(5, response.size());
     }
 
-    //todo: dokończyć testy
+    @Test
+    public void testGetAllFullCars(){
+        for (int i = 0; i < 5; i++){
+            commonFunctionsProvider.createCarForTest();
+        }
+
+        List<BaseCar> response = carGetService.getFullCarList(false).getCars();
+        Assertions.assertEquals(5, response.size());
+    }
+
+    @Test
+    public void testGetAvailableSimpleCars(){
+        for (int i = 0; i < 5; i++){
+            commonFunctionsProvider.createCarForTest();
+        }
+
+        List<CarGetService.SimpleCar> response = carGetService.getSimpleCarList(true).getCars();
+        Assertions.assertEquals(5, response.size());
+    }
+
+    @Test
+    public void testGetAvailableFullCars(){
+        for (int i = 0; i < 5; i++){
+            commonFunctionsProvider.createCarForTest();
+        }
+
+        List<BaseCar> response = carGetService.getFullCarList(true).getCars();
+        Assertions.assertEquals(5, response.size());
+    }
+
 
 }

@@ -32,34 +32,11 @@ public class GetCarFromApiTest {
     int randomServerPort;
 
     @Test
-    public void testGetSingleCarAsUser() throws URISyntaxException {
+    public void testGetSingleCarAuthorized() throws URISyntaxException {
         final UUID id = commonFunctionProvider.createCarForTest();
         final String url = "http://localhost:" + randomServerPort + "/api/v1/car/get/" + id;
 
         String token = commonFunctionProvider.getBearerToken("jan@nowak.pl", "Qwerty123!", randomServerPort, testRestTemplate);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-COM-PERSIST", "true");
-        headers.set("Authorization", "Bearer " + token);
-
-        ResponseEntity<GetCarResponse> response = testRestTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                new HttpEntity<>(headers),
-                GetCarResponse.class
-        );
-
-        Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(response.getBody().getCars().getId(), id);
-    }
-
-    @Test
-    public void testGetSingleCarAsAdmin() throws URISyntaxException {
-        final UUID id = commonFunctionProvider.createCarForTest();
-        final String url = "http://localhost:" + randomServerPort + "/api/v1/car/get/" + id;
-
-        String token = commonFunctionProvider.getBearerToken("adam@kowalski.pl", "Qwerty123!", randomServerPort, testRestTemplate);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");

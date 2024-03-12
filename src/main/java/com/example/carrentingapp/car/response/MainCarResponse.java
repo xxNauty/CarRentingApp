@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarResponse {
+public class MainCarResponse {
     private UUID id;
 
     private String message;

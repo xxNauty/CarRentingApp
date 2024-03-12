@@ -2,6 +2,17 @@
 GET  http://localhost:8080/api/v1/car/get/36a423d6-fc32-49bf-a086-732443c5855e
 Authorization: Bearer {{auth-token}}
 
-### Get all cars
-GET http://localhost:8080/api/v1/car/get/all
+### Get simplified list of all cars
+GET http://localhost:8080/api/v1/car/get/simple/all
+
+### Get simplified list of all available cars
+GET  http://localhost:8080/api/v1/car/get/simple/available
+Authorization: Bearer {{auth-token}}
+
+### Get full list of all cars
+GET  http://localhost:8080/api/v1/car/get/full/all
+Authorization: Bearer {{auth-token}}
+
+### Get full list of all available cars
+GET  http://localhost:8080/api/v1/car/get/full/available
 Authorization: Bearer {{auth-token}}

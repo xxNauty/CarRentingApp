@@ -2,7 +2,7 @@ package com.example.carrentingapp.unit.car;
 
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.CarRepository;
-import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.car.response.MainCarResponse;
 import com.example.carrentingapp.car.service.CarCreateService;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class CarCreateServiceTest {
 
     @Test
     public void testCreateCar(){
-        CarResponse car = service.createCar(
+        MainCarResponse car = service.createCar(
                 "Opel",
                 "Corsa",
                 2000,

@@ -18,30 +18,17 @@ public class BaseCar {
     @Id
     @GeneratedValue
     private UUID id;
-
     private String brand;
-
     private String model;
-
     private Integer yearOfProduction;
-
     private Float mileage;
-
     private Boolean isRented;
-
     private Float power;
-
     private Float torque;
-
     private Float engineSize;
-
     private Float averageFuelConsumption;
-
     private Float minRankOfUser;
-
     private Float pricePerDay;
-
     private Boolean hasActiveSale;
-
     private Boolean isAvailable;
 }

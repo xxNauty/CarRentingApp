@@ -5,11 +5,11 @@ Authorization: Bearer {{auth-token}}
 
 {
   "brand": "Opel",
-  "model": "Omega",
+  "model": "Corsa",
   "yearOfProduction": 2000,
-  "mileage": 200000,
+  "mileage": 200,
   "power": 211,
-  "torque": 300,
+  "torque": 3040,
   "engineSize": 3.2,
   "averageFuelConsumption": 12.5,
   "minRankOfUser": 6.5,

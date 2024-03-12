@@ -3,7 +3,7 @@ package com.example.carrentingapp.car.service;
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.CarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
-import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.car.response.MainCarResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +13,15 @@ public class CarUpdateService {
 
     private final CarRepository carRepository;
 
-    public CarResponse updateMileageFromRequest(BaseCar car, float valueToAdd){
+    public MainCarResponse updateMileageFromRequest(BaseCar car, float valueToAdd){
         car.setMileage(car.getMileage() + valueToAdd);
 
         carRepository.save(car);
 
-        return new CarResponse(car.getId(), "Car mileage updated, actual mileage: " + car.getMileage());
+        return new MainCarResponse(car.getId(), "Car mileage updated, actual mileage: " + car.getMileage());
     }
 
-    public CarResponse updateCarDataResponse(UpdateCarDataRequest request){
+    public MainCarResponse updateCarDataResponse(UpdateCarDataRequest request){
         BaseCar carToUpdate = carRepository.findById(request.getId()).orElseThrow();
 
         carToUpdate.setBrand(request.getBrand());
@@ -36,7 +36,7 @@ public class CarUpdateService {
 
         carRepository.save(carToUpdate);
 
-        return new CarResponse(request.getId(), "Car updated");
+        return new MainCarResponse(request.getId(), "Car updated");
     }
 
 }

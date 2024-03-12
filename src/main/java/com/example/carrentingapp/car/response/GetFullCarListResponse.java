@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetCarListResponse {
-
-    private List<BaseCar> cars;
+public class GetFullCarListResponse {
+    public List<BaseCar> cars;
 }

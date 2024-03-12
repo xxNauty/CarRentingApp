@@ -7,10 +7,12 @@ import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.service.CarUpdateService;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +27,14 @@ public class CarUpdateServiceTest {
 
     @Autowired
     private CommonFunctionsProvider provider;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @AfterEach
+    public void execute() {
+        jdbcTemplate.execute("TRUNCATE TABLE base_car" );
+    }
 
     @Test
     public void testUpdateCarMileage(){

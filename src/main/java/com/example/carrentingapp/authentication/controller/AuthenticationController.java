@@ -3,15 +3,13 @@ package com.example.carrentingapp.authentication.controller;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
+import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
 import com.example.carrentingapp.authentication.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -27,6 +25,13 @@ public class AuthenticationController {
             @RequestBody RegistrationRequest request
     ){
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @GetMapping("/register/verify")
+    public ResponseEntity<EmailVerificationResponse> verifyEmail(
+            @RequestParam String token
+    ){
+        return ResponseEntity.ok(authenticationService.verifyEmail(token));
     }
 
     @PostMapping("/login")

@@ -3,11 +3,18 @@ package com.example.carrentingapp.authentication.service;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
+import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
 import com.example.carrentingapp.configuration.jwt.JwtService;
+import com.example.carrentingapp.email_verification.token.ConfirmationToken;
+import com.example.carrentingapp.email_verification.token.ConfirmationTokenRepository;
+import com.example.carrentingapp.exception.exception.http_error_403.EmailAlreadyVerifiedException;
+import com.example.carrentingapp.exception.exception.http_error_403.TokenExpiredException;
+import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.service.UserCreateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,20 +39,23 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserDataValidationService validationService;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final UserCreateService userCreateService;
 
     public AuthenticationResponse  register(RegistrationRequest request) {
-        BaseUser user = new BaseUser(
+        BaseUser user = userCreateService.createUser(
                 validationService.dataMatchesRequirements(request.getFirstName(), "first name"),
                 validationService.dataMatchesRequirements(request.getLastName(), "last name"),
                 validationService.isEmailCorrect(request.getEmail()),
                 passwordEncoder.encode(validationService.isPasswordStrongEnough(request.getPassword())),
                 request.getDateOfBirth()
-                );
+        );
         BaseUser savedUser = repository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
+        return AuthenticationResponse
+                .builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -67,27 +78,6 @@ public class AuthenticationService {
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
-    }
-
-    private void saveUserToken(BaseUser user, String jwtToken) {
-        Token token = Token.builder()
-                .user(user)
-                .token(jwtToken)
-                .expired(false)
-                .revoked(false)
-                .build();
-        tokenRepository.save(token);
-    }
-
-    private void revokeAllUserTokens(BaseUser user) {
-        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-        if (validUserTokens.isEmpty())
-            return;
-        validUserTokens.forEach(token -> {
-            token.setExpired(true);
-            token.setRevoked(true);
-        });
-        tokenRepository.saveAll(validUserTokens);
     }
 
     public void refreshToken(
@@ -117,5 +107,50 @@ public class AuthenticationService {
             }
         }
     }
+
+    public EmailVerificationResponse verifyEmail(String token){
+        ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token).orElseThrow(() -> new TokenNotFoundException("There is no token for this user"));
+
+        if(confirmationToken.getConfirmedAt() != null){
+            throw new EmailAlreadyVerifiedException("You already verified your email");
+        }
+
+        if(confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())){
+            throw new TokenExpiredException("Given token already expired");
+        }
+
+        confirmationToken.setConfirmedAt(LocalDateTime.now());
+
+        BaseUser user = confirmationToken.getUser();
+        user.setIsEnabled(true);
+
+        repository.save(user);
+        confirmationTokenRepository.save(confirmationToken);
+
+        return new EmailVerificationResponse("Email verified, your account is now enabled");
+    }
+
+    private void saveUserToken(BaseUser user, String jwtToken) {
+        Token token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
+    }
+
+    private void revokeAllUserTokens(BaseUser user) {
+        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+
+
 
 }

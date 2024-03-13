@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@Table(name = "car_base")
 public class BaseCar {
 
     @Id

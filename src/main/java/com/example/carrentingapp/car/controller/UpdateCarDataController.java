@@ -1,6 +1,6 @@
 package com.example.carrentingapp.car.controller;
 
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.response.MainCarResponse;
 import com.example.carrentingapp.car.service.CarUpdateService;
@@ -21,7 +21,7 @@ public class UpdateCarDataController {
 
     private final CarUpdateService service;
 
-    private final CarRepository repository;
+    private final BaseCarRepository repository;
 
     @PostMapping("/mileage")
     public ResponseEntity<MainCarResponse> updateCarMileage(

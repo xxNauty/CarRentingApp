@@ -1,7 +1,8 @@
 package com.example.carrentingapp.car.service;
 
 import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.response.GetCarResponse;
 import com.example.carrentingapp.car.response.GetFullCarListResponse;
 import com.example.carrentingapp.car.response.GetSimpleCarListResponse;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarGetService {
 
-    private final CarRepository repository;
+    final BaseCarRepository repository;
 
     public GetCarResponse getCarById(UUID id){
         return new GetCarResponse(repository.findById(id).orElseThrow());
@@ -32,7 +33,8 @@ public class CarGetService {
                             car.getBrand(),
                             car.getModel(),
                             car.getYearOfProduction(),
-                            car.getPower()
+                            car.getPower(),
+                            car.getActiveLock()
                     )
             );
         }
@@ -40,9 +42,29 @@ public class CarGetService {
     }
 
     public GetFullCarListResponse getFullCarList(Boolean onlyAvailable){
-        return onlyAvailable
-                ? new GetFullCarListResponse(repository.findByIsAvailable(true))
-                : new GetFullCarListResponse(repository.findAll());
+        List<BaseCar> cars = onlyAvailable ? repository.findByIsAvailable(true) : repository.findAll();
+        List<FullCar> output = new ArrayList<>();
+
+        for(BaseCar car : cars){
+            output.add(
+                    new FullCar(
+                            car.getBrand(),
+                            car.getModel(),
+                            car.getYearOfProduction(),
+                            car.getPower(),
+                            car.getTorque(),
+                            car.getEngineSize(),
+                            car.getMinRankOfUser(),
+                            car.getPricePerDay(),
+                            car.getHasActiveSale(),
+                            car.getIsAvailable(),
+                            car.getMileage(),
+                            car.getIsRented(),
+                            car.getActiveLock()
+                    )
+            );
+        }
+        return new GetFullCarListResponse(output);
     }
 
 
@@ -50,6 +72,23 @@ public class CarGetService {
             String brand,
             String model,
             Integer yearOfProduction,
-            Float power
+            Float power,
+            CarLock lock
+    ){}
+
+    public record FullCar(
+            String brand,
+            String model,
+            Integer yearOfProduction,
+            Float power,
+            Float torque,
+            Float engineSize,
+            Float minRankOfUser,
+            Float pricePerDay,
+            Boolean hasActiveSale,
+            Boolean isAvailable,
+            Float mileage,
+            Boolean isRented,
+            CarLock lock
     ){}
 }

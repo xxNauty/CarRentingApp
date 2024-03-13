@@ -1,0 +1,20 @@
+### Temporary lock car
+POST http://localhost:8080/api/v1/car/lock
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carId": "c5ef231b-f0ba-4ac4-8812-9567b974d4cc",
+  "reason": "OTHER",
+  "lockedTo": "2024-04-04"
+}
+
+### Unlock car
+POST http://localhost:8080/api/v1/car/unlock
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carId": "c5ef231b-f0ba-4ac4-8812-9567b974d4cc"
+}
+

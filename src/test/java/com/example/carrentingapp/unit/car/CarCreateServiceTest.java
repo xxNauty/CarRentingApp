@@ -1,7 +1,7 @@
 package com.example.carrentingapp.unit.car;
 
 import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.response.MainCarResponse;
 import com.example.carrentingapp.car.service.CarCreateService;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
@@ -22,7 +22,7 @@ public class CarCreateServiceTest {
     private CarCreateService carCreateService;
 
     @Autowired
-    private CarRepository carRepository;
+    private BaseCarRepository carRepository;
 
     @Test
     public void testCreateCar(){

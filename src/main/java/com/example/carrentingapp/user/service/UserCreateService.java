@@ -1,5 +1,6 @@
 package com.example.carrentingapp.user.service;
 
+import com.example.carrentingapp.email_verification.notifications.confirm_email.ConfirmEmailNotificationSender;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.enums.Role;
 import com.example.carrentingapp.user.BaseUserRepository;
@@ -15,6 +16,7 @@ public class UserCreateService {
 
     private final BaseUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ConfirmEmailNotificationSender confirmEmailNotificationSender;
 
     public BaseUser createUser(
             String firstName,
@@ -30,6 +32,8 @@ public class UserCreateService {
                 passwordEncoder.encode(password),
                 dateOfBirth
         );
+
+        confirmEmailNotificationSender.sendConfirmationEmail(user);
 
         userRepository.save(user);
 
@@ -51,6 +55,7 @@ public class UserCreateService {
                 dateOfBirth
         );
         user.setRole(Role.ADMIN);
+        user.setIsEnabled(true); //admin nie musi potwierdzać adresu email
 
         userRepository.save(user);
 

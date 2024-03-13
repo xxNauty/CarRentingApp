@@ -1,0 +1,2 @@
+### Test email sender
+GET http://localhost:8080/api/v1/email/send

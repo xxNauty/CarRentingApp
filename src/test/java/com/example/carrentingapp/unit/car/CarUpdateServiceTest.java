@@ -2,7 +2,7 @@ package com.example.carrentingapp.unit.car;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.service.CarUpdateService;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
@@ -23,7 +23,7 @@ public class CarUpdateServiceTest {
     private CarUpdateService carUpdateService;
 
     @Autowired
-    private CarRepository carRepository;
+    private BaseCarRepository carRepository;
 
     @Autowired
     private CommonFunctionsProvider commonFunctionsProvider;

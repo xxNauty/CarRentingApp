@@ -2,7 +2,7 @@ package com.example.carrentingapp.unit.car;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.response.GetCarResponse;
 import com.example.carrentingapp.car.service.CarGetService;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
@@ -26,7 +26,7 @@ public class CarGetServiceTest {
     private CarGetService carGetService;
 
     @Autowired
-    private CarRepository carRepository;
+    private BaseCarRepository carRepository;
 
     @Autowired
     private CommonFunctionsProvider commonFunctionsProvider;
@@ -59,7 +59,7 @@ public class CarGetServiceTest {
             commonFunctionsProvider.createCarForTest();
         }
 
-        List<BaseCar> response = carGetService.getFullCarList(false).getCars();
+        List<CarGetService.FullCar> response = carGetService.getFullCarList(false).getCars();
         Assertions.assertEquals(5, response.size());
     }
 
@@ -79,7 +79,7 @@ public class CarGetServiceTest {
             commonFunctionsProvider.createCarForTest();
         }
 
-        List<BaseCar> response = carGetService.getFullCarList(true).getCars();
+        List<CarGetService.FullCar> response = carGetService.getFullCarList(true).getCars();
         Assertions.assertEquals(5, response.size());
     }
 

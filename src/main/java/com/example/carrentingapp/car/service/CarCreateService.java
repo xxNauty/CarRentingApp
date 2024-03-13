@@ -1,7 +1,7 @@
 package com.example.carrentingapp.car.service;
 
 import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.response.MainCarResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CarCreateService {
 
-    private final CarRepository carRepository;
+    private final BaseCarRepository carRepository;
 
     public MainCarResponse createCar(
             String brand,

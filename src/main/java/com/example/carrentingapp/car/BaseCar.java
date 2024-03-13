@@ -1,10 +1,9 @@
 package com.example.carrentingapp.car;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,4 +30,16 @@ public class BaseCar {
     private Float pricePerDay;
     private Boolean hasActiveSale;
     private Boolean isAvailable;
+    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
+    private List<CarLock> locks;
+
+    public CarLock getActiveLock(){
+        for(CarLock lock : locks){
+            if (lock.getIsActive()){
+                return lock;
+            }
+        }
+        return null;
+    }
+
 }

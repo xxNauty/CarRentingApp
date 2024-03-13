@@ -1,7 +1,7 @@
 package com.example.carrentingapp.car.service;
 
 import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.CarRepository;
+import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.response.MainCarResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CarUpdateService {
 
-    private final CarRepository carRepository;
+    private final BaseCarRepository carRepository;
 
     public MainCarResponse updateMileageFromRequest(BaseCar car, float valueToAdd){
         car.setMileage(car.getMileage() + valueToAdd);

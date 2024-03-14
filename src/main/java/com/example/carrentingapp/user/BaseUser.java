@@ -20,6 +20,7 @@ import static com.example.carrentingapp.user.enums.Role.USER;
 @Getter
 @Setter
 @Builder
+@Table(name = "user_base")
 public class BaseUser implements UserDetails {
 
     @Id

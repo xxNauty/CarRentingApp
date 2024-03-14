@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Table(name = "car_lock")
 public class CarLock {
     @Id
     @GeneratedValue

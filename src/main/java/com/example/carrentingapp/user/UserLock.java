@@ -13,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @EqualsAndHashCode
+@Table(name = "user_lock")
 public class UserLock {
 
     @Id

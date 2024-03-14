@@ -1,10 +1,7 @@
 package com.example.carrentingapp.email.notifications.confirm_email.token;
 
 import com.example.carrentingapp.user.BaseUser;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "user_email_confirmation_token")
 public class ConfirmationToken {
 
     @Id

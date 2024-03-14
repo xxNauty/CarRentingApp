@@ -1,13 +1,9 @@
-package com.example.carrentingapp.email_verification.token;
+package com.example.carrentingapp.email.notifications.confirm_email.token;
 
 import com.example.carrentingapp.user.BaseUser;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 

@@ -2,9 +2,8 @@ package com.example.carrentingapp.unit.email;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.authentication.service.AuthenticationService;
-import com.example.carrentingapp.email_verification.token.ConfirmationToken;
-import com.example.carrentingapp.email_verification.token.ConfirmationTokenRepository;
-import com.example.carrentingapp.email_verification.token.ConfirmationTokenService;
+import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationToken;
+import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.BaseUser;
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-//todo: porównać @Mock z @Autowired
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -27,9 +26,6 @@ public class ConfirmationTokenTest {
 
     @Autowired
     private BaseUserRepository baseUserRepository;
-
-    @Autowired
-    private ConfirmationTokenService confirmationTokenService;
 
     @Autowired
     private CommonFunctionsProvider commonFunctionsProvider;

@@ -1,4 +1,4 @@
-package com.example.carrentingapp.email_verification.sender;
+package com.example.carrentingapp.email.sender;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -20,7 +20,7 @@ public class EmailService implements EmailSender{
 
     @Override
     @Async //todo: doczytać temat
-    public void send(String to, String subject, String email) {
+    public void send(String to, String from, String subject, String email) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
@@ -28,7 +28,7 @@ public class EmailService implements EmailSender{
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom("hello@carrentingapp.pl");
+            helper.setFrom(from);
             javaMailSender.send(message);
         }
         catch (MessagingException e){

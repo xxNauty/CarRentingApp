@@ -1,4 +1,4 @@
-package com.example.carrentingapp.email_verification.token;
+package com.example.carrentingapp.email.notifications.confirm_email.token;
 
 import com.example.carrentingapp.user.BaseUser;
 import jakarta.persistence.*;

@@ -15,6 +15,15 @@ import java.time.LocalDate;
 
 //todo: zastosować transakcje tam gdzie potrzeba
 
+//todo: customowa obsługa błędów unique constraint
+
+//todo: obsługa pól isEnabled i isLocked
+
+//todo: sprawdzić czym jest revoked w jwt_token
+
+//todo: zablokować możliwość podwójnego blokowania samochodu, stara blokada traci ważność przy utworzeniu nowej
+
+//todo: dodać mechanizm liczenia opóźnień w zwrotach samochodów
 @SpringBootApplication
 public class CarRentingAppApplication {
 

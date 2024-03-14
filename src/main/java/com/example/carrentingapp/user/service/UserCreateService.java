@@ -1,6 +1,6 @@
 package com.example.carrentingapp.user.service;
 
-import com.example.carrentingapp.email_verification.notifications.confirm_email.ConfirmEmailNotificationSender;
+import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailNotificationSender;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.enums.Role;
 import com.example.carrentingapp.user.BaseUserRepository;

@@ -1,7 +1,7 @@
-package com.example.carrentingapp.email_verification.notifications.confirm_email;
+package com.example.carrentingapp.email.notifications.confirm_email;
 
-import com.example.carrentingapp.email_verification.sender.EmailSender;
-import com.example.carrentingapp.email_verification.token.ConfirmationTokenService;
+import com.example.carrentingapp.email.sender.EmailSender;
+import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenService;
 import com.example.carrentingapp.user.BaseUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class ConfirmEmailNotificationSender {
         final String subject = "Confirm your email address";
         final String token = confirmationTokenService.createToken(user);
 
-        sender.send(user.getEmail(), subject, ConfirmEmailTemplate.template(token));
+        sender.send(user.getEmail(), "hello@carrentingapp.pl", subject, ConfirmEmailTemplate.template(token));
 
     }
 }

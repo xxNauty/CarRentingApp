@@ -1,4 +1,4 @@
-package com.example.carrentingapp.email_verification.notifications.confirm_email;
+package com.example.carrentingapp.email.notifications.confirm_email;
 
 public class ConfirmEmailTemplate {
     public static String template(String token){

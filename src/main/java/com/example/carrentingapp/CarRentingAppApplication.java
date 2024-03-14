@@ -14,6 +14,7 @@ import java.time.LocalDate;
 //todo: dodać obsługę 404 error w przypadku braku znalezionego entity
 
 //todo: zastosować transakcje tam gdzie potrzeba
+
 @SpringBootApplication
 public class CarRentingAppApplication {
 

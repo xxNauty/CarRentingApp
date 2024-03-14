@@ -15,17 +15,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_jwt_token")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id"
-//)
 public class Token {
     @Id
     @GeneratedValue
     private UUID id;
     @Column(unique = true)
     private String token;
-//    private String tokenType = "BEARER";
     private boolean revoked;
     private boolean expired;
     @ManyToOne

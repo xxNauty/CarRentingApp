@@ -1,6 +1,7 @@
 package com.example.carrentingapp.configuration;
 
 import com.example.carrentingapp.configuration.jwt.JwtAuthenticationFilter;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,20 +19,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
-
-    private static final String[] SECURED_URL_FOR_USER = {
-            "/api/v1/car/get/{id}",
-            "/api/v1/car/get/all"
-    };
-
-    private static final String[] SECURED_URL_FOR_ADMIN = {
-            "/api/v1/car/create/base",
-            "/api/v1/car/update/mileage",
-            "/api/v1/car/update/data"
-    };
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;

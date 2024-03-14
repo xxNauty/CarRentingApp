@@ -23,7 +23,6 @@ public class UserLock {
     private Reason reason;
     @Enumerated(EnumType.STRING)
     private LockType type;
-//    @Column
     private LocalDate expirationDate;
     @ManyToOne
     private BaseUser user;

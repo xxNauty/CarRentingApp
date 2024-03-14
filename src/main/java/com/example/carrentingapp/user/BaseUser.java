@@ -1,5 +1,6 @@
 package com.example.carrentingapp.user;
 
+import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.user.enums.Role;
 import jakarta.persistence.*;
@@ -48,15 +49,13 @@ public class BaseUser implements UserDetails {
     private Boolean isEnabled;
 
     @OneToMany(targetEntity = Token.class, mappedBy = "user")
-    private List<Token> tokens;
+    private List<Token> loginTokens;
 
     @OneToMany(targetEntity = UserLock.class, mappedBy = "user")
-    private List<UserLock> locks;
+    private List<UserLock> userLocks;
 
-//    private List<CarRental> rentedCars;
-//
-//    private List<CarRental> reservedCars;
-// todo: odkomentować po dodaniu brakującej klasy
+    @OneToMany(targetEntity = CarRent.class, mappedBy = "user")
+    private List<CarRent> rentedCars;
 
     public BaseUser(
             String firstName,

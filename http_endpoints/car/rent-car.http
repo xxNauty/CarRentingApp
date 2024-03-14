@@ -1,0 +1,29 @@
+### Rent car
+POST http://localhost:8080/api/v1/car/rent/request
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carId": "6188ae1f-d0ff-48ad-9311-f19341c8f2a4",
+  "rentedFrom": "2024-04-04",
+  "rentedTo": "2024-04-14"
+}
+
+### Collect rented car
+POST http://localhost:8080/api/v1/car/rent/collect
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carRentId": "a55905c4-c6b0-4d1e-b81a-f2bbeab1d8cb"
+}
+
+### Return rented car
+POST http://localhost:8080/api/v1/car/rent/return
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carRentId": "a55905c4-c6b0-4d1e-b81a-f2bbeab1d8cb",
+  "kilometersTraveled": 443.45
+}

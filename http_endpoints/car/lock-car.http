@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carId": "c5ef231b-f0ba-4ac4-8812-9567b974d4cc",
+  "carId": "99c5819c-f41d-4e49-bf7a-762c945aed87",
   "reason": "OTHER",
   "lockedTo": "2024-04-04"
 }
@@ -15,6 +15,6 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carId": "c5ef231b-f0ba-4ac4-8812-9567b974d4cc"
+  "carId": "99c5819c-f41d-4e49-bf7a-762c945aed87"
 }
 

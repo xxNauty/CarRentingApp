@@ -10,19 +10,29 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@NoArgsConstructor
 @Table(name = "user_jwt_token")
 public class Token {
+
     @Id
     @GeneratedValue
     private UUID id;
+
     @Column(unique = true)
     private String token;
+
     private boolean revoked;
+
     private boolean expired;
+
     @ManyToOne
     private BaseUser user;
+
+    public Token(String token, BaseUser user) {
+        this.token = token;
+        this.revoked = false;
+        this.expired = false;
+        this.user = user;
+    }
 }

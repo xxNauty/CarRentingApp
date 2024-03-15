@@ -1,10 +1,15 @@
 package com.example.carrentingapp.authentication.service;
 
+import com.example.carrentingapp.exception.exception.http_error_403.UserTooYoungException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidDataException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidEmailAddressException;
 import com.example.carrentingapp.exception.exception.http_error_500.PasswordNotSafeException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
+
+//todo: doczytać jak działa regex, sprawdzić czy nie ma lepszych rozwiązań
 @Service
 public class UserDataValidationService {
 
@@ -35,6 +40,15 @@ public class UserDataValidationService {
         }
 
         return password;
+    }
+
+    //minimum 18 lat by móc założyć konto
+    public LocalDate isUserOldEnough(LocalDate dateOfBirth){
+        if(Period.between(dateOfBirth, LocalDate.now()).getYears() < 18){
+            throw new UserTooYoungException("You are too young to use this page");
+        }
+
+        return dateOfBirth;
     }
 
 }

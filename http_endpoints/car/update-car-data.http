@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "id": "99c5819c-f41d-4e49-bf7a-762c945aed87",
+  "id": "090574b0-a935-47dd-82fe-74e701c881c2",
   "brand": "Lotus",
   "model": "Omega",
   "yearOfProduction": 2000,

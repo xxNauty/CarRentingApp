@@ -11,8 +11,10 @@ import com.example.carrentingapp.exception.exception.http_error_404.CarLockNotFo
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CarLockService {
 

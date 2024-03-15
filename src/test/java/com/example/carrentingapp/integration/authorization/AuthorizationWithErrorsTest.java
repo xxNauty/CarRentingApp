@@ -160,4 +160,3 @@ public class AuthorizationWithErrorsTest {
         Assertions.assertEquals(userCountAfter, userCountBefore);
     }
 }
-//todo: weryfikacja wieku, minimum 18 lat do założenia konta

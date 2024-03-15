@@ -3,7 +3,8 @@ package com.example.carrentingapp.car.service;
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
-import com.example.carrentingapp.car.response.MainCarResponse;
+import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +14,16 @@ public class CarUpdateService {
 
     private final BaseCarRepository carRepository;
 
-    public MainCarResponse updateMileageFromRequest(BaseCar car, float valueToAdd){
+    public CarResponse updateMileageFromRequest(BaseCar car, float valueToAdd){
         car.setMileage(car.getMileage() + valueToAdd);
 
         carRepository.save(car);
 
-        return new MainCarResponse(car.getId(), "Car mileage updated, actual mileage: " + car.getMileage());
+        return new CarResponse(car.getId(), "Car mileage updated, actual mileage: " + car.getMileage());
     }
 
-    public MainCarResponse updateCarDataResponse(UpdateCarDataRequest request){
-        BaseCar carToUpdate = carRepository.findById(request.getId()).orElseThrow();
+    public CarResponse updateCarDataResponse(UpdateCarDataRequest request){
+        BaseCar carToUpdate = carRepository.findById(request.getId()).orElseThrow(() -> new CarNotFoundException("There is no car with given Id"));
 
         carToUpdate.setBrand(request.getBrand());
         carToUpdate.setModel(request.getModel());
@@ -36,7 +37,7 @@ public class CarUpdateService {
 
         carRepository.save(carToUpdate);
 
-        return new MainCarResponse(request.getId(), "Car updated");
+        return new CarResponse(request.getId(), "Car updated");
     }
 
 }

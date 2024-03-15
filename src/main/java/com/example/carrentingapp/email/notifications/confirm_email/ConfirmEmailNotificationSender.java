@@ -14,10 +14,12 @@ public class ConfirmEmailNotificationSender {
     private final ConfirmationTokenService confirmationTokenService;
 
     public void sendConfirmationEmail(BaseUser user){
+        final String from = "hello@carrentingapp.pl";
         final String subject = "Confirm your email address";
         final String token = confirmationTokenService.createToken(user);
+        final String body = ConfirmEmailTemplate.template(token);
 
-        sender.send(user.getEmail(), "hello@carrentingapp.pl", subject, ConfirmEmailTemplate.template(token));
 
+        sender.send(user.getEmail(), from, subject, body);;
     }
 }

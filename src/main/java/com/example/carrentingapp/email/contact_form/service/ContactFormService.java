@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ContactFormService {
 
@@ -27,8 +29,7 @@ public class ContactFormService {
                 request.getEmail(),
                 "adam@kowalski.pl",
                 request.getSubject(),
-                request.getBody(),
-                LocalDateTime.now()
+                request.getBody()
         );
 
         contactFormMessageRepository.save(message);
@@ -50,8 +51,7 @@ public class ContactFormService {
                 ((BaseUser) authentication.getPrincipal()).getEmail(),
                 "adam@kowalski.pl",
                 request.getSubject(),
-                request.getBody(),
-                LocalDateTime.now()
+                request.getBody()
         );
 
         contactFormMessageRepository.save(message);

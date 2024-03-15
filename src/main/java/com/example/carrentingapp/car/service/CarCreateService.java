@@ -2,7 +2,7 @@ package com.example.carrentingapp.car.service;
 
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.BaseCarRepository;
-import com.example.carrentingapp.car.response.MainCarResponse;
+import com.example.carrentingapp.car.response.CarResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class CarCreateService {
 
     private final BaseCarRepository carRepository;
 
-    public MainCarResponse createCar(
+    public CarResponse createCar(
             String brand,
             String model,
             Integer yearOfProduction,
@@ -42,7 +42,7 @@ public class CarCreateService {
 
         carRepository.save(car);
 
-        return new MainCarResponse(
+        return new CarResponse(
                 car.getId(),
                 "Car created"
         );

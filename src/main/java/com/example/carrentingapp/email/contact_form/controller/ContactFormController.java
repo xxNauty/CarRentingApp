@@ -6,6 +6,7 @@ import com.example.carrentingapp.email.contact_form.response.ContactFormResponse
 import com.example.carrentingapp.email.contact_form.service.ContactFormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class ContactFormController {
     }
 
     @PostMapping("/auth")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ContactFormResponse> sendMessage(
             @RequestBody AuthorizedContactFormRequest request
     ){

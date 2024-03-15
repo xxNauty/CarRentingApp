@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CarGetService {
 
-    final BaseCarRepository repository;
+    private final BaseCarRepository repository;
 
     public GetCarResponse getCarById(UUID id){
         return new GetCarResponse(repository.findById(id).orElseThrow());

@@ -1,10 +1,12 @@
 package com.example.carrentingapp.rent.request;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class CollectCarRequest {
     private UUID carRentId;
 }

@@ -4,8 +4,8 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "lockType": "FOREVER",
+  "lockType": "TEMPORARY",
   "expirationDate": "2024-04-04",
   "reason": "OTHER",
-  "userid": "d0ffcde9-cbaa-43f4-be4c-3696bfa0c572"
+  "userid": "5ccba101-986b-43d3-b9c2-d89dab84ad81"
 }

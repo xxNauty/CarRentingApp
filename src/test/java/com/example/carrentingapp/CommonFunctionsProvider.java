@@ -2,7 +2,7 @@ package com.example.carrentingapp;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.car.response.MainCarResponse;
+import com.example.carrentingapp.car.response.CarResponse;
 import com.example.carrentingapp.car.service.CarCreateService;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.service.UserCreateService;
@@ -56,7 +56,7 @@ public class CommonFunctionsProvider {
     }
 
     public UUID createCarForTest(){
-        MainCarResponse response =  carCreateService.createCar(
+        CarResponse response =  carCreateService.createCar(
                 "Opel",
                 "Corsa",
                 2000,

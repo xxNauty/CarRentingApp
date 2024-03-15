@@ -12,20 +12,28 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "car_rent")
 @NoArgsConstructor
+@Table(name = "car_rent")
 public class CarRent {
+
     @Id
     @GeneratedValue
     private UUID id;
+
     @ManyToOne
     private BaseCar car;
+
     @ManyToOne
     private BaseUser user;
+
     private LocalDate rentedFrom;
+
     private LocalDate rentedTo;
+
     private LocalDateTime collectionDate;
+
     private Boolean isActive;
+
     private Boolean collectedCar;
 
     public CarRent(BaseCar car, BaseUser user, LocalDate rentedFrom, LocalDate rentedTo, LocalDateTime collectionDate, Boolean isActive) {

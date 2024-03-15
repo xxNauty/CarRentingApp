@@ -2,9 +2,8 @@ package com.example.carrentingapp.integration.car;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
 import com.example.carrentingapp.car.request.CreateCarRequest;
-import com.example.carrentingapp.car.response.MainCarResponse;
+import com.example.carrentingapp.car.response.CarResponse;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -63,10 +61,10 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MainCarResponse> response = testRestTemplate.postForEntity(
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
-                MainCarResponse.class
+                CarResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
@@ -100,10 +98,10 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MainCarResponse> response = testRestTemplate.postForEntity(
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
-                MainCarResponse.class
+                CarResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -133,10 +131,10 @@ public class CreateCarByApiTest {
 
         HttpEntity<CreateCarRequest> httpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<MainCarResponse> response = testRestTemplate.postForEntity(
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 uri,
                 httpEntity,
-                MainCarResponse.class
+                CarResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());

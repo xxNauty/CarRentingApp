@@ -15,12 +15,9 @@ import java.util.UUID;
 
 import static com.example.carrentingapp.user.enums.Role.USER;
 
+@Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Builder
 @Table(name = "user_base")
 public class BaseUser implements UserDetails {
 
@@ -75,6 +72,10 @@ public class BaseUser implements UserDetails {
         this.role = USER;
     }
 
+    public void updateRank(float valueToAdd){
+        this.rank += valueToAdd;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
@@ -85,32 +86,24 @@ public class BaseUser implements UserDetails {
         return email;
     }
 
-    public Boolean isAccountLocked(){ return isLocked; }
-
-    public Boolean isAccountEnabled(){ return isEnabled; }
-
     @Override
-    @Deprecated
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @Deprecated
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override
-    @Deprecated
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    @Deprecated
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     @Override

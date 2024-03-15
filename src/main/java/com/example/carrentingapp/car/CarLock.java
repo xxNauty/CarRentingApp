@@ -7,12 +7,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
 @Table(name = "car_lock")
 public class CarLock {
     @Id

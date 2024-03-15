@@ -1,8 +1,10 @@
 package com.example.carrentingapp.email.contact_form.request;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class ContactFormRequest {
     private String email;
     private String subject;

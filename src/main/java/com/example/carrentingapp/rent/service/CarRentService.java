@@ -2,6 +2,7 @@ package com.example.carrentingapp.rent.service;
 
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.exception.exception.http_error_403.BaseAccessDeniedException;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
 import com.example.carrentingapp.exception.exception.http_error_403.RentPeriodTooLongException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
@@ -42,7 +43,9 @@ public class CarRentService {
 
         BaseCar carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        //todo: sprawdzić czy principal nie jest stringiem
+        if(authentication.getPrincipal() instanceof String){
+            throw new BaseAccessDeniedException("You cannot rent a car not authorized");
+        }
 
         BaseUser user = (BaseUser) authentication.getPrincipal();
 
@@ -108,7 +111,7 @@ public class CarRentService {
         else {
             pointsAfterRent += 0.5F;
         }
-        user.setRank(user.getRank() + pointsAfterRent); //todo: poprawić
+        user.updateRank(pointsAfterRent);
         rent.setIsActive(false);
         car.setIsRented(false);
         car.setMileage(car.getMileage() + request.getKilometersTraveled());

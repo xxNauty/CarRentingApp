@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/car/get")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/car/get")
 @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class GetCarController {
 

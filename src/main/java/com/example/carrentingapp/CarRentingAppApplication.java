@@ -66,13 +66,14 @@ public class CarRentingAppApplication {
 }
 
 /*
- 1. Potwierdzanie adresu email działa
- 2. Rejestracja poprawna działa (Todo: sprawdzić walidację danych wejściowych)
- 3. Blokowanie i odblokowywanie użytkownika działa
- 4. Tworzenie encji samochodu działa
- 5. Pobieranie list oraz pojedyńczego samochodu działa(Todo: dorobić obsługę isRented do pobierania dostępnych
-                                                        samochodów, jeśli niedostępny to zwraca powód niedostępności)
- 6. Wynajmowanie auta działa dla poprawnych danych
+    Testy:
+        1. Rejestracja działa
+        2. Potwierdzanie adresu email działa
+        3. Blokowanie i odblokowywanie użytkownika działa
+        4. Tworzenie encji samochodu działa
+        5. Pobieranie list oraz pojedyńczego samochodu działa
+        (Todo: dorobić obsługę isRented do pobierania dostępnych  samochodów, jeśli niedostępny to zwraca powód niedostępności)
+        6. Wynajmowanie auta działa dla poprawnych danych
  */
 /*
  1. SecurityContextHolder -> sprawdzanie czy getPrincipal() nie jest Stringiem
@@ -95,5 +96,6 @@ public class CarRentingAppApplication {
     a) wyglądzie testów jednostkowych
     b) czym jest Mockowanie
  11. W UserDataValidationService sprawdzić czy nie ma lepszych opcji niż Regex
+ 12. Usunąć możliwość podwójnego oddania i odebrania samochodu
  */
 

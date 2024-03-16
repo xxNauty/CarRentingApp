@@ -41,11 +41,13 @@ public class CarRentService {
     public CarRentResponse rentCar(CarRentRequest request){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if(authentication.getPrincipal().toString().equals("anonymousUser")){
+            throw new BaseAccessDeniedException("You cannot do this unauthorized");
+        }
+
         BaseCar carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        if(authentication.getPrincipal() instanceof String){
-            throw new BaseAccessDeniedException("You cannot rent a car not authorized");
-        }
+        //todo: sprawdzić czy principal nie jest stringiem
 
         BaseUser user = (BaseUser) authentication.getPrincipal();
 

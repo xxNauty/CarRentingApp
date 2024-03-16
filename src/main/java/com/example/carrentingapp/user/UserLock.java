@@ -1,5 +1,6 @@
 package com.example.carrentingapp.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class UserLock {
     @Enumerated(EnumType.STRING)
     private LockType type;
     private LocalDate expirationDate;
+    @JsonIgnore
     @ManyToOne
     private BaseUser user;
     private Boolean isActive;

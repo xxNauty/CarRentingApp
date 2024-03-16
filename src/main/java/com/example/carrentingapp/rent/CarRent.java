@@ -2,6 +2,7 @@ package com.example.carrentingapp.rent;
 
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.user.BaseUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class CarRent {
     @ManyToOne
     private BaseCar car;
 
+    @JsonIgnore
     @ManyToOne
     private BaseUser user;
 

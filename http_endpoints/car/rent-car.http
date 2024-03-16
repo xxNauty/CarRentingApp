@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carId": "cee1f27a-54af-4e18-a040-f7fec184ec8e",
+  "carId": "3444f120-b1d0-4399-add8-3dd6dc76e1e8",
   "rentedFrom": "2024-04-04",
   "rentedTo": "2024-04-14"
 }

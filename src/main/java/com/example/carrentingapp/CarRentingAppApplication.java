@@ -61,43 +61,45 @@ public class CarRentingAppApplication {
                         430.99F
                 );
             }
+
+            System.out.println("Application ready!");
+
+            System.out.println("\n--------------------------------\n");
         };
     }
 }
-
 /*
-    Testy:
-        1. Rejestracja działa
-        2. Potwierdzanie adresu email działa
-        3. Blokowanie i odblokowywanie użytkownika działa
-        4. Tworzenie encji samochodu działa
-        5. Pobieranie list oraz pojedyńczego samochodu działa
-        (Todo: dorobić obsługę isRented do pobierania dostępnych  samochodów, jeśli niedostępny to zwraca powód niedostępności)
-        6. Wynajmowanie auta działa dla poprawnych danych
+    Lista zadań:
+       1.
+       2.
+       3.
+       4. Zablokować możliwość odbioru auta które jest jeszcze wynajęte
+       5. GetUserData zwracający informacje o:
+        a) wybranym użytkowniku, gdy odpytuje admin
+        b) dane użytkownika odpytującego, dla role user
+       6. Brakujące powiadomienia email:
+        a) Utworzenie konta
+        b) Wynajęcie auta
+        c) Auto gotowe do odbioru
+        d) Odbiór auta
+        e) Zwrot auta i podsumowanie
+       7. Liczenie opóźnień w zwrotach, 5 -> blokada na miesiąc
+       8. Przedłużanie blokady samochodu/usera -> stara traci ważność, tylko jedna aktywna w danym momencie
+       9. Obsługa błędów UniqueConstraint
+       10. Testy przepisać na nowo
+       12. Usunąć możliwość podwójnego oddania i odebrania samochodu
+       13. Historia wysłanych maili
+       14. Usunąć nieużywane adnotacje Lomboka
+       15. Dodać domyślne wiadomości w wyjątkach jeśli nie poda się przy wywołaniu
+       16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
+       17. Usystematyzować konstrukcję relacji
+       18. Wywalić Permission
  */
 /*
- 1.
- 2.
- 3. UpdateCarData/UpdateCarMileage -> zwraca 500 zamiast 403 przy wysłaniu zapytania jako User
- 4. Zablokować możliwość odbioru auta które jest jeszcze wynajęte
- 5. GetUserData zwracający informacje o:
-    a) wybranym użytkowniku, gdy odpytuje admin
-    b) dane użytkownika odpytującego, dla role user
- 6. Brakujące powiadomienia email:
-    a) Utworzenie konta
-    b) Wynajęcie auta
-    c) Auto gotowe do odbioru
-    d) Odbiór auta
-    e) Zwrot auta i podsumowanie
- 7. Liczenie opóźnień w zwrotach, 5 -> blokada na miesiąc
- 8. Przedłużanie blokady samochodu/usera -> stara traci ważność, tylko jedna aktywna w danym momencie
- 9. Obsługa błędów UniqueConstraint
- 10. Testy przepisać na nowo, doczytać o:
-    a) wyglądzie testów jednostkowych
-    b) czym jest Mockowanie
- 11. W UserDataValidationService sprawdzić czy nie ma lepszych opcji niż Regex
- 12. Usunąć możliwość podwójnego oddania i odebrania samochodu
- 13. Historia wysłanych maili
- 14. Usunąć nieużywane adnotacje Lomboka
+    Do doczytania:
+        1. FetchType Lazy vs Eager
+        2. Wygląd testów jednostkowych
+        3. "Mockowanie"
+        4. Zasada działania regexa
  */
 

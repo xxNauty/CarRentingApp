@@ -1,5 +1,6 @@
 package com.example.carrentingapp.configuration.jwt;
 
+import com.example.carrentingapp.exception.exception.http_error_403.AccessDeniedException;
 import com.example.carrentingapp.exception.exception.http_error_403.UserAccountLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.token.TokenRepository;
@@ -47,6 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(7);
+        if(jwt.equals("null")){ //todo: zbadać zachowanie
+            filterChain.doFilter(request, response);
+            return;
+//            throw new AccessDeniedException("You cannot do this not logged in");
+        }
         userEmail = jwtService.extractUsername(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);

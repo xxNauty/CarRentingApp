@@ -77,7 +77,7 @@ public class CarRentingAppApplication {
  */
 /*
  1.
- 2. Dorobić możliwość ponownego wysłania potwierdzenia adresu email
+ 2.
  3. UpdateCarData/UpdateCarMileage -> zwraca 500 zamiast 403 przy wysłaniu zapytania jako User
  4. Zablokować możliwość odbioru auta które jest jeszcze wynajęte
  5. GetUserData zwracający informacje o:

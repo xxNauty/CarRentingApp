@@ -1,22 +1,15 @@
-package com.example.carrentingapp.email.contact_form.service;
+package com.example.carrentingapp.contact_form.service;
 
 import com.example.carrentingapp.configuration.service.SecurityService;
-import com.example.carrentingapp.email.contact_form.ContactFormMessage;
-import com.example.carrentingapp.email.contact_form.ContactFormMessageRepository;
-import com.example.carrentingapp.email.contact_form.request.AuthorizedContactFormRequest;
-import com.example.carrentingapp.email.contact_form.request.ContactFormRequest;
-import com.example.carrentingapp.email.contact_form.response.ContactFormResponse;
+import com.example.carrentingapp.contact_form.response.ContactFormResponse;
+import com.example.carrentingapp.contact_form.ContactFormMessage;
+import com.example.carrentingapp.contact_form.ContactFormMessageRepository;
+import com.example.carrentingapp.contact_form.request.AuthorizedContactFormRequest;
+import com.example.carrentingapp.contact_form.request.ContactFormRequest;
 import com.example.carrentingapp.email.sender.EmailSender;
-import com.example.carrentingapp.email.sender.EmailService;
-import com.example.carrentingapp.exception.exception.http_error_403.BaseAccessDeniedException;
-import com.example.carrentingapp.user.BaseUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Service
 @Transactional

@@ -11,4 +11,5 @@ public interface BaseUserRepository extends JpaRepository<BaseUser, UUID> {
 
     Optional<BaseUser> findByEmail(String email);
 
+    Optional<BaseUser> findByEmailAndId(String email, UUID id);
 }

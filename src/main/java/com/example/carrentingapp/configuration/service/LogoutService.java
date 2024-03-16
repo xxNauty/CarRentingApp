@@ -1,4 +1,4 @@
-package com.example.carrentingapp.configuration;
+package com.example.carrentingapp.configuration.service;
 
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;

@@ -76,7 +76,7 @@ public class CarRentingAppApplication {
         6. Wynajmowanie auta działa dla poprawnych danych
  */
 /*
- 1. SecurityContextHolder -> sprawdzanie czy getPrincipal() nie jest Stringiem
+ 1.
  2. Dorobić możliwość ponownego wysłania potwierdzenia adresu email
  3. UpdateCarData/UpdateCarMileage -> zwraca 500 zamiast 403 przy wysłaniu zapytania jako User
  4. Zablokować możliwość odbioru auta które jest jeszcze wynajęte

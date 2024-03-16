@@ -2,6 +2,7 @@ package com.example.carrentingapp.rent.service;
 
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.configuration.service.SecurityService;
 import com.example.carrentingapp.exception.exception.http_error_403.BaseAccessDeniedException;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
 import com.example.carrentingapp.exception.exception.http_error_403.RentPeriodTooLongException;
@@ -36,25 +37,17 @@ public class CarRentService {
     private final CarRentRepository carRentRepository;
     private final BaseCarRepository baseCarRepository;
     private final BaseUserRepository baseUserRepository;
+    private final SecurityService securityService;
 
     @Transactional
     public CarRentResponse rentCar(CarRentRequest request){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication.getPrincipal().toString().equals("anonymousUser")){
-            throw new BaseAccessDeniedException("You cannot do this unauthorized");
-        }
-
         BaseCar carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        //todo: sprawdzić czy principal nie jest stringiem
-
-        BaseUser user = (BaseUser) authentication.getPrincipal();
+        BaseUser user = securityService.getLoggedInUser();
 
         if(Period.between(request.getRentedFrom(), request.getRentedTo()).getDays() > 14){
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
         }
-
 
         boolean isActive = !carToRent.getIsRented();
         LocalDateTime collectionDate  = LocalDateTime.now().plusDays(1);
@@ -88,7 +81,7 @@ public class CarRentService {
     public CollectCarResponse carReadyToCollect(CollectCarRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
 
-        if(rent.getCollectionDate().isBefore(LocalDateTime.now())){
+        if(rent.getCollectionDate().isAfter(LocalDateTime.now())){
             throw new CarNotReadyException("Your car is not ready to collect yet");
         }
 

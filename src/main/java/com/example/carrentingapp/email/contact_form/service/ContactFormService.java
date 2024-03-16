@@ -1,5 +1,6 @@
 package com.example.carrentingapp.email.contact_form.service;
 
+import com.example.carrentingapp.configuration.service.SecurityService;
 import com.example.carrentingapp.email.contact_form.ContactFormMessage;
 import com.example.carrentingapp.email.contact_form.ContactFormMessageRepository;
 import com.example.carrentingapp.email.contact_form.request.AuthorizedContactFormRequest;
@@ -24,6 +25,7 @@ public class ContactFormService {
 
     private final ContactFormMessageRepository contactFormMessageRepository;
     private final EmailSender service;
+    private final SecurityService securityService;
 
     public ContactFormResponse sendMessageToAdminAsNotAuthorized(ContactFormRequest request){
         ContactFormMessage message = new ContactFormMessage(
@@ -45,14 +47,9 @@ public class ContactFormService {
     }
 
     public ContactFormResponse sendMessageToAdminAsAuthorized(AuthorizedContactFormRequest request){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication.getPrincipal().toString().equals("anonymousUser")){
-            throw new BaseAccessDeniedException("You cannot do this unauthorized");
-        }
 
         ContactFormMessage message = new ContactFormMessage(
-                ((BaseUser) authentication.getPrincipal()).getEmail(),
+                securityService.getLoggedInUser().getEmail(),
                 "adam@kowalski.pl",
                 request.getSubject(),
                 request.getBody()

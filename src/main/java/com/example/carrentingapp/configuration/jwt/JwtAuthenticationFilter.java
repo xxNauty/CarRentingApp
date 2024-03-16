@@ -50,13 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         userEmail = jwtService.extractUsername(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-//            if(userRepository.findByEmail(userEmail).orElseThrow( //todo: sprawdzić czemu zwraca 500
-//                    () -> new UserNotFoundException("User with given email not found")).isAccountLocked()
-//            ){
-//                throw new UserAccountLockedException("You cannot do it while Your account is locked");
-//            }
-
             Boolean isTokenValid = tokenRepository.findByToken(jwt)
                     .map(t -> !t.isExpired() && !t.isRevoked())
                     .orElse(false);

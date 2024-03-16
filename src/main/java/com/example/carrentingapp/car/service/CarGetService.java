@@ -24,7 +24,7 @@ public class CarGetService {
     }
 
     public GetSimpleCarListResponse getSimpleCarList(Boolean onlyAvailable){
-        List<BaseCar> cars = onlyAvailable ? repository.findByIsAvailable(true) : repository.findAll();
+        List<BaseCar> cars = onlyAvailable ? repository.findAllAvailable() : repository.findAll();
         List<SimpleCar> output = new ArrayList<>();
 
         for(BaseCar car : cars){
@@ -42,7 +42,7 @@ public class CarGetService {
     }
 
     public GetFullCarListResponse getFullCarList(Boolean onlyAvailable){
-        List<BaseCar> cars = onlyAvailable ? repository.findByIsAvailable(true) : repository.findAll();
+        List<BaseCar> cars = onlyAvailable ? repository.findAllAvailable() : repository.findAll();
         List<FullCar> output = new ArrayList<>();
 
         for(BaseCar car : cars){

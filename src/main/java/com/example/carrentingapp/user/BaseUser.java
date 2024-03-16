@@ -3,6 +3,7 @@ package com.example.carrentingapp.user;
 import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.user.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +33,7 @@ public class BaseUser implements UserDetails {
     @Column(unique=true)
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private LocalDate dateOfBirth;
@@ -45,13 +47,13 @@ public class BaseUser implements UserDetails {
 
     private Boolean isEnabled;
 
-    @OneToMany(targetEntity = Token.class, mappedBy = "user")
+    @OneToMany(targetEntity = Token.class, mappedBy = "user", fetch = FetchType.EAGER)
     private List<Token> loginTokens;
 
-    @OneToMany(targetEntity = UserLock.class, mappedBy = "user")
+    @OneToMany(targetEntity = UserLock.class, mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserLock> userLocks;
 
-    @OneToMany(targetEntity = CarRent.class, mappedBy = "user")
+    @OneToMany(targetEntity = CarRent.class, mappedBy = "user", fetch = FetchType.EAGER)
     private List<CarRent> rentedCars;
 
     public BaseUser(
@@ -72,36 +74,43 @@ public class BaseUser implements UserDetails {
         this.role = USER;
     }
 
+    @JsonIgnore
     public void updateRank(float valueToAdd){
         this.rank += valueToAdd;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return email;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return !isLocked;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return isEnabled;
     }

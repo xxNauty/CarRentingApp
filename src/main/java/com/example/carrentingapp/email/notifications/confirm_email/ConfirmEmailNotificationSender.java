@@ -19,7 +19,6 @@ public class ConfirmEmailNotificationSender {
         final String token = confirmationTokenService.createToken(user);
         final String body = ConfirmEmailTemplate.template(token);
 
-
         sender.send(user.getEmail(), from, subject, body);;
     }
 }

@@ -2,6 +2,7 @@ package com.example.carrentingapp.authentication.controller;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
+import com.example.carrentingapp.authentication.request.SendVerifyingTokenAgainRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
 import com.example.carrentingapp.authentication.service.AuthenticationService;
@@ -27,13 +28,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
-    @GetMapping("/register/verify")
-    public ResponseEntity<EmailVerificationResponse> verifyEmail(
-            @RequestParam String token
-    ){
-        return ResponseEntity.ok(authenticationService.verifyEmail(token));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody LoginRequest request
@@ -47,5 +41,19 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         authenticationService.refreshToken(request, response);
+    }
+
+    @GetMapping("/register/verify")
+    public ResponseEntity<EmailVerificationResponse> verifyEmail(
+            @RequestParam String token
+    ){
+        return ResponseEntity.ok(authenticationService.verifyEmail(token));
+    }
+
+    @PostMapping("/register/verify/send-again")
+    public ResponseEntity<EmailVerificationResponse> sendVerifyingTokenAgain(
+            @RequestBody SendVerifyingTokenAgainRequest request
+    ){
+        return ResponseEntity.ok(authenticationService.sendVerifyingTokenAgain(request));
     }
 }

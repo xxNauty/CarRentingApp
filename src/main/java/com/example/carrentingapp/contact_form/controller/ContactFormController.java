@@ -1,9 +1,9 @@
-package com.example.carrentingapp.email.contact_form.controller;
+package com.example.carrentingapp.contact_form.controller;
 
-import com.example.carrentingapp.email.contact_form.request.AuthorizedContactFormRequest;
-import com.example.carrentingapp.email.contact_form.request.ContactFormRequest;
-import com.example.carrentingapp.email.contact_form.response.ContactFormResponse;
-import com.example.carrentingapp.email.contact_form.service.ContactFormService;
+import com.example.carrentingapp.contact_form.request.AuthorizedContactFormRequest;
+import com.example.carrentingapp.contact_form.request.ContactFormRequest;
+import com.example.carrentingapp.contact_form.response.ContactFormResponse;
+import com.example.carrentingapp.contact_form.service.ContactFormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

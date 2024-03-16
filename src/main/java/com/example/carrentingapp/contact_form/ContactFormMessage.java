@@ -1,4 +1,4 @@
-package com.example.carrentingapp.email.contact_form;
+package com.example.carrentingapp.contact_form;
 
 import com.example.carrentingapp.user.BaseUser;
 import jakarta.persistence.*;

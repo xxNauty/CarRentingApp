@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 public class EmailVerificationResponse {
-
     private String message;
 
 }

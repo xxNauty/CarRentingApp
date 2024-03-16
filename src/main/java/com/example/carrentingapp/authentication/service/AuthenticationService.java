@@ -2,11 +2,14 @@ package com.example.carrentingapp.authentication.service;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
+import com.example.carrentingapp.authentication.request.SendVerifyingTokenAgainRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
 import com.example.carrentingapp.configuration.jwt.JwtService;
+import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationToken;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
+import com.example.carrentingapp.exception.exception.http_error_403.AccountAlreadyEnabledException;
 import com.example.carrentingapp.exception.exception.http_error_403.EmailAlreadyVerifiedException;
 import com.example.carrentingapp.exception.exception.http_error_403.TokenExpiredException;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
@@ -30,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -44,6 +48,8 @@ public class AuthenticationService {
     private final UserDataValidationService validationService;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserCreateService userCreateService;
+    private final ConfirmEmailNotificationSender confirmEmailNotificationSender;
+
 
     public AuthenticationResponse  register(RegistrationRequest request) {
         BaseUser user = userCreateService.createUser(
@@ -131,6 +137,18 @@ public class AuthenticationService {
         confirmationTokenRepository.save(confirmationToken);
 
         return new EmailVerificationResponse("Email verified, your account is now enabled");
+    }
+
+    public EmailVerificationResponse sendVerifyingTokenAgain(SendVerifyingTokenAgainRequest request){
+        BaseUser user = repository.findByEmailAndId(
+                request.getEmail(),
+                UUID.fromString(request.getUserId())
+        ).orElseThrow(() -> new UserNotFoundException("There is no such user"));
+        if (user.getIsEnabled()){
+            throw new AccountAlreadyEnabledException("Your account is already enabled");
+        }
+        confirmEmailNotificationSender.sendConfirmationEmail(user);
+        return new EmailVerificationResponse("Email verification token sent again");
     }
 
     private void saveUserToken(BaseUser user, String jwtToken) {

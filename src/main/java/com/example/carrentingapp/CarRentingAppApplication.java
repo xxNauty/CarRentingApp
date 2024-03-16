@@ -97,5 +97,7 @@ public class CarRentingAppApplication {
     b) czym jest Mockowanie
  11. W UserDataValidationService sprawdzić czy nie ma lepszych opcji niż Regex
  12. Usunąć możliwość podwójnego oddania i odebrania samochodu
+ 13. Historia wysłanych maili
+ 14. Usunąć nieużywane adnotacje Lomboka
  */
 

@@ -74,15 +74,8 @@ public class CarRentingAppApplication {
        2.
        3.
        4. Zablokować możliwość odbioru auta które jest jeszcze wynajęte
-       5. GetUserData zwracający informacje o:
-        a) wybranym użytkowniku, gdy odpytuje admin
-        b) dane użytkownika odpytującego, dla role user
-       6. Brakujące powiadomienia email:
-        a) Utworzenie konta
-        b) Wynajęcie auta
-        c) Auto gotowe do odbioru
-        d) Odbiór auta
-        e) Zwrot auta i podsumowanie
+       5.
+       6. Brakujące powiadomienia email
        7. Liczenie opóźnień w zwrotach, 5 -> blokada na miesiąc
        8. Przedłużanie blokady samochodu/usera -> stara traci ważność, tylko jedna aktywna w danym momencie
        9. Obsługa błędów UniqueConstraint
@@ -93,7 +86,9 @@ public class CarRentingAppApplication {
        15. Dodać domyślne wiadomości w wyjątkach jeśli nie poda się przy wywołaniu
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
        17. Usystematyzować konstrukcję relacji
-       18. Wywalić Permission
+       18. Wywalić Permission Enum
+       19. Mechanizm "Nie pamiętam hasła"
+       20. Zwrot samochodu, ocena przez admina przebiegu wypożyczenia
  */
 /*
     Do doczytania:
@@ -101,5 +96,11 @@ public class CarRentingAppApplication {
         2. Wygląd testów jednostkowych
         3. "Mockowanie"
         4. Zasada działania regexa
+        5. Konwencja nazewnictwa
+        6. Dependency injection
+        7. np. String data; vs String data = "";
+        8. Wzorzec fasada
+        9. Spring JPA/Hibernate
+        10. Cache'owanie
  */
 

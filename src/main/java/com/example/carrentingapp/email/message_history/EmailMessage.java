@@ -1,4 +1,4 @@
-package com.example.carrentingapp.email.notifications.history;
+package com.example.carrentingapp.email.message_history;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

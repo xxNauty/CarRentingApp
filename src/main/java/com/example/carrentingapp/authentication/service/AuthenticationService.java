@@ -6,7 +6,8 @@ import com.example.carrentingapp.authentication.request.SendVerifyingTokenAgainR
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
 import com.example.carrentingapp.configuration.jwt.JwtService;
-import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailNotificationSender;
+import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationToken;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
 import com.example.carrentingapp.exception.exception.http_error_403.AccountAlreadyEnabledException;
@@ -48,8 +49,7 @@ public class AuthenticationService {
     private final UserDataValidationService validationService;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserCreateService userCreateService;
-    private final ConfirmEmailNotificationSender confirmEmailNotificationSender;
-
+    private final NotificationSender notificationSender;
 
     public AuthenticationResponse  register(RegistrationRequest request) {
         BaseUser user = userCreateService.createUser(
@@ -147,7 +147,7 @@ public class AuthenticationService {
         if (user.getIsEnabled()){
             throw new AccountAlreadyEnabledException("Your account is already enabled");
         }
-        confirmEmailNotificationSender.sendConfirmationEmail(user);
+        notificationSender.sendConfirmEmailNotification(new ConfirmEmailRequest(user));
         return new EmailVerificationResponse("Email verification token sent again");
     }
 

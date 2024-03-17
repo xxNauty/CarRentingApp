@@ -1,24 +1,27 @@
 package com.example.carrentingapp.email.notifications.confirm_email;
 
+import com.example.carrentingapp.email.notifications.NotificationSenderInterface;
+import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
 import com.example.carrentingapp.email.sender.EmailSender;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenService;
-import com.example.carrentingapp.user.BaseUser;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-@RequiredArgsConstructor
-public class ConfirmEmailNotificationSender {
+@Component
+@AllArgsConstructor
+public class ConfirmEmailNotificationSender implements NotificationSenderInterface {
 
     private final EmailSender sender;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public void sendConfirmationEmail(BaseUser user){
+    @Override
+    public void sendEmail(NotificationRequestInterface request){
         final String from = "hello@carrentingapp.pl";
         final String subject = "Confirm your email address";
-        final String token = confirmationTokenService.createToken(user);
+        final String token = confirmationTokenService.createToken(((ConfirmEmailRequest) request).getUser());
         final String body = ConfirmEmailTemplate.template(token);
 
-        sender.send(user.getEmail(), from, subject, body);;
+        sender.send(((ConfirmEmailRequest) request).getUser().getEmail(), from, subject, body);;
     }
 }

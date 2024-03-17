@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carId": "3444f120-b1d0-4399-add8-3dd6dc76e1e8",
+  "carId": "407528d8-3315-4577-af95-cfd4ee82ec09",
   "rentedFrom": "2024-04-04",
   "rentedTo": "2024-04-14"
 }
@@ -15,7 +15,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carRentId": "83252aae-6708-48d0-afbd-4c42379fb617"
+  "carRentId": "4ddb39d5-fe94-4732-857b-ba23d6df712f"
 }
 
 ### Return rented car
@@ -24,6 +24,6 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carRentId": "83252aae-6708-48d0-afbd-4c42379fb617",
+  "carRentId": "4ddb39d5-fe94-4732-857b-ba23d6df712f",
   "kilometersTraveled": 443.45
 }

@@ -1,5 +1,8 @@
 package com.example.carrentingapp.user.service;
 
+import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.account_locked.AccountLockedRequest;
+import com.example.carrentingapp.email.notifications.account_unlocked.AccountUnlockedRequest;
 import com.example.carrentingapp.exception.exception.http_error_403.AccountAlreadyLockedException;
 import com.example.carrentingapp.exception.exception.http_error_403.AccountUnlockImpossibleException;
 import com.example.carrentingapp.exception.exception.http_error_403.UserNotLockedException;
@@ -23,6 +26,7 @@ public class UserLockService {
 
     private final UserLockRepository repository;
     private final BaseUserRepository userRepository;
+    private final NotificationSender notificationSender;
 
     public LockResponse lockUser(LockRequest request) {
         BaseUser user = userRepository.findById(request.getUserid())
@@ -43,6 +47,8 @@ public class UserLockService {
 
         userRepository.save(user);
         repository.save(lock);
+
+        notificationSender.sendAccountLockedNotification(new AccountLockedRequest(lock));
 
         return new LockResponse("User account is now locked");
     }
@@ -67,6 +73,8 @@ public class UserLockService {
 
         userRepository.save(user);
         repository.save(lock);
+
+        notificationSender.sendAccountUnlockedNotification(new AccountUnlockedRequest(user));
 
         return new LockResponse("User account is now unlocked");
     }

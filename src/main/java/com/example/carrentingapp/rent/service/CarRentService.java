@@ -3,6 +3,10 @@ package com.example.carrentingapp.rent.service;
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.configuration.service.SecurityService;
+import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
+import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest;
+import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
 import com.example.carrentingapp.exception.exception.http_error_403.BaseAccessDeniedException;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
 import com.example.carrentingapp.exception.exception.http_error_403.RentPeriodTooLongException;
@@ -10,8 +14,10 @@ import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundE
 import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
 import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.rent.CarRentRepository;
+import com.example.carrentingapp.rent.request.CarReadyToCollectRequest;
 import com.example.carrentingapp.rent.request.CollectCarRequest;
 import com.example.carrentingapp.rent.request.ReturnCarRequest;
+import com.example.carrentingapp.rent.response.CarReadyToCollectResponse;
 import com.example.carrentingapp.rent.response.CarRentResponse;
 import com.example.carrentingapp.rent.request.CarRentRequest;
 import com.example.carrentingapp.rent.response.CollectCarResponse;
@@ -38,6 +44,7 @@ public class CarRentService {
     private final BaseCarRepository baseCarRepository;
     private final BaseUserRepository baseUserRepository;
     private final SecurityService securityService;
+    private final NotificationSender notificationSender;
 
     @Transactional
     public CarRentResponse rentCar(CarRentRequest request){
@@ -66,6 +73,8 @@ public class CarRentService {
         carRentRepository.save(rent);
         baseCarRepository.save(carToRent);
 
+        notificationSender.sendCarRentedNotification(new CarRentedRequest(carToRent, user));
+
 
         String returnMessage = isActive
                 ? "Car rented successfully, you can collect your car at: " + collectionDate
@@ -78,7 +87,14 @@ public class CarRentService {
         );
     }
 
-    public CollectCarResponse carReadyToCollect(CollectCarRequest request){
+    public CarReadyToCollectResponse carReadyToCollect(CarReadyToCollectRequest request){
+        notificationSender.sendCarReadyToCollectNotification(
+                new com.example.carrentingapp.email.notifications.car_ready_to_collect.CarReadyToCollectRequest(request.getUser())
+        );
+        return new CarReadyToCollectResponse("Notification sent");
+    }
+
+    public CollectCarResponse collectCar(CollectCarRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
 
         if(rent.getCollectionDate().isAfter(LocalDateTime.now())){
@@ -88,6 +104,8 @@ public class CarRentService {
         rent.setIsActive(true);
         rent.setCollectedCar(true);
         carRentRepository.save(rent);
+
+        notificationSender.sendCarCollectedNotification(new CarCollectedRequest(rent));
 
         return new CollectCarResponse("Car collected, enjoy your ride");
     }
@@ -114,6 +132,9 @@ public class CarRentService {
         carRentRepository.save(rent);
         baseCarRepository.save(car);
         baseUserRepository.save(user);
+
+        //todo
+        notificationSender.sendCarReturnedNotification(new CarReturnedRequest());
 
         return new ReturnCarResponse("Car returned successfully");
     }

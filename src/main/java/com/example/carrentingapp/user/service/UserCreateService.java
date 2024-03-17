@@ -1,6 +1,7 @@
 package com.example.carrentingapp.user.service;
 
-import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailNotificationSender;
+import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.enums.Role;
 import com.example.carrentingapp.user.BaseUserRepository;
@@ -17,7 +18,7 @@ public class UserCreateService {
 
     private final BaseUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ConfirmEmailNotificationSender confirmEmailNotificationSender;
+    private final NotificationSender notificationSender;
 
     //todo: przerobić na UserCreateResponse
     @Transactional
@@ -36,7 +37,7 @@ public class UserCreateService {
                 dateOfBirth
         );
 
-        confirmEmailNotificationSender.sendConfirmationEmail(user);
+        notificationSender.sendConfirmEmailNotification(new ConfirmEmailRequest(user));
 
         userRepository.save(user);
 

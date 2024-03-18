@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface BaseCarRepository extends JpaRepository<BaseCar, UUID> {
 
-    @Query(value = "select c from BaseCar c where c.isAvailable = true or c.isRented = false")
-    List<BaseCar> findAllAvailable();
+    @Query(value = "select c from BaseCar c where c.status = :status")
+    List<BaseCar> findByStatus(BaseCar.CarStatus status);
 
 }

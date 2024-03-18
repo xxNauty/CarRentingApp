@@ -1,5 +1,6 @@
 package com.example.carrentingapp.email.notifications.car_rented;
 
+import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.notifications.NotificationSenderInterface;
 import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
 import com.example.carrentingapp.email.sender.EmailSender;
@@ -18,6 +19,6 @@ public class CarRentedNotificationSender implements NotificationSenderInterface 
         final String subject = "Car collected";
         final String body = CarRentedTemplate.template(((CarRentedRequest) request).getCar());
 
-        sender.send(((CarRentedRequest) request).getUser().getEmail(), from, subject, body);
+        sender.send(((CarRentedRequest) request).getUser().getEmail(), from, subject, body, EmailMessage.EmailMessageType.NOTIFICATION);
     }
 }

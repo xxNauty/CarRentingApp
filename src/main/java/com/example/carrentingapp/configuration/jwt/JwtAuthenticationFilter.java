@@ -3,6 +3,7 @@ package com.example.carrentingapp.configuration.jwt;
 import com.example.carrentingapp.exception.exception.http_error_403.AccessDeniedException;
 import com.example.carrentingapp.exception.exception.http_error_403.UserAccountLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
+import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
 import com.example.carrentingapp.user.BaseUserRepository;
 import jakarta.servlet.FilterChain;
@@ -51,13 +52,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(jwt.equals("null")){ //todo: zbadać zachowanie
             filterChain.doFilter(request, response);
             return;
-//            throw new AccessDeniedException("You cannot do this not logged in");
         }
         userEmail = jwtService.extractUsername(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             Boolean isTokenValid = tokenRepository.findByToken(jwt)
-                    .map(t -> !t.isExpired() /*&& !t.isRevoked()*/)
+                    .map(t -> t.getStatus().equals(Token.JwtTokenStatus.JWT_TOKEN_ACTIVE))
                     .orElse(false);
             if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

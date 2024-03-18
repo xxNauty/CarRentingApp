@@ -1,11 +1,10 @@
 package com.example.carrentingapp.email.message_history;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.Length;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,25 +25,33 @@ public class EmailMessage {
 
     private String subject;
 
+    @Column(length = Length.LONG) //todo: zweryfikować czy potrzeba aż tyle
     private String body;
 
     private LocalDateTime sentAt;
 
-    private boolean sent;
+    @Enumerated(EnumType.STRING)
+    private EmailMessageStatus status;
 
     public EmailMessage(
             String emailFrom,
             String emailTo,
             String subject,
-            String body,
-            LocalDateTime sentAt,
-            boolean sent
+            String body
     ) {
         this.emailFrom = emailFrom;
         this.emailTo = emailTo;
         this.subject = subject;
         this.body = body;
-        this.sentAt = sentAt;
-        this.sent = sent;
+    }
+
+    public enum EmailMessageStatus{
+        EMAIL_SENT,
+        EMAIL_ERROR
+    }
+
+    public enum EmailMessageType{
+        NOTIFICATION,
+        CONTACT_FORM
     }
 }

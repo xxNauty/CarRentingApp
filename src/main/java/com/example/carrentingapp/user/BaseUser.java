@@ -2,19 +2,17 @@ package com.example.carrentingapp.user;
 
 import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.token.Token;
-import com.example.carrentingapp.user.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
-import static com.example.carrentingapp.user.enums.Role.USER;
 
 @Data
 @Entity
@@ -43,10 +41,6 @@ public class BaseUser implements UserDetails {
 
     private Float rank;
 
-    private Boolean isLocked;
-
-    private Boolean isEnabled;
-
     @OneToMany(targetEntity = Token.class, mappedBy = "user", fetch = FetchType.EAGER)
     private List<Token> loginTokens;
 
@@ -55,6 +49,9 @@ public class BaseUser implements UserDetails {
 
     @OneToMany(targetEntity = CarRent.class, mappedBy = "user", fetch = FetchType.EAGER)
     private List<CarRent> rentedCars;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     public BaseUser(
             String firstName,
@@ -69,9 +66,8 @@ public class BaseUser implements UserDetails {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.rank = 5.0F;
-        this.isLocked = false;
-        this.isEnabled = false;
-        this.role = USER;
+        this.role = Role.USER;
+        this.status = UserStatus.USER_CREATED;
     }
 
     @JsonIgnore
@@ -100,7 +96,8 @@ public class BaseUser implements UserDetails {
     @Override
     @JsonIgnore
     public boolean isAccountNonLocked() {
-        return !isLocked;
+        return !status.equals(UserStatus.USER_LOCKED_FOREVER) &&
+                !status.equals(UserStatus.USER_LOCKED_TEMPORARY);
     }
 
     @Override
@@ -112,7 +109,7 @@ public class BaseUser implements UserDetails {
     @Override
     @JsonIgnore
     public boolean isEnabled() {
-        return isEnabled;
+        return !status.equals(UserStatus.USER_CREATED);
     }
 
     @Override
@@ -123,4 +120,21 @@ public class BaseUser implements UserDetails {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public enum Role {
+        USER,
+        ADMIN;
+        public List<SimpleGrantedAuthority> getAuthorities() {
+            return List.of((new SimpleGrantedAuthority("ROLE_" + this.name())));
+        }
+    }
+
+    public enum UserStatus{
+        USER_CREATED,
+        USER_READY,
+        USER_HAS_CAR,
+        USER_LOCKED_TEMPORARY,
+        USER_LOCKED_FOREVER
+    }
+
 }

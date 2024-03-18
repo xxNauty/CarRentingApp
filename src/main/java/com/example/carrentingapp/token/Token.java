@@ -23,7 +23,8 @@ public class Token {
     @Column(unique = true)
     private String token;
 
-    private boolean expired;
+    @Enumerated(EnumType.STRING)
+    private JwtTokenStatus status;
 
     @JsonIgnore
     @ManyToOne
@@ -31,7 +32,12 @@ public class Token {
 
     public Token(String token, BaseUser user) {
         this.token = token;
-        this.expired = false;
+        this.status = JwtTokenStatus.JWT_TOKEN_ACTIVE;
         this.user = user;
+    }
+
+    public enum JwtTokenStatus{
+        JWT_TOKEN_ACTIVE,
+        JWT_TOKEN_EXPIRED
     }
 }

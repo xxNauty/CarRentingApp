@@ -1,11 +1,12 @@
-package com.example.carrentingapp.contact_form.service;
+package com.example.carrentingapp.email.contact_form.service;
 
 import com.example.carrentingapp.configuration.service.SecurityService;
-import com.example.carrentingapp.contact_form.response.ContactFormResponse;
-import com.example.carrentingapp.contact_form.ContactFormMessage;
-import com.example.carrentingapp.contact_form.ContactFormMessageRepository;
-import com.example.carrentingapp.contact_form.request.AuthorizedContactFormRequest;
-import com.example.carrentingapp.contact_form.request.ContactFormRequest;
+import com.example.carrentingapp.email.contact_form.response.ContactFormResponse;
+import com.example.carrentingapp.email.contact_form.ContactFormMessage;
+import com.example.carrentingapp.email.contact_form.ContactFormMessageRepository;
+import com.example.carrentingapp.email.contact_form.request.AuthorizedContactFormRequest;
+import com.example.carrentingapp.email.contact_form.request.ContactFormRequest;
+import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.sender.EmailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,8 @@ public class ContactFormService {
                 message.getRecipientEmail(),
                 message.getSenderEmail(),
                 message.getSubject(),
-                message.getBody()
+                message.getBody(),
+                EmailMessage.EmailMessageType.CONTACT_FORM
         );
         return new ContactFormResponse("Message sent successfully");
     }
@@ -54,7 +56,8 @@ public class ContactFormService {
                 message.getRecipientEmail(),
                 message.getSenderEmail(),
                 message.getSubject(),
-                message.getBody()
+                message.getBody(),
+                EmailMessage.EmailMessageType.CONTACT_FORM
         );
         return new ContactFormResponse("Message sent successfully");
     }

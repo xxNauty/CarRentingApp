@@ -1,5 +1,6 @@
 package com.example.carrentingapp.email.notifications.account_locked;
 
+import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.notifications.NotificationSenderInterface;
 import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
 import com.example.carrentingapp.email.sender.EmailSender;
@@ -18,6 +19,6 @@ public class AccountLockedNotificationSender implements NotificationSenderInterf
         final String subject = "Your account has been locked";
         final String body = AccountLockedTemplate.template(((AccountLockedRequest) request).getLock());
 
-        sender.send(((AccountLockedRequest) request).getLock().getUser().getEmail(), from, subject, body);
+        sender.send(((AccountLockedRequest) request).getLock().getUser().getEmail(), from, subject, body, EmailMessage.EmailMessageType.NOTIFICATION);
     }
 }

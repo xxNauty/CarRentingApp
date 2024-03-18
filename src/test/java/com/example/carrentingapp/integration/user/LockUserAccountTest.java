@@ -84,7 +84,7 @@ public class LockUserAccountTest {
                 LockResponse.class
         );
 
-        userLockRepository.findAllActiveLockForUser(user.getId()).orElseThrow(() -> new UserNotLockedException("User not locked"));
+        userLockRepository.findAllByStatusAndUser(user.getId(), UserLock.UserLockStatus.USER_LOCK_ACTIVE).orElseThrow(() -> new UserNotLockedException("User not locked"));
         Assertions.assertDoesNotThrow(() -> new UserNotLockedException("User not locked"));
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), lockResponse.getStatusCode());

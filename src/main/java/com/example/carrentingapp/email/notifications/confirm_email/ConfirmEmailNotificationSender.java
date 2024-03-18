@@ -1,5 +1,6 @@
 package com.example.carrentingapp.email.notifications.confirm_email;
 
+import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.notifications.NotificationSenderInterface;
 import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
 import com.example.carrentingapp.email.sender.EmailSender;
@@ -22,6 +23,6 @@ public class ConfirmEmailNotificationSender implements NotificationSenderInterfa
         final String token = confirmationTokenService.createToken(((ConfirmEmailRequest) request).getUser());
         final String body = ConfirmEmailTemplate.template(token);
 
-        sender.send(((ConfirmEmailRequest) request).getUser().getEmail(), from, subject, body);
+        sender.send(((ConfirmEmailRequest) request).getUser().getEmail(), from, subject, body, EmailMessage.EmailMessageType.NOTIFICATION);
     }
 }

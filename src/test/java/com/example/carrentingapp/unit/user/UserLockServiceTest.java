@@ -52,16 +52,16 @@ public class UserLockServiceTest {
         BaseUser userFromDatabase = baseUserRepository.findById(user.getId()).orElseThrow(() -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
-        Assertions.assertTrue(userFromDatabase.getIsLocked());
+        Assertions.assertTrue(!userFromDatabase.isAccountNonLocked());
 
-        userLockRepository.findAllActiveLockForUser(user.getId()).orElseThrow(() -> new UserNotLockedException("User not locked"));
+        userLockRepository.findAllByStatusAndUser(UserLock.UserLockStatus.USER_LOCK_ACTIVE, user.getId()).orElseThrow(() -> new UserNotLockedException("User not locked"));
         Assertions.assertDoesNotThrow(() -> new UserNotLockedException("User not locked"));
     }
 
     @Test
     public void testUserUnlock(){
         BaseUser user = commonFunctionsProvider.createUser();
-        Assertions.assertFalse(user.getIsLocked());
+        Assertions.assertFalse(!user.isAccountNonLocked());
 
         userLockService.lockUser(new LockRequest(
                 user.getId(),
@@ -80,7 +80,7 @@ public class UserLockServiceTest {
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
         Assertions.assertFalse(userAfterUnlock.getIsLocked());
 
-        UserLock lock = userLockRepository.findAllActiveLockForUser(user.getId()).orElse(new UserLock());
+        UserLock lock = userLockRepository.findAllByStatusAndUser(UserLock.UserLockStatus.USER_LOCK_ACTIVE, user.getId()).orElse(new UserLock());
         Assertions.assertEquals(lock, new UserLock());
     }
 

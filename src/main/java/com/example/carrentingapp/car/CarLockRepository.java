@@ -12,10 +12,10 @@ import java.util.UUID;
 @Repository
 public interface CarLockRepository extends JpaRepository<CarLock, UUID> {
 
-    @Query(value = "select l from CarLock l where l.car.id = :carId and l.isActive = true")
-    Optional<CarLock> findAllActiveLocksForCar(UUID carId);
+    @Query(value = "select l from CarLock l where l.car.id = :carId and l.status = :status")
+    Optional<CarLock> findAllActiveLocksForCar(UUID carId, CarLock.CarLockStatus status);
 
-    List<CarLock> findAllByIsActive(boolean isActive);
+    List<CarLock> findAllByStatus(CarLock.CarLockStatus status);
 
 
 }

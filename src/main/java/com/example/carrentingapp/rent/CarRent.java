@@ -34,17 +34,26 @@ public class CarRent {
 
     private LocalDateTime collectionDate;
 
-    private Boolean isActive;
+    @Enumerated(EnumType.STRING)
+    private CarRentStatus status;
 
-    private Boolean collectedCar;
-
-    public CarRent(BaseCar car, BaseUser user, LocalDate rentedFrom, LocalDate rentedTo, LocalDateTime collectionDate, Boolean isActive) {
+    public CarRent(BaseCar car, BaseUser user, LocalDate rentedFrom, LocalDate rentedTo, LocalDateTime collectionDate) {
         this.car = car;
         this.user = user;
         this.rentedFrom = rentedFrom;
         this.rentedTo = rentedTo;
         this.collectionDate = collectionDate;
-        this.isActive = isActive;
-        this.collectedCar = false;
+        this.status = CarRentStatus.CAR_RENT_CREATED;
+    }
+
+    public enum CarRentStatus{
+        CAR_RENT_CREATED,
+        CAR_RENT_CAR_WAITING,
+        CAR_RENT_CAR_READY_TO_COLLECT,
+        CAR_RENT_CAR_COLLECTED,
+        CAR_RENT_WAITING_FOR_REVIEW,
+        CAR_RENT_END_OF_RENT_OK,
+        CAR_RENT_END_OF_RENT_DAMAGED_CAR,
+        CAR_RENT_END_OF_RENT_LATE
     }
 }

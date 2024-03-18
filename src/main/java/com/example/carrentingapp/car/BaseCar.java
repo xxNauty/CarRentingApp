@@ -26,8 +26,6 @@ public class BaseCar {
 
     private Float mileage;
 
-    private Boolean isRented;
-
     private Float power;
 
     private Float torque;
@@ -42,18 +40,26 @@ public class BaseCar {
 
     private Boolean hasActiveSale;
 
-    private Boolean isAvailable;
+    @Enumerated(EnumType.STRING)
+    private CarStatus status;
 
     @OneToMany(mappedBy = "car", fetch = FetchType.EAGER) //todo: FetchType Eager vs Lazy
     private List<CarLock> locks;
 
+    //todo: mechanizm pilnujący by w danym momencie była tylko jedna aktywna blokada
     public CarLock getActiveLock(){
         for(CarLock lock : locks){
-            if (lock.getIsActive()){
+            if (lock.getStatus().equals(CarLock.CarLockStatus.CAR_LOCK_ACTIVE)){
                 return lock;
             }
         }
         return null;
+    }
+
+    public enum CarStatus{
+        CAR_READY,
+        CAR_LOCKED,
+        CAR_RENTED
     }
 
 }

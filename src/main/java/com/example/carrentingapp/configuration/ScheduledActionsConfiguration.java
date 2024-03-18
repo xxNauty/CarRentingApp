@@ -1,7 +1,7 @@
 package com.example.carrentingapp.configuration;
 
 import com.example.carrentingapp.car.service.CarUnlockService;
-import com.example.carrentingapp.rent.service.CarReadyToRentService;
+import com.example.carrentingapp.rent.service.CarReadyToCollectService;
 import com.example.carrentingapp.user.service.UserUnlockService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @AllArgsConstructor
 public class ScheduledActionsConfiguration {
 
-    private final CarReadyToRentService carReadyToRentService;
+    private final CarReadyToCollectService carReadyToRentService;
     private final UserUnlockService userUnlockService;
     private final CarUnlockService carUnlockService;
 

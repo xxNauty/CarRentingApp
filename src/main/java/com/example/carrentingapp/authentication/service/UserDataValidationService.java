@@ -1,6 +1,6 @@
 package com.example.carrentingapp.authentication.service;
 
-import com.example.carrentingapp.exception.exception.http_error_403.UserTooYoungException;
+import com.example.carrentingapp.exception.exception.http_error_500.UserTooYoungException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidDataException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidEmailAddressException;
 import com.example.carrentingapp.exception.exception.http_error_500.PasswordNotSafeException;

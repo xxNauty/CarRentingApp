@@ -1,7 +1,7 @@
 package com.example.carrentingapp.unit.user;
 
 import com.example.carrentingapp.CommonFunctionsProvider;
-import com.example.carrentingapp.exception.exception.http_error_403.UserNotLockedException;
+import com.example.carrentingapp.exception.exception.http_error_500.UserNotLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.BaseUserRepository;

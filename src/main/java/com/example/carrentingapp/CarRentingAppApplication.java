@@ -82,14 +82,14 @@ public class CarRentingAppApplication {
        10. Testy przepisać na nowo
        12. Usunąć możliwość podwójnego oddania i odebrania samochodu
        13.
-       14. Usunąć nieużywane adnotacje Lomboka
+       14.
        15.
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
        17. Usystematyzować konstrukcję relacji
        18.
        19.
        20. Zwrot samochodu, ocena przez admina przebiegu wypożyczenia
-       21. Zweryfikować błędy wyrzucane przy starcie aplikacji
+       21.
        22. Wynajęcie samochodu conajmniej 7 dni przed
  */
 /*

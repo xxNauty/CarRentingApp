@@ -12,29 +12,41 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "car_lock")
 public class CarLock {
+
     @Id
     @GeneratedValue
     private UUID id;
+
     @ManyToOne
     @JsonIgnore
     private BaseCar car;
-    @Enumerated(EnumType.STRING)
-    private CarReason reason;
-    private LocalDate lockedTo;
-    private Boolean isActive;
 
-    public CarLock(BaseCar car, CarReason reason, LocalDate lockedTo, Boolean isActive) {
+    @Enumerated(EnumType.STRING)
+    private CarLockReason reason;
+
+    private LocalDate lockedTo;
+
+    @Enumerated(EnumType.STRING)
+    private CarLockStatus status;
+
+    public CarLock(BaseCar car, CarLockReason reason, LocalDate lockedTo) {
         this.car = car;
         this.reason = reason;
         this.lockedTo = lockedTo;
-        this.isActive = isActive;
+        this.status = CarLockStatus.CAR_LOCK_ACTIVE;
     }
 
-    public enum CarReason {
+    public enum CarLockReason {
         REGULAR_SERVICE,
         FAILURE,
         TUNING,
         OTHER
+    }
+
+    public enum CarLockStatus{
+        CAR_LOCK_ACTIVE,
+        CAR_LOCK_NOT_ACTIVE,
+        CAR_LOCK_EXTENDED
     }
 
 }

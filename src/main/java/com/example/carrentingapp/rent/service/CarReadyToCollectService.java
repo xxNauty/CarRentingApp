@@ -12,13 +12,13 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class CarReadyToRentService{
+public class CarReadyToCollectService {
 
     private final CarRentRepository carRentRepository;
     private final NotificationSender notificationSender;
 
     public void check() {
-        List<CarRent> rents = carRentRepository.getAllByCollectedCar(false);
+        List<CarRent> rents = carRentRepository.getAllByStatus(CarRent.CarRentStatus.CAR_RENT_CAR_READY_TO_COLLECT);
         for(CarRent rent : rents){
             if (rent.getCollectionDate().toLocalDate().equals(LocalDate.now())){
                 notificationSender.sendCarReadyToCollectNotification(new CarReadyToCollectRequest(rent.getUser()));

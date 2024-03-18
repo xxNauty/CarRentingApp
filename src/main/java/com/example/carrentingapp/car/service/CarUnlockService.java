@@ -18,7 +18,7 @@ public class CarUnlockService {
     private final CarLockService carLockService;
 
     public void check(){
-        List<CarLock> locks = carLockRepository.findAllByIsActive(true);
+        List<CarLock> locks = carLockRepository.findAllByStatus(CarLock.CarLockStatus.CAR_LOCK_ACTIVE);
         for (CarLock lock : locks){
             if (lock.getLockedTo().equals(LocalDate.now())){
                 carLockService.unlockCar(new CarUnlockRequest(lock.getId()));

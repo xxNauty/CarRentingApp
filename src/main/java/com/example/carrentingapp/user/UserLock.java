@@ -28,7 +28,9 @@ public class UserLock {
     @JsonIgnore
     @ManyToOne
     private BaseUser user;
-    private Boolean isActive;
+
+    @Enumerated(EnumType.STRING)
+    private UserLockStatus status;
 
     public UserLock(
             Reason reason,
@@ -40,22 +42,24 @@ public class UserLock {
         this.type = type;
         this.expirationDate = expirationDate;
         this.user = user;
-        this.isActive = true;
+        this.status = UserLockStatus.USER_LOCK_ACTIVE;
     }
 
-    @RequiredArgsConstructor
     public enum Reason {
-        FREQUENT_DELAYED_RETURNS("częste-opóźnienia-ze-zwrotami"),
-        DAMAGED_CAR("uszkodzenie-samochodu"),
-        DESTROYED_CAR("zniszczenie-samochodu"),
-        OTHER("inne");
-
-        private final String reason;
+        FREQUENT_DELAYED_RETURNS,
+        DAMAGED_CAR,
+        DESTROYED_CAR,
+        OTHER;
     }
 
     public enum LockType {
         TEMPORARY,
         FOREVER
+    }
+
+    public enum UserLockStatus{
+        USER_LOCK_ACTIVE,
+        USER_LOCK_NOT_ACTIVE
     }
 
 

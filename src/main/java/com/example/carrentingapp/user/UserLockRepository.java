@@ -11,9 +11,9 @@ import java.util.UUID;
 @Repository
 public interface UserLockRepository extends JpaRepository<UserLock, UUID> {
 
-    @Query(value = "select l from UserLock l where l.user.id = :userID and l.isActive = true")
-    Optional<UserLock> findAllActiveLockForUser(UUID userID);
+    @Query(value = "select l from UserLock l where l.user.id = :id and l.status = :status")
+    Optional<UserLock> findAllByStatusAndUser(UUID id, UserLock.UserLockStatus status);
 
-    List<UserLock> findAllByIsActive(boolean isActive);
+    List<UserLock> findAllByStatus(UserLock.UserLockStatus status);
 
 }

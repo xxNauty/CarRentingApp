@@ -1,5 +1,6 @@
 package com.example.carrentingapp.email.notifications.account_unlocked;
 
+import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.notifications.NotificationSenderInterface;
 import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
 import com.example.carrentingapp.email.sender.EmailSender;
@@ -17,6 +18,6 @@ public class AccountUnlockedNotificationSender implements NotificationSenderInte
         final String subject = "Your account has been unlocked";
         final String body = AccountUnlockedTemplate.template();
 
-        sender.send(((AccountUnlockedRequest) request).getUser().getEmail(), from, subject, body);
+        sender.send(((AccountUnlockedRequest) request).getUser().getEmail(), from, subject, body, EmailMessage.EmailMessageType.NOTIFICATION);
     }
 }

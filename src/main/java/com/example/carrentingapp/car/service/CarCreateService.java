@@ -29,7 +29,6 @@ public class CarCreateService {
                 .model(model)
                 .yearOfProduction(yearOfProduction)
                 .mileage(mileage)
-                .isRented(false)
                 .power(power)
                 .torque(torque)
                 .engineSize(engineSize)
@@ -37,7 +36,7 @@ public class CarCreateService {
                 .minRankOfUser(minRankOfUser)
                 .pricePerDay(pricePerDay)
                 .hasActiveSale(false)
-                .isAvailable(true)
+                .status(BaseCar.CarStatus.CAR_READY)
                 .build();
 
         carRepository.save(car);

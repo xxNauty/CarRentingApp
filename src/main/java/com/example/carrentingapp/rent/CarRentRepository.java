@@ -9,6 +9,6 @@ import java.util.UUID;
 @Repository
 public interface CarRentRepository extends JpaRepository<CarRent, UUID> {
 
-    List<CarRent> getAllByCollectedCar(boolean collectedCar);
+    List<CarRent> getAllByStatus(CarRent.CarRentStatus status);
 
 }

@@ -28,6 +28,8 @@ public class ConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
+    private ConfirmationTokenStatus status;
+
     @ManyToOne
     private BaseUser user;
 
@@ -40,5 +42,12 @@ public class ConfirmationToken {
         this.createdAt = LocalDateTime.now();
         this.expiredAt = expiredAt;
         this.user = user;
+        this.status = ConfirmationTokenStatus.CONFIRMATION_TOKEN_SENT;
+    }
+
+    public enum ConfirmationTokenStatus{
+        CONFIRMATION_TOKEN_SENT,
+        CONFIRMATION_TOKEN_CONFIRMED,
+        CONFIRMATION_TOKEN_RESENT
     }
 }

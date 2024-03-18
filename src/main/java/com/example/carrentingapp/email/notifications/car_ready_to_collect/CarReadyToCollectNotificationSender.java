@@ -1,5 +1,6 @@
 package com.example.carrentingapp.email.notifications.car_ready_to_collect;
 
+import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.notifications.NotificationSenderInterface;
 import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
@@ -20,6 +21,6 @@ public class CarReadyToCollectNotificationSender implements NotificationSenderIn
         final String subject = "Car collected";
         final String body = CarReadyToCollectTemplate.template();
 
-        sender.send(((CarReadyToCollectRequest) request).getUser().getEmail(), from, subject, body);
+        sender.send(((CarReadyToCollectRequest) request).getUser().getEmail(), from, subject, body, EmailMessage.EmailMessageType.NOTIFICATION);
     }
 }

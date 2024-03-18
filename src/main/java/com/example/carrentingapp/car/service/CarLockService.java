@@ -27,12 +27,11 @@ public class CarLockService {
 
         CarLock lock = new CarLock(
                 car,
-                CarLock.CarReason.valueOf(request.getReason()),
-                request.getLockedTo(),
-                true
+                CarLock.CarLockReason.valueOf(request.getReason()),
+                request.getLockedTo()
         );
 
-        car.setIsAvailable(false);
+        car.setStatus(BaseCar.CarStatus.CAR_LOCKED);
 
         baseCarRepository.save(car);
         carLockRepository.save(lock);
@@ -43,10 +42,10 @@ public class CarLockService {
     public CarLockResponse unlockCar(CarUnlockRequest request){
         BaseCar car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
-        CarLock lock = carLockRepository.findAllActiveLocksForCar(request.getCarId()).orElseThrow(() -> new CarLockNotFoundException("Car with given id not found"));
+        CarLock lock = carLockRepository.findAllActiveLocksForCar(request.getCarId(), CarLock.CarLockStatus.CAR_LOCK_ACTIVE).orElseThrow(() -> new CarLockNotFoundException("Car with given id not found"));
 
-        lock.setIsActive(false);
-        car.setIsAvailable(true);
+        lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);
+        car.setStatus(BaseCar.CarStatus.CAR_READY);
 
         baseCarRepository.save(car);
         carLockRepository.save(lock);

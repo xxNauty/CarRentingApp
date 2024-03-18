@@ -24,7 +24,7 @@ public class CarGetService {
     }
 
     public GetSimpleCarListResponse getSimpleCarList(Boolean onlyAvailable){
-        List<BaseCar> cars = onlyAvailable ? repository.findAllAvailable() : repository.findAll();
+        List<BaseCar> cars = onlyAvailable ? repository.findByStatus(BaseCar.CarStatus.CAR_READY) : repository.findAll();
         List<SimpleCar> output = new ArrayList<>();
 
         for(BaseCar car : cars){
@@ -42,7 +42,7 @@ public class CarGetService {
     }
 
     public GetFullCarListResponse getFullCarList(Boolean onlyAvailable){
-        List<BaseCar> cars = onlyAvailable ? repository.findAllAvailable() : repository.findAll();
+        List<BaseCar> cars = onlyAvailable ? repository.findByStatus(BaseCar.CarStatus.CAR_READY)  : repository.findAll();
         List<FullCar> output = new ArrayList<>();
 
         for(BaseCar car : cars){
@@ -57,9 +57,7 @@ public class CarGetService {
                             car.getMinRankOfUser(),
                             car.getPricePerDay(),
                             car.getHasActiveSale(),
-                            car.getIsAvailable(),
                             car.getMileage(),
-                            car.getIsRented(),
                             car.getActiveLock()
                     )
             );
@@ -86,9 +84,7 @@ public class CarGetService {
             Float minRankOfUser,
             Float pricePerDay,
             Boolean hasActiveSale,
-            Boolean isAvailable,
             Float mileage,
-            Boolean isRented,
             CarLock lock
     ){}
 }

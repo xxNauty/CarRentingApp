@@ -56,7 +56,7 @@ public class CarRentService {
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
         }
 
-        boolean isActive = !carToRent.getIsRented();
+        boolean isActive = true; //todo: do poprawy
         LocalDateTime collectionDate  = LocalDateTime.now().plusDays(1);
 
         CarRent rent = new CarRent(
@@ -64,10 +64,9 @@ public class CarRentService {
                 user,
                 request.getRentedFrom(),
                 request.getRentedTo(),
-                collectionDate,
-                isActive
+                collectionDate
         );
-        carToRent.setIsRented(true);
+        carToRent.setStatus(BaseCar.CarStatus.CAR_RENTED);
 
 
         carRentRepository.save(rent);
@@ -94,16 +93,20 @@ public class CarRentService {
         return new CarReadyToCollectResponse("Notification sent");
     }
 
+    @Transactional
     public CollectCarResponse collectCar(CollectCarRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
+        BaseUser user = rent.getUser();
 
         if(rent.getCollectionDate().isAfter(LocalDateTime.now())){
             throw new CarNotReadyException("Your car is not ready to collect yet");
         }
 
-        rent.setIsActive(true);
-        rent.setCollectedCar(true);
+        rent.setStatus(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED);
+        user.setStatus(BaseUser.UserStatus.USER_HAS_CAR);
+
         carRentRepository.save(rent);
+        baseUserRepository.save(user);
 
         notificationSender.sendCarCollectedNotification(new CarCollectedRequest(rent));
 
@@ -116,17 +119,18 @@ public class CarRentService {
         BaseUser user = rent.getUser();
         BaseCar car = rent.getCar();
 
-        float pointsAfterRent = 0;
-        int late = Period.between(rent.getRentedTo(), LocalDate.now()).getDays();
-        if (late > 0){
-            pointsAfterRent -= (late * 0.2F);
-        }
-        else {
-            pointsAfterRent += 0.5F;
-        }
-        user.updateRank(pointsAfterRent);
-        rent.setIsActive(false);
-        car.setIsRented(false);
+        //todo: dorobić mechanizm liczenia rankingu
+//        float pointsAfterRent = 0;
+//        int late = Period.between(rent.getRentedTo(), LocalDate.now()).getDays();
+//        if (late > 0){
+//            pointsAfterRent -= (late * 0.2F);
+//        }
+//        else {
+//            pointsAfterRent += 0.5F;
+//        }
+//        user.updateRank(pointsAfterRent);
+        rent.setStatus(CarRent.CarRentStatus.CAR_RENT_WAITING_FOR_REVIEW);
+        car.setStatus(BaseCar.CarStatus.CAR_READY);
         car.setMileage(car.getMileage() + request.getKilometersTraveled());
 
         carRentRepository.save(rent);

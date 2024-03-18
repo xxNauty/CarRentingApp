@@ -3,7 +3,6 @@ package com.example.carrentingapp.user.service;
 import com.example.carrentingapp.email.notifications.NotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.enums.Role;
 import com.example.carrentingapp.user.BaseUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,8 +57,8 @@ public class UserCreateService {
                 passwordEncoder.encode(password),
                 dateOfBirth
         );
-        user.setRole(Role.ADMIN);
-        user.setIsEnabled(true); //admin nie musi potwierdzać adresu email
+        user.setRole(BaseUser.Role.ADMIN);
+        user.setStatus(BaseUser.UserStatus.USER_READY); //admin nie musi potwierdzać adresu email
 
         userRepository.save(user);
 

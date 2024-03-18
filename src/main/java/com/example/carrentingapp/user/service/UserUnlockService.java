@@ -19,7 +19,7 @@ public class UserUnlockService {
     private final UserLockService userLockService;
 
     public void check(){
-        List<UserLock> locks = userLockRepository.findAllByIsActive(true);
+        List<UserLock> locks = userLockRepository.findAllByStatus(UserLock.UserLockStatus.USER_LOCK_ACTIVE);
         for (UserLock lock : locks){
             if (lock.getExpirationDate().equals(LocalDate.now())){
                 userLockService.unlockUser(new UnlockRequest(lock.getUser().getId()));

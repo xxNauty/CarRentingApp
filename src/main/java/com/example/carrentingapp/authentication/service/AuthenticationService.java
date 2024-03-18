@@ -129,9 +129,10 @@ public class AuthenticationService {
         }
 
         confirmationToken.setConfirmedAt(LocalDateTime.now());
+        confirmationToken.setStatus(ConfirmationToken.ConfirmationTokenStatus.CONFIRMATION_TOKEN_CONFIRMED);
 
         BaseUser user = confirmationToken.getUser();
-        user.setIsEnabled(true);
+        user.setStatus(BaseUser.UserStatus.USER_READY);
 
         repository.save(user);
         confirmationTokenRepository.save(confirmationToken);
@@ -144,7 +145,7 @@ public class AuthenticationService {
                 request.getEmail(),
                 UUID.fromString(request.getUserId())
         ).orElseThrow(() -> new UserNotFoundException("There is no such user"));
-        if (user.getIsEnabled()){
+        if (user.isEnabled()){
             throw new AccountAlreadyEnabledException("Your account is already enabled");
         }
         notificationSender.sendConfirmEmailNotification(new ConfirmEmailRequest(user));
@@ -157,11 +158,11 @@ public class AuthenticationService {
     }
 
     private void revokeAllUserTokens(BaseUser user) {
-        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId(), Token.JwtTokenStatus.JWT_TOKEN_ACTIVE);
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {
-            token.setExpired(true);
+            token.setStatus(Token.JwtTokenStatus.JWT_TOKEN_EXPIRED);
         });
         tokenRepository.saveAll(validUserTokens);
     }

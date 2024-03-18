@@ -32,7 +32,7 @@ public class UserLockService {
         BaseUser user = userRepository.findById(request.getUserid())
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
-        if(user.getIsLocked()){
+        if(!user.isAccountNonLocked()){
             throw new AccountAlreadyLockedException("You can not lock already locked account");
         }
 
@@ -43,7 +43,12 @@ public class UserLockService {
                 user
         );
 
-        user.setIsLocked(true);
+        if (request.getLockType().equals(UserLock.LockType.TEMPORARY.name())){
+            user.setStatus(BaseUser.UserStatus.USER_LOCKED_TEMPORARY);
+        }
+        else if (request.getLockType().equals(UserLock.LockType.FOREVER.name())){
+            user.setStatus(BaseUser.UserStatus.USER_LOCKED_FOREVER);
+        }
 
         userRepository.save(user);
         repository.save(lock);
@@ -57,19 +62,19 @@ public class UserLockService {
         BaseUser user = userRepository.findById(request.getUserid())
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
-        if(!user.getIsLocked()){
+        if(user.isAccountNonLocked()){
             throw new UserNotLockedException("This user is not locked");
         }
 
-        UserLock lock = repository.findAllActiveLockForUser(request.getUserid())
+        UserLock lock = repository.findAllByStatusAndUser(request.getUserid(), UserLock.UserLockStatus.USER_LOCK_ACTIVE)
                 .orElseThrow(() -> new UserLockNotFoundException("There is no active locks for this user"));
 
         if(lock.getType().equals(UserLock.LockType.FOREVER)){
             throw new AccountUnlockImpossibleException("This account is locked forever");
         }
 
-        user.setIsLocked(false);
-        lock.setIsActive(false);
+        user.setStatus(BaseUser.UserStatus.USER_READY);
+        lock.setStatus(UserLock.UserLockStatus.USER_LOCK_NOT_ACTIVE);
 
         userRepository.save(user);
         repository.save(lock);

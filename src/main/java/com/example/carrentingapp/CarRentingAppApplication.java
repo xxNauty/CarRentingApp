@@ -73,7 +73,7 @@ public class CarRentingAppApplication {
        1.
        2.
        3.
-4.
+       4.
        5.
        6.
        7. Liczenie opóźnień w zwrotach, 5 -> blokada na miesiąc
@@ -105,5 +105,6 @@ public class CarRentingAppApplication {
         9. Spring JPA/Hibernate
         10. Cache'owanie
         11. @Scheduled, crontab
+        12. try, catch, FINALLY
  */
 

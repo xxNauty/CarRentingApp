@@ -73,9 +73,9 @@ public class CarRentingAppApplication {
        1.
        2.
        3.
-       4. Zablokować możliwość odbioru auta które jest jeszcze wynajęte
+4.
        5.
-       6. Brakujące powiadomienia email
+       6.
        7. Liczenie opóźnień w zwrotach, 5 -> blokada na miesiąc
        8. Przedłużanie blokady samochodu/usera -> stara traci ważność, tylko jedna aktywna w danym momencie
        9. Obsługa błędów UniqueConstraint

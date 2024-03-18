@@ -14,6 +14,8 @@ import com.example.carrentingapp.email.notifications.car_returned.CarReturnedNot
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
+import com.example.carrentingapp.email.notifications.forgot_password.ForgotPasswordNotificationSender;
+import com.example.carrentingapp.email.notifications.forgot_password.ForgotPasswordRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ public class NotificationSender {
     private final CarRentedNotificationSender carRentedNotificationSender;
     private final CarReturnedNotificationSender carReturnedNotificationSender;
     private final ConfirmEmailNotificationSender confirmEmailNotificationSender;
+    private final ForgotPasswordNotificationSender forgotPasswordNotificationSender;
 
     public void sendAccountLockedNotification(AccountLockedRequest request){
         accountLockedNotificationSender.sendEmail(request);
@@ -56,5 +59,9 @@ public class NotificationSender {
 
     public void sendConfirmEmailNotification(ConfirmEmailRequest request){
         confirmEmailNotificationSender.sendEmail(request);
+    }
+
+    public void sendForgotPasswordNotification(ForgotPasswordRequest request){
+        forgotPasswordNotificationSender.sendEmail(request);
     }
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class UnlockRequest {
     private UUID userid;
 }

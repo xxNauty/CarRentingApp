@@ -15,13 +15,14 @@ import com.example.carrentingapp.user.UserLockRepository;
 import com.example.carrentingapp.user.request.LockRequest;
 import com.example.carrentingapp.user.request.UnlockRequest;
 import com.example.carrentingapp.user.response.LockResponse;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserLockService {
 
     private final UserLockRepository repository;

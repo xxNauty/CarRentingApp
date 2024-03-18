@@ -4,6 +4,7 @@ import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.car.service.CarLockService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/v1/car")
 @PreAuthorize("hasRole('ADMIN')")
 public class CarLockController {

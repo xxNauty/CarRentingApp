@@ -9,13 +9,14 @@ import com.example.carrentingapp.rent.response.CarRentResponse;
 import com.example.carrentingapp.rent.response.CollectCarResponse;
 import com.example.carrentingapp.rent.response.ReturnCarResponse;
 import com.example.carrentingapp.rent.service.CarRentService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/v1/car/rent")
 @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class CarRentController {

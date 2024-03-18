@@ -6,6 +6,7 @@ import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.response.GetCarResponse;
 import com.example.carrentingapp.car.response.GetFullCarListResponse;
 import com.example.carrentingapp.car.response.GetSimpleCarListResponse;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CarGetService {
 
     private final BaseCarRepository repository;

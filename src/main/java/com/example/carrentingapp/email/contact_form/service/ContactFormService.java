@@ -8,13 +8,14 @@ import com.example.carrentingapp.email.contact_form.request.AuthorizedContactFor
 import com.example.carrentingapp.email.contact_form.request.ContactFormRequest;
 import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.sender.EmailSender;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ContactFormService {
 
     private final ContactFormMessageRepository contactFormMessageRepository;

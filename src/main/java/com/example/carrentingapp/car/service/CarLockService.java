@@ -9,13 +9,14 @@ import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.CarLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CarLockService {
 
     private final BaseCarRepository baseCarRepository;

@@ -4,6 +4,7 @@ import com.example.carrentingapp.email.notifications.NotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.BaseUserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserCreateService {
 
     private final BaseUserRepository userRepository;

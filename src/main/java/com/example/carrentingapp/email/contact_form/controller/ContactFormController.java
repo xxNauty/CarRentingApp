@@ -4,6 +4,7 @@ import com.example.carrentingapp.email.contact_form.request.AuthorizedContactFor
 import com.example.carrentingapp.email.contact_form.request.ContactFormRequest;
 import com.example.carrentingapp.email.contact_form.response.ContactFormResponse;
 import com.example.carrentingapp.email.contact_form.service.ContactFormService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/v1/contact_form")
 public class ContactFormController {
 

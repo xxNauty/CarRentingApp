@@ -83,7 +83,7 @@ public class CarRentingAppApplication {
        12. Usunąć możliwość podwójnego oddania i odebrania samochodu
        13.
        14. Usunąć nieużywane adnotacje Lomboka
-       15. Dodać domyślne wiadomości w wyjątkach jeśli nie poda się przy wywołaniu
+       15.
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
        17. Usystematyzować konstrukcję relacji
        18.

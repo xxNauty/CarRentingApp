@@ -2,8 +2,9 @@ package com.example.carrentingapp.authentication.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class NewPasswordRequest {
     private String email;

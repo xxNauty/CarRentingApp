@@ -5,6 +5,7 @@ import com.example.carrentingapp.exception.exception.http_error_404.UserNotFound
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.BaseUserRepository;
 import com.example.carrentingapp.user.response.GetUserDataResponse;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class GetUserDataService {
 
     private final SecurityService securityService;

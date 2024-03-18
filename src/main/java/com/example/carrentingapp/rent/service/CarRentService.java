@@ -23,6 +23,7 @@ import com.example.carrentingapp.rent.response.CollectCarResponse;
 import com.example.carrentingapp.rent.response.ReturnCarResponse;
 import com.example.carrentingapp.user.BaseUser;
 import com.example.carrentingapp.user.BaseUserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ import java.time.Period;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CarRentService {
 
     private final CarRentRepository carRentRepository;

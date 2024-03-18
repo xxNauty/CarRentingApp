@@ -2,6 +2,7 @@ package com.example.carrentingapp.user.controller;
 
 import com.example.carrentingapp.user.response.GetUserDataResponse;
 import com.example.carrentingapp.user.service.GetUserDataService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("api/v1/user")
 public class GetUserDataController {
 

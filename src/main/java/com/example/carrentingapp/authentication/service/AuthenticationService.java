@@ -23,6 +23,7 @@ import com.example.carrentingapp.user.service.UserCreateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,7 +39,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthenticationService {
 
     private final BaseUserRepository repository;
@@ -63,11 +64,10 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse
-                .builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        return new AuthenticationResponse(
+                jwtToken,
+                refreshToken
+        );
     }
 
     public AuthenticationResponse login(LoginRequest request){
@@ -83,10 +83,10 @@ public class AuthenticationService {
         String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        return new AuthenticationResponse(
+                jwtToken,
+                refreshToken
+        );
     }
 
     public void refreshToken(
@@ -108,10 +108,10 @@ public class AuthenticationService {
                 String accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                AuthenticationResponse authResponse = AuthenticationResponse.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build();
+                AuthenticationResponse authResponse = new AuthenticationResponse(
+                        accessToken,
+                        refreshToken
+                );
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }

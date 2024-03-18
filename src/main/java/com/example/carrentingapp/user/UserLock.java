@@ -7,13 +7,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@EqualsAndHashCode
 @Table(name = "user_lock")
 public class UserLock {
 

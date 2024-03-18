@@ -3,11 +3,12 @@ package com.example.carrentingapp.car.service;
 import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.response.CarResponse;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CarCreateService {
 
     private final BaseCarRepository carRepository;

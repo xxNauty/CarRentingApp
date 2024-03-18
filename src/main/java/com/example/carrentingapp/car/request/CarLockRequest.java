@@ -1,18 +1,13 @@
 package com.example.carrentingapp.car.request;
 
 import com.example.carrentingapp.car.CarLock;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Data
-@Builder
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class CarLockRequest {
     private UUID carId;
     private String reason;

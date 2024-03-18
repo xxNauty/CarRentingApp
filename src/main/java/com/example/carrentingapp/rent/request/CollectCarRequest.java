@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class CollectCarRequest {
     private UUID carRentId;

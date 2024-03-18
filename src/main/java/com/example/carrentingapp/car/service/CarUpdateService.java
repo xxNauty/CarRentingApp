@@ -5,11 +5,12 @@ import com.example.carrentingapp.car.BaseCarRepository;
 import com.example.carrentingapp.car.request.UpdateCarDataRequest;
 import com.example.carrentingapp.car.response.CarResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CarUpdateService {
 
     private final BaseCarRepository carRepository;

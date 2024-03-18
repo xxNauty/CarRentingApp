@@ -4,6 +4,7 @@ import com.example.carrentingapp.authentication.request.ForgotPasswordVerificati
 import com.example.carrentingapp.authentication.request.NewPasswordRequest;
 import com.example.carrentingapp.authentication.response.ForgotPasswordResponse;
 import com.example.carrentingapp.authentication.service.ForgotPasswordService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/v1/auth/forgot-password")
 public class ForgotPasswordController {
 

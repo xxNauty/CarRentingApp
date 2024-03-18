@@ -4,6 +4,7 @@ import com.example.carrentingapp.car.response.GetCarResponse;
 import com.example.carrentingapp.car.service.CarGetService;
 import com.example.carrentingapp.car.response.GetFullCarListResponse;
 import com.example.carrentingapp.car.response.GetSimpleCarListResponse;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/v1/car/get")
 @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class GetCarController {

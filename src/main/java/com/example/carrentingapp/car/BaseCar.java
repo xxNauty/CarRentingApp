@@ -9,8 +9,8 @@ import java.util.UUID;
 @Data
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "car_base")
 public class BaseCar {
 

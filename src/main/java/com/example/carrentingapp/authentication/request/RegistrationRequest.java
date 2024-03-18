@@ -1,16 +1,11 @@
 package com.example.carrentingapp.authentication.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
-@Builder
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class RegistrationRequest {
 
     private String firstName;

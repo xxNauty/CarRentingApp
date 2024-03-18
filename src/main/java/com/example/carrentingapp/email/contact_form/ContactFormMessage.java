@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @Table(name = "contact_form_message")
 public class ContactFormMessage {

@@ -162,7 +162,6 @@ public class AuthenticationService {
             return;
         validUserTokens.forEach(token -> {
             token.setExpired(true);
-            token.setRevoked(true);
         });
         tokenRepository.saveAll(validUserTokens);
     }

@@ -3,11 +3,11 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "firstName": "Ali",
-  "lastName": "Bouali",
+  "firstName": "Aqwe",
+  "lastName": "Boua",
   "email":  "alibou@21mail.com",
-  "password": "pa23234!Dord",
-  "dateOfBirth": "2000-03-04"
+  "password": "pa13123123@Q",
+  "dateOfBirth": "2006-03-18"
 }
 
 > {% client.global.set("auth-token", response.body.access_token);  %}
@@ -18,5 +18,5 @@ Content-Type: application/json
 
 {
   "email": "alibou@21mail.com",
-  "userId": "a9a575b3-8597-4460-8c6d-9e62556b29c7"
+  "userId": "f7be445d-83be-49c5-af33-aa236f9a1ab4"
 }

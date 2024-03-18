@@ -4,6 +4,6 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carId": "2970f3bd-7aa8-4576-bd85-c622a849d7fb",
+  "carId": "1bc28b46-7837-4d7c-bb4a-e110698c34d3",
   "mileageToAdd": 500.7
 }

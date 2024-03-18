@@ -22,6 +22,6 @@ public class ConfirmEmailNotificationSender implements NotificationSenderInterfa
         final String token = confirmationTokenService.createToken(((ConfirmEmailRequest) request).getUser());
         final String body = ConfirmEmailTemplate.template(token);
 
-        sender.send(((ConfirmEmailRequest) request).getUser().getEmail(), from, subject, body);;
+        sender.send(((ConfirmEmailRequest) request).getUser().getEmail(), from, subject, body);
     }
 }

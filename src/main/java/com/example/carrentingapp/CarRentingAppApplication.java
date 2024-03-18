@@ -104,5 +104,6 @@ public class CarRentingAppApplication {
         8. Wzorzec fasada
         9. Spring JPA/Hibernate
         10. Cache'owanie
+        11. @Scheduled, crontab
  */
 

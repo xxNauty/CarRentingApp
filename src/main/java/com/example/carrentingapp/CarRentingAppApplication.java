@@ -89,6 +89,8 @@ public class CarRentingAppApplication {
        18. Wywalić Permission Enum
        19. Mechanizm "Nie pamiętam hasła"
        20. Zwrot samochodu, ocena przez admina przebiegu wypożyczenia
+       21. Zweryfikować błędy wyrzucane przy starcie aplikacji
+       22. Wynajęcie samochodu conajmniej 7 dni przed
  */
 /*
     Do doczytania:

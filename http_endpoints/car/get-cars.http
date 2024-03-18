@@ -1,5 +1,5 @@
 ### Get specified car
-GET  http://localhost:8080/api/v1/car/get/99a4883d-3c28-4e29-bc79-0f84f18e5b4d
+GET  http://localhost:8080/api/v1/car/get/93570df3-9f6a-4826-aac1-26f704c4913a
 Authorization: Bearer {{auth-token}}
 
 ### Get simplified list of all cars

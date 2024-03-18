@@ -23,7 +23,7 @@ public class Token {
     @Column(unique = true)
     private String token;
 
-    private boolean revoked;
+//    private boolean revoked;
 
     private boolean expired;
 
@@ -33,7 +33,7 @@ public class Token {
 
     public Token(String token, BaseUser user) {
         this.token = token;
-        this.revoked = false;
+//        this.revoked = false;
         this.expired = false;
         this.user = user;
     }

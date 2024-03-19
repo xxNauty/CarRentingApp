@@ -2,9 +2,9 @@ package com.example.carrentingapp.authentication.response;
 
 import lombok.*;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class EmailVerificationResponse {
     private String message;
-
 }

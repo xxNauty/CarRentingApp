@@ -43,7 +43,7 @@ public class BaseCar {
     @Enumerated(EnumType.STRING)
     private CarStatus status;
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER) //todo: FetchType Eager vs Lazy
+    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
     private List<CarLock> locks;
 
     //todo: mechanizm pilnujący by w danym momencie była tylko jedna aktywna blokada

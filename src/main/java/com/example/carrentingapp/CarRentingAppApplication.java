@@ -106,5 +106,8 @@ public class CarRentingAppApplication {
         10. Cache'owanie
         11. @Scheduled, crontab
         12. try, catch, FINALLY
+        13. Http header X-COM-PERSIST, co to
+        14. REGEX
+        15. Async
  */
 

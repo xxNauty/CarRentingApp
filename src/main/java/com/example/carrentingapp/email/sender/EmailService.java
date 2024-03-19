@@ -23,7 +23,7 @@ public class EmailService implements EmailSender{
     private final EmailMessageRepository emailMessageRepository;
 
     @Override
-    @Async //todo: doczytać temat
+    @Async
     public void send(String to, String from, String subject, String email, EmailMessage.EmailMessageType type) {
         EmailMessage emailMessage = new EmailMessage(
                 from,

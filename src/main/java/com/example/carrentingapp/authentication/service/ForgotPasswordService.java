@@ -44,7 +44,9 @@ public class ForgotPasswordService {
             throw new AccessDeniedException("It is not your token");
         }
         passwordService.changePassword(user, request.getPassword());
-        
+
+        token.setStatus(ForgotPasswordVerificationToken.ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_USED);
+        forgotPasswordVerificationTokenRepository.save(token);
         return new ForgotPasswordResponse("");
     }
 

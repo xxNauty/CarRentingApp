@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 
-//todo: doczytać jak działa regex, sprawdzić czy nie ma lepszych rozwiązań
 @Service
 public class UserDataValidationService {
 

@@ -26,6 +26,8 @@ public class ForgotPasswordVerificationToken {
 
     private LocalDateTime usedAt;
 
+    private ForgotPasswordTokenStatus status;
+
     @ManyToOne
     private BaseUser user;
 
@@ -38,5 +40,12 @@ public class ForgotPasswordVerificationToken {
         this.createdAt = LocalDateTime.now();
         this.expiredAt = expiredAt;
         this.user = user;
+        this.status = ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_SENT;
+    }
+
+    public enum ForgotPasswordTokenStatus{
+        CONFIRMATION_TOKEN_SENT,
+        CONFIRMATION_TOKEN_USED,
+        CONFIRMATION_TOKEN_EXPIRED
     }
 }

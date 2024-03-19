@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "email":  "jan@nowak.pl",
-  "password": "Qwerty123!"
+  "password": "Qwerty123"
 }
 
 > {% client.global.set("auth-token", response.body.access_token);  %}

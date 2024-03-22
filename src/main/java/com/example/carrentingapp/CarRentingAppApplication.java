@@ -1,7 +1,9 @@
 package com.example.carrentingapp;
 
-import com.example.carrentingapp.car.service.CarCreateService;
+import com.example.carrentingapp.car.CarLock;
+import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.BaseUserRepository;
 import com.example.carrentingapp.user.service.UserCreateService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
 @SpringBootApplication
 public class CarRentingAppApplication {
 
@@ -17,7 +22,10 @@ public class CarRentingAppApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserCreateService userCreateService, CarCreateService carCreateService){
+    public CommandLineRunner commandLineRunner(
+            UserCreateService userCreateService,
+            BaseUserRepository baseUserRepository
+    ){
         return args -> {
             System.out.println("\n--------------------------------\n");
 
@@ -45,25 +53,12 @@ public class CarRentingAppApplication {
             System.out.println("Login: " + user.getEmail());
             System.out.println("Password: Qwerty123!");
 
+            //todo wymyślić lepiej
+            user.setStatus(BaseUser.UserStatus.USER_READY);
+            baseUserRepository.save(user);
+
             System.out.println("\n--------------------------------\n");
-
-            for (int i = 0; i < 5; i++) {
-                carCreateService.createCar(
-                        "Opel",
-                        "Corsa",
-                        2000,
-                        300_000F,
-                        50F,
-                        90F,
-                        1F,
-                        5.6F,
-                        5F,
-                        430.99F
-                );
-            }
-
             System.out.println("Application ready!");
-
             System.out.println("\n--------------------------------\n");
         };
     }

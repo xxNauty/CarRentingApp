@@ -4,7 +4,8 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class CarUnlockRequest {
     private UUID carId;

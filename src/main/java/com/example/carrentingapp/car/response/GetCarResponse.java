@@ -3,10 +3,11 @@ package com.example.carrentingapp.car.response;
 import com.example.carrentingapp.car.BaseCar;
 import lombok.*;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class GetCarResponse {
 
-    private BaseCar cars;
+    private BaseCar car;
 
 }

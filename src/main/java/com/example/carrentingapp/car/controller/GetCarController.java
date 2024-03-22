@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,8 +20,10 @@ public class GetCarController {
 
     private final CarGetService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GetCarResponse> getCarById(@PathVariable UUID id){
+    @GetMapping
+    public ResponseEntity<GetCarResponse> getCarById(
+            @RequestParam UUID id
+    ){
         return ResponseEntity.ok(service.getCarById(id));
     }
 

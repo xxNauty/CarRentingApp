@@ -5,7 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class GetSimpleCarListResponse {
 

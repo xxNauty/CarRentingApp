@@ -12,9 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "user_base")
@@ -70,7 +73,6 @@ public class BaseUser implements UserDetails {
         this.status = UserStatus.USER_CREATED;
     }
 
-    @JsonIgnore
     public void updateRank(float valueToAdd){
         this.rank += valueToAdd;
     }
@@ -115,10 +117,37 @@ public class BaseUser implements UserDetails {
     @Override
     public String toString() {
         return "BaseUser{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", role=" + role +
+                ", rank=" + rank +
+                ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseUser baseUser = (BaseUser) o;
+        return Objects.equals(id, baseUser.id) &&
+                Objects.equals(firstName, baseUser.firstName) &&
+                Objects.equals(lastName, baseUser.lastName) &&
+                Objects.equals(email, baseUser.email) &&
+                Objects.equals(dateOfBirth, baseUser.dateOfBirth) &&
+                role == baseUser.role &&
+                Objects.equals(rank, baseUser.rank) &&
+                status == baseUser.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, dateOfBirth,
+                role, rank, status);
     }
 
     public enum Role {

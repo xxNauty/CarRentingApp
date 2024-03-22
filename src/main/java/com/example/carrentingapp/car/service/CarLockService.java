@@ -9,6 +9,7 @@ import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.CarLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
+import com.example.carrentingapp.exception.exception.http_error_500.CarNotLockedException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,10 @@ public class CarLockService {
     public CarLockResponse unlockCar(CarUnlockRequest request){
         BaseCar car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
-        CarLock lock = carLockRepository.findAllActiveLocksForCar(request.getCarId(), CarLock.CarLockStatus.CAR_LOCK_ACTIVE).orElseThrow(() -> new CarLockNotFoundException("Car with given id not found"));
+        CarLock lock = carLockRepository.findAllActiveLocksForCar(
+                request.getCarId(),
+                CarLock.CarLockStatus.CAR_LOCK_ACTIVE
+        ).orElseThrow(() -> new CarNotLockedException("Car with given id is not locked"));
 
         lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);
         car.setStatus(BaseCar.CarStatus.CAR_READY);

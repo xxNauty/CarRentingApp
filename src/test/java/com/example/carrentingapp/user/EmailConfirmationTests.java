@@ -7,6 +7,10 @@ import com.example.carrentingapp.email.notifications.confirm_email.token.Confirm
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
+import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.service.UserCreateService;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -24,7 +28,7 @@ import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class EmailConfirmationTests {
 
     @Autowired

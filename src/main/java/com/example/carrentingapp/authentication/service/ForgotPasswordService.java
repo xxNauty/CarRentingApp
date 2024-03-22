@@ -16,6 +16,8 @@ import com.example.carrentingapp.user.service.PasswordService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ForgotPasswordService {
@@ -24,10 +26,24 @@ public class ForgotPasswordService {
     private final NotificationSender notificationSender;
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
     private final PasswordService passwordService;
+    private final UserDataValidationService userDataValidationService;
 
     public ForgotPasswordResponse sendEmail(ForgotPasswordVerificationRequest request){
         BaseUser user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given Id"));
+
+        //sprawdzenie czy są w bazie jakieś niewykorzystane tokeny dla danego użytkownika, jeśli tak to ustawiamy ich status na EXPIRED
+
+        List<ForgotPasswordVerificationToken> tokens = forgotPasswordVerificationTokenRepository.findAllTokensForUser(
+                user.getId(),
+                ForgotPasswordVerificationToken.ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_SENT
+        );
+
+        for (ForgotPasswordVerificationToken token : tokens) {
+            token.setStatus(ForgotPasswordVerificationToken.ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_EXPIRED);
+            forgotPasswordVerificationTokenRepository.save(token);
+        }
+
         notificationSender.sendForgotPasswordNotification(new ForgotPasswordRequest(user));
         return new ForgotPasswordResponse("An email sent, check your inbox and follow the instructions given in message");
     }
@@ -43,11 +59,11 @@ public class ForgotPasswordService {
         if(!token.getUser().equals(user)){
             throw new AccessDeniedException("It is not your token");
         }
-        passwordService.changePassword(user, request.getPassword());
+        passwordService.changePassword(user, userDataValidationService.isPasswordStrongEnough(request.getPassword()));
 
         token.setStatus(ForgotPasswordVerificationToken.ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_USED);
         forgotPasswordVerificationTokenRepository.save(token);
-        return new ForgotPasswordResponse("");
+        return new ForgotPasswordResponse("New password set successfully");
     }
 
 }

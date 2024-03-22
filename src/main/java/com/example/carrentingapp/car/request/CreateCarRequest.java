@@ -1,5 +1,6 @@
 package com.example.carrentingapp.car.request;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter

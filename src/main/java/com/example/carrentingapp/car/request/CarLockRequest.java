@@ -1,6 +1,5 @@
 package com.example.carrentingapp.car.request;
 
-import com.example.carrentingapp.car.CarLock;
 import lombok.*;
 
 import java.time.LocalDate;

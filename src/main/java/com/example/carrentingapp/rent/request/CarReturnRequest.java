@@ -2,12 +2,13 @@ package com.example.carrentingapp.rent.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class CollectCarRequest {
+public class CarReturnRequest {
     private UUID carRentId;
+    private Float kilometersTraveled;
+
 }

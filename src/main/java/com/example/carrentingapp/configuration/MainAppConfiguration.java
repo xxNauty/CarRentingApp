@@ -1,11 +1,10 @@
 package com.example.carrentingapp.configuration;
 
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
-import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.UserBaseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class MainAppConfiguration {
 
-    private final BaseUserRepository repository;
+    private final UserBaseRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {

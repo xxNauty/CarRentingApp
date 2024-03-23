@@ -1,12 +1,11 @@
 package com.example.carrentingapp.rent.request;
 
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.UserBase;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class CarReadyToCollectRequest {
-    private BaseUser user;
+    private UserBase user;
 }

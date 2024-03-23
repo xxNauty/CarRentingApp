@@ -7,8 +7,6 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class ReturnCarRequest {
+public class CarCollectRequest {
     private UUID carRentId;
-    private Float kilometersTraveled;
-
 }

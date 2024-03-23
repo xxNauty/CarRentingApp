@@ -25,7 +25,7 @@ public class EmailMessage {
 
     private String subject;
 
-    @Column(length = Length.LONG) //todo: zweryfikować czy potrzeba aż tyle
+    @Column(length = 1000)
     private String body;
 
     private LocalDateTime sentAt;

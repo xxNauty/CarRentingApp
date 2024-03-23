@@ -2,11 +2,7 @@ package com.example.carrentingapp.user;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.response.GetUserDataResponse;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.junit.BeforeClass;
+import com.example.carrentingapp.user.response.UserGetDataResponse;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -18,7 +14,6 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -30,7 +25,7 @@ public class GetUserDataTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseUserRepository baseUserRepository;
+    private UserBaseRepository baseUserRepository;
 
     @LocalServerPort
     int randomServerPort;
@@ -40,22 +35,22 @@ public class GetUserDataTests {
         final String token = getToken("adam@kowalski.pl");
         final String url = "http://localhost:" + randomServerPort + "/api/v1/user/get";
 
-        BaseUser loggedUser = baseUserRepository.findByEmail("adam@kowalski.pl").orElseThrow();
+        UserBase loggedUser = baseUserRepository.findByEmail("adam@kowalski.pl").orElseThrow();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
-        Assertions.assertInstanceOf(BaseUser.class, response.getBody().getUser());
+        Assertions.assertInstanceOf(UserBase.class, response.getBody().getUser());
         Assertions.assertEquals(loggedUser, response.getBody().getUser());
     }
 
@@ -64,22 +59,22 @@ public class GetUserDataTests {
         final String token = getToken("jan@nowak.pl");
         final String url = "http://localhost:" + randomServerPort + "/api/v1/user/get";
 
-        BaseUser loggedUser = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow();
+        UserBase loggedUser = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
-        Assertions.assertInstanceOf(BaseUser.class, response.getBody().getUser());
+        Assertions.assertInstanceOf(UserBase.class, response.getBody().getUser());
         Assertions.assertEquals(loggedUser, response.getBody().getUser());
     }
 
@@ -87,16 +82,16 @@ public class GetUserDataTests {
     public void getOwnDataNotAuthorized(){
         final String url = "http://localhost:" + randomServerPort + "/api/v1/user/get";
 
-        BaseUser loggedUser = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow();
+        UserBase loggedUser = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -106,7 +101,7 @@ public class GetUserDataTests {
     public void getSpecifiedUserDataAsAdmin(){
         final String token = getToken("adam@kowalski.pl");
 
-        BaseUser user = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow();
+        UserBase user = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow();
 
         final String url = "http://localhost:" + randomServerPort + "/api/v1/user/get/id?id=" + user.getId().toString();
 
@@ -114,16 +109,16 @@ public class GetUserDataTests {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
-        Assertions.assertInstanceOf(BaseUser.class, response.getBody().getUser());
+        Assertions.assertInstanceOf(UserBase.class, response.getBody().getUser());
         Assertions.assertEquals(user, response.getBody().getUser());
     }
 
@@ -131,7 +126,7 @@ public class GetUserDataTests {
     public void getSpecifiedUserDataAsUser(){
         final String token = getToken("jan@nowak.pl");
 
-        BaseUser user = baseUserRepository.findByEmail("adam@kowalski.pl").orElseThrow();
+        UserBase user = baseUserRepository.findByEmail("adam@kowalski.pl").orElseThrow();
 
         final String url = "http://localhost:" + randomServerPort + "/api/v1/user/get/id?id=" + user.getId().toString();
 
@@ -139,11 +134,11 @@ public class GetUserDataTests {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -151,18 +146,18 @@ public class GetUserDataTests {
 
     @Test
     public void getSpecifiedUserDataNotAuthorized(){
-        BaseUser user = baseUserRepository.findByEmail("adam@kowalski.pl").orElseThrow();
+        UserBase user = baseUserRepository.findByEmail("adam@kowalski.pl").orElseThrow();
 
         final String url = "http://localhost:" + randomServerPort + "/api/v1/user/get/id?id=" + user.getId().toString();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -178,11 +173,11 @@ public class GetUserDataTests {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        ResponseEntity<GetUserDataResponse> response = testRestTemplate.exchange(
+        ResponseEntity<UserGetDataResponse> response = testRestTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetUserDataResponse.class
+                UserGetDataResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());

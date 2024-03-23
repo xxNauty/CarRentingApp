@@ -1,9 +1,8 @@
 package com.example.carrentingapp.user.controller;
 
-import com.example.carrentingapp.user.response.GetUserDataResponse;
-import com.example.carrentingapp.user.service.GetUserDataService;
+import com.example.carrentingapp.user.response.UserGetDataResponse;
+import com.example.carrentingapp.user.service.UserGetDataService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/user")
 public class GetUserDataController {
 
-    private final GetUserDataService gerUserDataService;
+    private final UserGetDataService gerUserDataService;
 
     @GetMapping("/get")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<GetUserDataResponse> getUserDataAsUser(){
+    public ResponseEntity<UserGetDataResponse> getUserDataAsUser(){
         return ResponseEntity.ok(gerUserDataService.getUserData());
     }
 
     @GetMapping("/get/id")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<GetUserDataResponse> getUserDataAsAdmin(
+    public ResponseEntity<UserGetDataResponse> getUserDataAsAdmin(
             @RequestParam String id
     ){
         return ResponseEntity.ok(gerUserDataService.getUserData(id));

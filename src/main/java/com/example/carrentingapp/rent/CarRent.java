@@ -1,7 +1,7 @@
 package com.example.carrentingapp.rent;
 
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.car.CarBase;
+import com.example.carrentingapp.user.UserBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,11 +22,11 @@ public class CarRent {
     private UUID id;
 
     @ManyToOne
-    private BaseCar car;
+    private CarBase car;
 
     @JsonIgnore
     @ManyToOne
-    private BaseUser user;
+    private UserBase user;
 
     private LocalDate rentedFrom;
 
@@ -37,7 +37,7 @@ public class CarRent {
     @Enumerated(EnumType.STRING)
     private CarRentStatus status;
 
-    public CarRent(BaseCar car, BaseUser user, LocalDate rentedFrom, LocalDate rentedTo, LocalDateTime collectionDate) {
+    public CarRent(CarBase car, UserBase user, LocalDate rentedFrom, LocalDate rentedTo, LocalDateTime collectionDate) {
         this.car = car;
         this.user = user;
         this.rentedFrom = rentedFrom;

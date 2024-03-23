@@ -1,9 +1,9 @@
 package com.example.carrentingapp.email.notifications.car_rented;
 
-import com.example.carrentingapp.car.BaseCar;
+import com.example.carrentingapp.car.CarBase;
 
 public class CarRentedTemplate {
-    public static String template(BaseCar car){
+    public static String template(CarBase car){
         return
                 "<h1>Hello!</h1>" +
                         "<h2>You have just rented a car. Some info about this car: </h2>" +

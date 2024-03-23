@@ -1,6 +1,5 @@
 package com.example.carrentingapp.email.contact_form;
 
-import com.example.carrentingapp.user.BaseUser;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

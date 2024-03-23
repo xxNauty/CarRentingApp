@@ -19,7 +19,7 @@ public class CarLock {
 
     @ManyToOne
     @JsonIgnore
-    private BaseCar car;
+    private CarBase car;
 
     @Enumerated(EnumType.STRING)
     private CarLockReason reason;
@@ -29,7 +29,7 @@ public class CarLock {
     @Enumerated(EnumType.STRING)
     private CarLockStatus status;
 
-    public CarLock(BaseCar car, CarLockReason reason, LocalDate lockedTo) {
+    public CarLock(CarBase car, CarLockReason reason, LocalDate lockedTo) {
         this.car = car;
         this.reason = reason;
         this.lockedTo = lockedTo;

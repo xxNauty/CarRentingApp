@@ -2,14 +2,8 @@ package com.example.carrentingapp.car;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
-import com.example.carrentingapp.car.request.CreateCarRequest;
+import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarResponse;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -24,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -36,7 +29,7 @@ public class CreateCarTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseCarRepository baseCarRepository;
+    private CarBaseRepository baseCarRepository;
 
     @LocalServerPort
     int randomServerPort;
@@ -46,7 +39,7 @@ public class CreateCarTests {
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
         final String token = getToken("adam@kowalski.pl");
 
-        CreateCarRequest createCarRequest = new CreateCarRequest(
+        CarCreateRequest createCarRequest = new CarCreateRequest(
                 "Polonez",
                 "Caro Plus",
                 1999,
@@ -63,7 +56,7 @@ public class CreateCarTests {
         createCarHeaders.set("X-COM-PERSIST", "true");
         createCarHeaders.set("Authorization", "Bearer " + token);
 
-        HttpEntity<CreateCarRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+        HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
 
         ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
                 createCarUrl,
@@ -77,11 +70,11 @@ public class CreateCarTests {
 
         UUID carId = carResponse.getBody().getId();
 
-        BaseCar car = baseCarRepository.findById(carId).orElseThrow();
+        CarBase car = baseCarRepository.findById(carId).orElseThrow();
 
         Assertions.assertEquals("Polonez", car.getBrand());
         Assertions.assertFalse(car.getHasActiveSale());
-        Assertions.assertEquals(BaseCar.CarStatus.CAR_READY, car.getStatus());
+        Assertions.assertEquals(CarBase.CarStatus.CAR_READY, car.getStatus());
     }
 
     @Test
@@ -91,7 +84,7 @@ public class CreateCarTests {
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
         final String token = getToken("jan@nowak.pl");
 
-        CreateCarRequest createCarRequest = new CreateCarRequest(
+        CarCreateRequest createCarRequest = new CarCreateRequest(
                 "Polonez",
                 "Caro Plus",
                 1999,
@@ -108,7 +101,7 @@ public class CreateCarTests {
         createCarHeaders.set("X-COM-PERSIST", "true");
         createCarHeaders.set("Authorization", "Bearer " + token);
 
-        HttpEntity<CreateCarRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+        HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
 
         ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
                 createCarUrl,
@@ -128,7 +121,7 @@ public class CreateCarTests {
 
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
 
-        CreateCarRequest createCarRequest = new CreateCarRequest(
+        CarCreateRequest createCarRequest = new CarCreateRequest(
                 "Polonez",
                 "Caro Plus",
                 1999,
@@ -144,7 +137,7 @@ public class CreateCarTests {
         HttpHeaders createCarHeaders = new HttpHeaders();
         createCarHeaders.set("X-COM-PERSIST", "true");
 
-        HttpEntity<CreateCarRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+        HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
 
         ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
                 createCarUrl,

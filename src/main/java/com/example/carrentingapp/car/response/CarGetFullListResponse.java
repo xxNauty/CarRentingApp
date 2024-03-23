@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetFullCarListResponse {
+public class CarGetFullListResponse {
     public List<CarGetService.FullCar> cars;
 }

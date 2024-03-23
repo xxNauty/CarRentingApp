@@ -3,9 +3,6 @@ package com.example.carrentingapp.user;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -33,7 +30,7 @@ public class AuthorizationTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseUserRepository baseUserRepository;
+    private UserBaseRepository baseUserRepository;
 
     @LocalServerPort
     int randomServerPort;

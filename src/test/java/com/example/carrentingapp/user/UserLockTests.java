@@ -4,16 +4,9 @@ import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.UserLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
-import com.example.carrentingapp.token.TokenRepository;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.UserLock;
-import com.example.carrentingapp.user.UserLockRepository;
 import com.example.carrentingapp.user.request.LockRequest;
 import com.example.carrentingapp.user.request.UnlockRequest;
 import com.example.carrentingapp.user.response.LockResponse;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -40,7 +33,7 @@ public class UserLockTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseUserRepository baseUserRepository;
+    private UserBaseRepository baseUserRepository;
 
     @Autowired
     private UserLockRepository userLockRepository;
@@ -91,10 +84,10 @@ public class UserLockTests {
 
         //sprawdzenie czy użytkownik faktycznie został zablokowany
 
-        BaseUser userAfterLock = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
+        UserBase userAfterLock = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
-        Assertions.assertEquals(BaseUser.UserStatus.USER_LOCKED_FOREVER, userAfterLock.getStatus());
+        Assertions.assertEquals(UserBase.UserStatus.USER_LOCKED_FOREVER, userAfterLock.getStatus());
 
         UserLock lock = userLockRepository.findAllByStatusAndUser(
                 userAfterLock.getId(),
@@ -165,10 +158,10 @@ public class UserLockTests {
 
         //sprawdzenie czy użytkownik nie został zablokowany
 
-        BaseUser userAfterLock = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
+        UserBase userAfterLock = baseUserRepository.findByEmail("jan@nowak.pl").orElseThrow(() -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
-        Assertions.assertEquals(BaseUser.UserStatus.USER_READY, userAfterLock.getStatus());
+        Assertions.assertEquals(UserBase.UserStatus.USER_READY, userAfterLock.getStatus());
 
         UserLock lock = userLockRepository.findAllByStatusAndUser(
                 userAfterLock.getId(),

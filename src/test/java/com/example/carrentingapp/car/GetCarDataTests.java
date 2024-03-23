@@ -2,22 +2,13 @@ package com.example.carrentingapp.car;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
-import com.example.carrentingapp.car.CarLock;
-import com.example.carrentingapp.car.CarLockRepository;
 import com.example.carrentingapp.car.request.CarLockRequest;
-import com.example.carrentingapp.car.request.CreateCarRequest;
+import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarResponse;
-import com.example.carrentingapp.car.response.GetCarResponse;
-import com.example.carrentingapp.car.response.GetSimpleCarListResponse;
+import com.example.carrentingapp.car.response.CarGetResponse;
+import com.example.carrentingapp.car.response.CarGetSimpleListResponse;
 import com.example.carrentingapp.car.service.CarLockService;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -43,7 +34,7 @@ public class GetCarDataTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseCarRepository baseCarRepository;
+    private CarBaseRepository baseCarRepository;
 
     @Autowired
     private CarLockRepository carLockRepository;
@@ -75,14 +66,14 @@ public class GetCarDataTests {
         adminHeaders.set("X-COM-PERSIST", "true");
         adminHeaders.set("Authorization", "Bearer " + adminToken);
 
-        ResponseEntity<GetCarResponse> adminResponse = testRestTemplate.exchange(
+        ResponseEntity<CarGetResponse> adminResponse = testRestTemplate.exchange(
                 getCarUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(adminHeaders),
-                GetCarResponse.class
+                CarGetResponse.class
         );
 
-        BaseCar carFromDatabase = baseCarRepository.findById(carId).orElseThrow();
+        CarBase carFromDatabase = baseCarRepository.findById(carId).orElseThrow();
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), adminResponse.getStatusCode());
         Assertions.assertNotNull(adminResponse.getBody());
@@ -96,11 +87,11 @@ public class GetCarDataTests {
         userHeaders.set("X-COM-PERSIST", "true");
         userHeaders.set("Authorization", "Bearer " + userToken);
 
-        ResponseEntity<GetCarResponse> userResponse = testRestTemplate.exchange(
+        ResponseEntity<CarGetResponse> userResponse = testRestTemplate.exchange(
                 getCarUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(userHeaders),
-                GetCarResponse.class
+                CarGetResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), userResponse.getStatusCode());
@@ -116,11 +107,11 @@ public class GetCarDataTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        ResponseEntity<GetCarResponse> response = testRestTemplate.exchange(
+        ResponseEntity<CarGetResponse> response = testRestTemplate.exchange(
                 getCarUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetCarResponse.class
+                CarGetResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -136,11 +127,11 @@ public class GetCarDataTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        ResponseEntity<GetSimpleCarListResponse> response = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> response = testRestTemplate.exchange(
                 getSimplifiedCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
@@ -176,11 +167,11 @@ public class GetCarDataTests {
 
 
 
-        ResponseEntity<GetSimpleCarListResponse> response = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> response = testRestTemplate.exchange(
                 getSimplifiedCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
@@ -195,11 +186,11 @@ public class GetCarDataTests {
         userHeaders.set("X-COM-PERSIST", "true");
         userHeaders.set("Authorization", "Bearer " + userToken);
 
-        ResponseEntity<GetSimpleCarListResponse> userResponse = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> userResponse = testRestTemplate.exchange(
                 getSimplifiedCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(userHeaders),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), userResponse.getStatusCode());
@@ -215,11 +206,11 @@ public class GetCarDataTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        ResponseEntity<GetSimpleCarListResponse> response = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> response = testRestTemplate.exchange(
                 getSimplifiedCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -251,11 +242,11 @@ public class GetCarDataTests {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + adminToken);
 
-        ResponseEntity<GetSimpleCarListResponse> response = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> response = testRestTemplate.exchange(
                 getFullCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
@@ -270,11 +261,11 @@ public class GetCarDataTests {
         userHeaders.set("X-COM-PERSIST", "true");
         userHeaders.set("Authorization", "Bearer " + userToken);
 
-        ResponseEntity<GetSimpleCarListResponse> userResponse = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> userResponse = testRestTemplate.exchange(
                 getFullCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(userHeaders),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), userResponse.getStatusCode());
@@ -290,11 +281,11 @@ public class GetCarDataTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        ResponseEntity<GetSimpleCarListResponse> response = testRestTemplate.exchange(
+        ResponseEntity<CarGetSimpleListResponse> response = testRestTemplate.exchange(
                 getFullCarListUrl,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                GetSimpleCarListResponse.class
+                CarGetSimpleListResponse.class
         );
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
@@ -306,7 +297,7 @@ public class GetCarDataTests {
             final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
             final String token = getToken("adam@kowalski.pl");
 
-            CreateCarRequest createCarRequest = new CreateCarRequest(
+            CarCreateRequest createCarRequest = new CarCreateRequest(
                     "Polonez",
                     "Caro Plus",
                     1999,
@@ -323,7 +314,7 @@ public class GetCarDataTests {
             createCarHeaders.set("X-COM-PERSIST", "true");
             createCarHeaders.set("Authorization", "Bearer " + token);
 
-            HttpEntity<CreateCarRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+            HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
 
             ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
                     createCarUrl,

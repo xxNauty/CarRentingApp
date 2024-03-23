@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CollectCarResponse {
+public class CarCollectResponse {
     private String message;
 }

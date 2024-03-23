@@ -1,13 +1,13 @@
 package com.example.carrentingapp.car.response;
 
-import com.example.carrentingapp.car.BaseCar;
+import com.example.carrentingapp.car.CarBase;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetCarResponse {
+public class CarGetResponse {
 
-    private BaseCar car;
+    private CarBase car;
 
 }

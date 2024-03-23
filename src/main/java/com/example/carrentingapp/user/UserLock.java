@@ -23,7 +23,7 @@ public class UserLock {
     private LocalDate expirationDate;
     @JsonIgnore
     @ManyToOne
-    private BaseUser user;
+    private UserBase user;
 
     @Enumerated(EnumType.STRING)
     private UserLockStatus status;
@@ -32,7 +32,7 @@ public class UserLock {
             Reason reason,
             LockType type,
             LocalDate expirationDate,
-            BaseUser user
+            UserBase user
     ) {
         this.reason = reason;
         this.type = type;

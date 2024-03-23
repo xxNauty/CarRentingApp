@@ -1,9 +1,7 @@
 package com.example.carrentingapp;
 
-import com.example.carrentingapp.car.CarLock;
-import com.example.carrentingapp.car.request.CarLockRequest;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
 import com.example.carrentingapp.user.service.UserCreateService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,8 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootApplication
 public class CarRentingAppApplication {
@@ -24,12 +20,12 @@ public class CarRentingAppApplication {
     @Bean
     public CommandLineRunner commandLineRunner(
             UserCreateService userCreateService,
-            BaseUserRepository baseUserRepository
+            UserBaseRepository baseUserRepository
     ){
         return args -> {
             System.out.println("\n--------------------------------\n");
 
-            BaseUser admin = userCreateService.createAdmin(
+            UserBase admin = userCreateService.createAdmin(
                     "Adam",
                     "Kowalski",
                     "adam@kowalski.pl",
@@ -42,7 +38,7 @@ public class CarRentingAppApplication {
 
             System.out.println("\n--------------------------------\n");
 
-            BaseUser user = userCreateService.createUser(
+            UserBase user = userCreateService.createUser(
                     "Jan",
                     "Nowak",
                     "jan@nowak.pl",
@@ -54,7 +50,7 @@ public class CarRentingAppApplication {
             System.out.println("Password: Qwerty123!");
 
             //todo wymyślić lepiej
-            user.setStatus(BaseUser.UserStatus.USER_READY);
+            user.setStatus(UserBase.UserStatus.USER_READY);
             baseUserRepository.save(user);
 
             System.out.println("\n--------------------------------\n");

@@ -1,7 +1,7 @@
 package com.example.carrentingapp.rent.service;
 
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.car.CarBase;
+import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.configuration.service.SecurityService;
 import com.example.carrentingapp.email.notifications.NotificationSender;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
@@ -14,17 +14,16 @@ import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFo
 import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.rent.CarRentRepository;
 import com.example.carrentingapp.rent.request.CarReadyToCollectRequest;
-import com.example.carrentingapp.rent.request.CollectCarRequest;
-import com.example.carrentingapp.rent.request.ReturnCarRequest;
+import com.example.carrentingapp.rent.request.CarCollectRequest;
+import com.example.carrentingapp.rent.request.CarReturnRequest;
 import com.example.carrentingapp.rent.response.CarReadyToCollectResponse;
 import com.example.carrentingapp.rent.response.CarRentResponse;
 import com.example.carrentingapp.rent.request.CarRentRequest;
-import com.example.carrentingapp.rent.response.CollectCarResponse;
-import com.example.carrentingapp.rent.response.ReturnCarResponse;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.rent.response.CarCollectResponse;
+import com.example.carrentingapp.rent.response.CarReturnResponse;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,16 +36,16 @@ import java.util.UUID;
 public class CarRentService {
 
     private final CarRentRepository carRentRepository;
-    private final BaseCarRepository baseCarRepository;
-    private final BaseUserRepository baseUserRepository;
+    private final CarBaseRepository baseCarRepository;
+    private final UserBaseRepository baseUserRepository;
     private final SecurityService securityService;
     private final NotificationSender notificationSender;
 
     @Transactional
     public CarRentResponse rentCar(CarRentRequest request){
-        BaseCar carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
+        CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        BaseUser user = securityService.getLoggedInUser();
+        UserBase user = securityService.getLoggedInUser();
 
         if(Period.between(request.getRentedFrom(), request.getRentedTo()).getDays() > 14){
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
@@ -62,7 +61,7 @@ public class CarRentService {
                 request.getRentedTo(),
                 collectionDate
         );
-        carToRent.setStatus(BaseCar.CarStatus.CAR_RENTED);
+        carToRent.setStatus(CarBase.CarStatus.CAR_RENTED);
 
 
         carRentRepository.save(rent);
@@ -90,30 +89,30 @@ public class CarRentService {
     }
 
     @Transactional
-    public CollectCarResponse collectCar(CollectCarRequest request){
+    public CarCollectResponse collectCar(CarCollectRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
-        BaseUser user = rent.getUser();
+        UserBase user = rent.getUser();
 
         if(rent.getCollectionDate().isAfter(LocalDateTime.now())){
             throw new CarNotReadyException("Your car is not ready to collect yet");
         }
 
         rent.setStatus(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED);
-        user.setStatus(BaseUser.UserStatus.USER_HAS_CAR);
+        user.setStatus(UserBase.UserStatus.USER_HAS_CAR);
 
         carRentRepository.save(rent);
         baseUserRepository.save(user);
 
         notificationSender.sendCarCollectedNotification(new CarCollectedRequest(rent));
 
-        return new CollectCarResponse("Car collected, enjoy your ride");
+        return new CarCollectResponse("Car collected, enjoy your ride");
     }
 
     @Transactional
-    public ReturnCarResponse returnCar(ReturnCarRequest request){
+    public CarReturnResponse returnCar(CarReturnRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
-        BaseUser user = rent.getUser();
-        BaseCar car = rent.getCar();
+        UserBase user = rent.getUser();
+        CarBase car = rent.getCar();
 
         //todo: dorobić mechanizm liczenia rankingu
 //        float pointsAfterRent = 0;
@@ -126,7 +125,7 @@ public class CarRentService {
 //        }
 //        user.updateRank(pointsAfterRent);
         rent.setStatus(CarRent.CarRentStatus.CAR_RENT_WAITING_FOR_REVIEW);
-        car.setStatus(BaseCar.CarStatus.CAR_READY);
+        car.setStatus(CarBase.CarStatus.CAR_READY);
         car.setMileage(car.getMileage() + request.getKilometersTraveled());
 
         carRentRepository.save(rent);
@@ -136,7 +135,7 @@ public class CarRentService {
         //todo
         notificationSender.sendCarReturnedNotification(new CarReturnedRequest());
 
-        return new ReturnCarResponse("Car returned successfully");
+        return new CarReturnResponse("Car returned successfully");
     }
 
 }

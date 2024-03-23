@@ -1,6 +1,5 @@
 package com.example.carrentingapp.email.notifications.forgot_password.token;
 
-import com.example.carrentingapp.user.BaseUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

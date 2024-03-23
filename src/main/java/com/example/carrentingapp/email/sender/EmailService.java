@@ -25,12 +25,7 @@ public class EmailService implements EmailSender{
     @Override
     @Async
     public void send(String to, String from, String subject, String email, EmailMessage.EmailMessageType type) {
-        EmailMessage emailMessage = new EmailMessage(
-                from,
-                to,
-                subject,
-                email
-        );
+        EmailMessage emailMessage = new EmailMessage(from, to, subject, email);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");

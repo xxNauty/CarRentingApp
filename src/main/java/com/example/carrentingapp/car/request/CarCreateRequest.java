@@ -1,11 +1,10 @@
 package com.example.carrentingapp.car.request;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
 @AllArgsConstructor
-public class CreateCarRequest {
+public class CarCreateRequest {
     private String brand;
     private String model;
     private Integer yearOfProduction;

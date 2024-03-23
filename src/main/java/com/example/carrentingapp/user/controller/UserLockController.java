@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('ADMIN')")
 public class UserLockController {
 
-    private final UserLockService service;
+    private final UserLockService userLockService;
 
     @PostMapping("/lock")
     public ResponseEntity<LockResponse> lockUser(
             @RequestBody LockRequest request
     ){
-        return ResponseEntity.ok(service.lockUser(request));
+        return ResponseEntity.ok(userLockService.lockUser(request));
     }
 
     @PostMapping("/unlock")
     public ResponseEntity<LockResponse> unlockUser(
             @RequestBody UnlockRequest request
     ){
-        return ResponseEntity.ok(service.unlockUser(request));
+        return ResponseEntity.ok(userLockService.unlockUser(request));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.carrentingapp.email.notifications.forgot_password.token;
 
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.UserBase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,12 +29,12 @@ public class ForgotPasswordVerificationToken {
     private ForgotPasswordTokenStatus status;
 
     @ManyToOne
-    private BaseUser user;
+    private UserBase user;
 
     public ForgotPasswordVerificationToken(
             String token,
             LocalDateTime expiredAt,
-            BaseUser user
+            UserBase user
     ) {
         this.token = token;
         this.createdAt = LocalDateTime.now();

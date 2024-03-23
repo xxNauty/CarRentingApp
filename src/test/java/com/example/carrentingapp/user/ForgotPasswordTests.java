@@ -9,10 +9,6 @@ import com.example.carrentingapp.email.notifications.forgot_password.token.Forgo
 import com.example.carrentingapp.email.notifications.forgot_password.token.ForgotPasswordVerificationTokenRepository;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
-import com.example.carrentingapp.exception.exception.http_error_500.PasswordNotSafeException;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -27,8 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.URI;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -40,7 +34,7 @@ public class ForgotPasswordTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseUserRepository baseUserRepository;
+    private UserBaseRepository baseUserRepository;
 
     @Autowired
     private ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;

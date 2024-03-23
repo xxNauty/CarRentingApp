@@ -1,6 +1,5 @@
 package com.example.carrentingapp.email.notifications.car_collected;
 
-import com.example.carrentingapp.car.BaseCar;
 import com.example.carrentingapp.rent.CarRent;
 
 public class CarCollectedTemplate {

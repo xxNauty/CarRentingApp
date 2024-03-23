@@ -1,15 +1,14 @@
 package com.example.carrentingapp.email.notifications.car_rented;
 
-import com.example.carrentingapp.car.BaseCar;
+import com.example.carrentingapp.car.CarBase;
 import com.example.carrentingapp.email.notifications.NotificationRequestInterface;
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.UserBase;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class CarRentedRequest implements NotificationRequestInterface {
-    private BaseCar car;
-    private BaseUser user;
+    private CarBase car;
+    private UserBase user;
 }

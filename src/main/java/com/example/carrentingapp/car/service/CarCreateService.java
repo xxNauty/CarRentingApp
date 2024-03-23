@@ -1,43 +1,32 @@
 package com.example.carrentingapp.car.service;
 
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.car.CarBase;
+import com.example.carrentingapp.car.CarBaseRepository;
+import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class CarCreateService {
 
-    private final BaseCarRepository carRepository;
+    private final CarBaseRepository carRepository;
 
-    public CarResponse createCar(
-            String brand,
-            String model,
-            Integer yearOfProduction,
-            Float mileage,
-            Float power,
-            Float torque,
-            Float engineSize,
-            Float averageFuelConsumption,
-            Float minRankOfUser,
-            Float pricePerDay
-    ){
-        BaseCar car = BaseCar.builder()
-                .brand(brand)
-                .model(model)
-                .yearOfProduction(yearOfProduction)
-                .mileage(mileage)
-                .power(power)
-                .torque(torque)
-                .engineSize(engineSize)
-                .averageFuelConsumption(averageFuelConsumption)
-                .minRankOfUser(minRankOfUser)
-                .pricePerDay(pricePerDay)
+    public CarResponse createCar(CarCreateRequest request){
+        CarBase car = CarBase.builder()
+                .brand(request.getBrand())
+                .model(request.getModel())
+                .yearOfProduction(request.getYearOfProduction())
+                .mileage(request.getMileage())
+                .power(request.getPower())
+                .torque(request.getTorque())
+                .engineSize(request.getEngineSize())
+                .averageFuelConsumption(request.getAverageFuelConsumption())
+                .minRankOfUser(request.getMinRankOfUser())
+                .pricePerDay(request.getPricePerDay())
                 .hasActiveSale(false)
-                .status(BaseCar.CarStatus.CAR_READY)
+                .status(CarBase.CarStatus.CAR_READY)
                 .build();
 
         carRepository.save(car);

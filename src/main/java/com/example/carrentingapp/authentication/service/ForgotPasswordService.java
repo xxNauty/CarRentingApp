@@ -10,9 +10,9 @@ import com.example.carrentingapp.email.notifications.forgot_password.token.Forgo
 import com.example.carrentingapp.exception.exception.http_error_403.AccessDeniedException;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.service.PasswordService;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
+import com.example.carrentingapp.user.service.UserPasswordService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +22,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ForgotPasswordService {
 
-    private final BaseUserRepository baseUserRepository;
+    private final UserBaseRepository baseUserRepository;
     private final NotificationSender notificationSender;
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
-    private final PasswordService passwordService;
+    private final UserPasswordService passwordService;
     private final UserDataValidationService userDataValidationService;
 
     public ForgotPasswordResponse sendEmail(ForgotPasswordVerificationRequest request){
-        BaseUser user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
+        UserBase user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given Id"));
 
         //sprawdzenie czy są w bazie jakieś niewykorzystane tokeny dla danego użytkownika, jeśli tak to ustawiamy ich status na EXPIRED
@@ -53,7 +53,7 @@ public class ForgotPasswordService {
                 .findByToken(request.getToken()).orElseThrow(
                         () -> new TokenNotFoundException("Invalid verification token")
                 );
-        BaseUser user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
+        UserBase user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given Id"));
 
         if(!token.getUser().equals(user)){

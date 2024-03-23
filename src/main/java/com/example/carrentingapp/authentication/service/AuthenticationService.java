@@ -17,14 +17,13 @@ import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoun
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
 import com.example.carrentingapp.user.service.UserCreateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +41,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AuthenticationService {
 
-    private final BaseUserRepository repository;
+    private final UserBaseRepository repository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -53,14 +52,14 @@ public class AuthenticationService {
     private final NotificationSender notificationSender;
 
     public AuthenticationResponse  register(RegistrationRequest request) {
-        BaseUser user = userCreateService.createUser(
+        UserBase user = userCreateService.createUser(
                 validationService.dataMatchesRequirements(request.getFirstName(), "first name"),
                 validationService.dataMatchesRequirements(request.getLastName(), "last name"),
                 validationService.isEmailCorrect(request.getEmail()),
                 passwordEncoder.encode(validationService.isPasswordStrongEnough(request.getPassword())),
                 validationService.isUserOldEnough(request.getDateOfBirth())
         );
-        BaseUser savedUser = repository.save(user);
+        UserBase savedUser = repository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -77,7 +76,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        BaseUser user = repository.findByEmail(request.getEmail())
+        UserBase user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("There is no user with given Id"));
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -102,7 +101,7 @@ public class AuthenticationService {
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
         if (userEmail != null) {
-            BaseUser user = this.repository.findByEmail(userEmail)
+            UserBase user = this.repository.findByEmail(userEmail)
                     .orElseThrow(() -> new UserNotFoundException("There is no user with given Id"));
             if (jwtService.isTokenValid(refreshToken, user)) {
                 String accessToken = jwtService.generateToken(user);
@@ -131,8 +130,8 @@ public class AuthenticationService {
         confirmationToken.setConfirmedAt(LocalDateTime.now());
         confirmationToken.setStatus(ConfirmationToken.ConfirmationTokenStatus.CONFIRMATION_TOKEN_CONFIRMED);
 
-        BaseUser user = confirmationToken.getUser();
-        user.setStatus(BaseUser.UserStatus.USER_READY);
+        UserBase user = confirmationToken.getUser();
+        user.setStatus(UserBase.UserStatus.USER_READY);
 
         repository.save(user);
         confirmationTokenRepository.save(confirmationToken);
@@ -141,7 +140,7 @@ public class AuthenticationService {
     }
 
     public EmailVerificationResponse sendVerifyingTokenAgain(SendVerifyingTokenAgainRequest request){
-        BaseUser user = repository.findByEmailAndId(
+        UserBase user = repository.findByEmailAndId(
                 request.getEmail(),
                 UUID.fromString(request.getUserId())
         ).orElseThrow(() -> new UserNotFoundException("There is no such user"));
@@ -152,12 +151,12 @@ public class AuthenticationService {
         return new EmailVerificationResponse("Email verification token sent again");
     }
 
-    private void saveUserToken(BaseUser user, String jwtToken) {
+    private void saveUserToken(UserBase user, String jwtToken) {
         Token token = new Token(jwtToken, user);
         tokenRepository.save(token);
     }
 
-    private void revokeAllUserTokens(BaseUser user) {
+    private void revokeAllUserTokens(UserBase user) {
         List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId(), Token.JwtTokenStatus.JWT_TOKEN_ACTIVE);
         if (validUserTokens.isEmpty())
             return;

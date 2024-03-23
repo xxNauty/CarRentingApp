@@ -1,13 +1,12 @@
 package com.example.carrentingapp.car.service;
 
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.car.CarBase;
+import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.car.CarLock;
-import com.example.carrentingapp.car.response.GetCarResponse;
-import com.example.carrentingapp.car.response.GetFullCarListResponse;
-import com.example.carrentingapp.car.response.GetSimpleCarListResponse;
+import com.example.carrentingapp.car.response.CarGetResponse;
+import com.example.carrentingapp.car.response.CarGetFullListResponse;
+import com.example.carrentingapp.car.response.CarGetSimpleListResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,17 +17,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CarGetService {
 
-    private final BaseCarRepository repository;
+    private final CarBaseRepository repository;
 
-    public GetCarResponse getCarById(UUID id){
-        return new GetCarResponse(repository.findById(id).orElseThrow());
+    public CarGetResponse getCarById(UUID id){
+        return new CarGetResponse(repository.findById(id).orElseThrow());
     }
 
-    public GetSimpleCarListResponse getSimpleCarList(Boolean onlyAvailable){
-        List<BaseCar> cars = onlyAvailable ? repository.findByStatus(BaseCar.CarStatus.CAR_READY) : repository.findAll();
+    public CarGetSimpleListResponse getSimpleCarList(Boolean onlyAvailable){
+        List<CarBase> cars = onlyAvailable ? repository.findByStatus(CarBase.CarStatus.CAR_READY) : repository.findAll();
         List<SimpleCar> output = new ArrayList<>();
 
-        for(BaseCar car : cars){
+        for(CarBase car : cars){
             output.add(
                     new SimpleCar(
                             car.getBrand(),
@@ -39,14 +38,14 @@ public class CarGetService {
                     )
             );
         }
-        return new GetSimpleCarListResponse(output);
+        return new CarGetSimpleListResponse(output);
     }
 
-    public GetFullCarListResponse getFullCarList(Boolean onlyAvailable){
-        List<BaseCar> cars = onlyAvailable ? repository.findByStatus(BaseCar.CarStatus.CAR_READY)  : repository.findAll();
+    public CarGetFullListResponse getFullCarList(Boolean onlyAvailable){
+        List<CarBase> cars = onlyAvailable ? repository.findByStatus(CarBase.CarStatus.CAR_READY)  : repository.findAll();
         List<FullCar> output = new ArrayList<>();
 
-        for(BaseCar car : cars){
+        for(CarBase car : cars){
             output.add(
                     new FullCar(
                             car.getBrand(),
@@ -63,7 +62,7 @@ public class CarGetService {
                     )
             );
         }
-        return new GetFullCarListResponse(output);
+        return new CarGetFullListResponse(output);
     }
 
 

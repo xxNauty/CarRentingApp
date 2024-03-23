@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-//@Data
 @Getter
 @Setter
 @Entity
@@ -56,6 +55,11 @@ public class UserBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    private int carReturnDelays;
+
+    public void carReturnDelaysIncrement(){
+        this.carReturnDelays++;
+    }
     public UserBase(
             String firstName,
             String lastName,
@@ -71,6 +75,7 @@ public class UserBase implements UserDetails {
         this.rank = 5.0F;
         this.role = Role.USER;
         this.status = UserStatus.USER_CREATED;
+        this.carReturnDelays = 0;
     }
 
     public void updateRank(float valueToAdd){

@@ -1,5 +1,7 @@
 package com.example.carrentingapp.rent.controller;
 
+import com.example.carrentingapp.rent.request.*;
+import com.example.carrentingapp.rent.response.*;
 import com.example.carrentingapp.rent.request.CarReadyToCollectRequest;
 import com.example.carrentingapp.rent.request.CarRentRequest;
 import com.example.carrentingapp.rent.request.CarCollectRequest;
@@ -29,14 +31,6 @@ public class CarRentController {
         return ResponseEntity.ok(carRentService.rentCar(request));
     }
 
-    @PostMapping("/collect/ready_to")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CarReadyToCollectResponse> carReadyToCollect(
-            @RequestBody CarReadyToCollectRequest request
-    ){
-        return ResponseEntity.ok(carRentService.carReadyToCollect(request));
-    }
-
     @PostMapping("/collect")
     public ResponseEntity<CarCollectResponse> collectRentedCar(
             @RequestBody CarCollectRequest request
@@ -49,5 +43,13 @@ public class CarRentController {
             @RequestBody CarReturnRequest request
     ){
         return ResponseEntity.ok(carRentService.returnCar(request));
+    }
+
+    @PostMapping("/return/check")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CarCheckAfterRentResponse> checkCarAfterRent(
+            @RequestBody CarCheckAfterRentRequest request
+    ){
+        return ResponseEntity.ok(carRentService.checkCarAfterRent(request));
     }
 }

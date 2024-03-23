@@ -1,10 +1,8 @@
 package com.example.carrentingapp.token;
 
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.UserBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,9 +26,9 @@ public class Token {
 
     @JsonIgnore
     @ManyToOne
-    private BaseUser user;
+    private UserBase user;
 
-    public Token(String token, BaseUser user) {
+    public Token(String token, UserBase user) {
         this.token = token;
         this.status = JwtTokenStatus.JWT_TOKEN_ACTIVE;
         this.user = user;

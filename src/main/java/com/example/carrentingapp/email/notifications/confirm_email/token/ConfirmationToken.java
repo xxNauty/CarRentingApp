@@ -1,11 +1,9 @@
 package com.example.carrentingapp.email.notifications.confirm_email.token;
 
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.UserBase;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,12 +29,12 @@ public class ConfirmationToken {
     private ConfirmationTokenStatus status;
 
     @ManyToOne
-    private BaseUser user;
+    private UserBase user;
 
     public ConfirmationToken(
             String token,
             LocalDateTime expiredAt,
-            BaseUser user
+            UserBase user
     ) {
         this.token = token;
         this.createdAt = LocalDateTime.now();

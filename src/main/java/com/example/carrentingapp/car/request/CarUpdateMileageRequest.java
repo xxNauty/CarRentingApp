@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class UpdateCarMileageRequest {
+public class CarUpdateMileageRequest {
     private UUID carId;
     private Float mileageToAdd;
 }

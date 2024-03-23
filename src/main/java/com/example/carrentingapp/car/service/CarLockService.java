@@ -1,17 +1,15 @@
 package com.example.carrentingapp.car.service;
 
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.car.CarBase;
+import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.CarLockRepository;
 import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
-import com.example.carrentingapp.exception.exception.http_error_404.CarLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_500.CarNotLockedException;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class CarLockService {
 
-    private final BaseCarRepository baseCarRepository;
+    private final CarBaseRepository baseCarRepository;
 
     private final CarLockRepository carLockRepository;
 
     public CarLockResponse lockCar(CarLockRequest request){
-        BaseCar car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
+        CarBase car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
         CarLock lock = new CarLock(
                 car,
@@ -33,7 +31,7 @@ public class CarLockService {
                 request.getLockedTo()
         );
 
-        car.setStatus(BaseCar.CarStatus.CAR_LOCKED);
+        car.setStatus(CarBase.CarStatus.CAR_LOCKED);
 
         baseCarRepository.save(car);
         carLockRepository.save(lock);
@@ -42,7 +40,7 @@ public class CarLockService {
     }
 
     public CarLockResponse unlockCar(CarUnlockRequest request){
-        BaseCar car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
+        CarBase car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
         CarLock lock = carLockRepository.findAllActiveLocksForCar(
                 request.getCarId(),
@@ -50,7 +48,7 @@ public class CarLockService {
         ).orElseThrow(() -> new CarNotLockedException("Car with given id is not locked"));
 
         lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);
-        car.setStatus(BaseCar.CarStatus.CAR_READY);
+        car.setStatus(CarBase.CarStatus.CAR_READY);
 
         baseCarRepository.save(car);
         carLockRepository.save(lock);

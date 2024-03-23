@@ -2,10 +2,9 @@ package com.example.carrentingapp.car;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.car.request.CreateCarRequest;
-import com.example.carrentingapp.car.request.UpdateCarMileageRequest;
+import com.example.carrentingapp.car.request.CarCreateRequest;
+import com.example.carrentingapp.car.request.CarUpdateMileageRequest;
 import com.example.carrentingapp.car.response.CarResponse;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -33,7 +32,7 @@ public class UpdateCarDataTest {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseCarRepository baseCarRepository;
+    private CarBaseRepository baseCarRepository;
 
     @LocalServerPort
     int randomServerPort;
@@ -49,7 +48,7 @@ public class UpdateCarDataTest {
         final float mileageBeforeUpdate = baseCarRepository.findById(carId).orElseThrow().getMileage();
         final float mileageToAdd = 123.45F;
 
-        UpdateCarMileageRequest request = new UpdateCarMileageRequest(
+        CarUpdateMileageRequest request = new CarUpdateMileageRequest(
                 carId,
                 mileageToAdd
         );
@@ -58,7 +57,7 @@ public class UpdateCarDataTest {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<UpdateCarMileageRequest> httpEntity = new HttpEntity<>(request, headers);
+        HttpEntity<CarUpdateMileageRequest> httpEntity = new HttpEntity<>(request, headers);
 
         ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 updateMileageUrl,
@@ -84,7 +83,7 @@ public class UpdateCarDataTest {
         final float mileageBeforeUpdate = baseCarRepository.findById(carId).orElseThrow().getMileage();
         final float mileageToAdd = 123.45F;
 
-        UpdateCarMileageRequest request = new UpdateCarMileageRequest(
+        CarUpdateMileageRequest request = new CarUpdateMileageRequest(
                 carId,
                 mileageToAdd
         );
@@ -93,7 +92,7 @@ public class UpdateCarDataTest {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<UpdateCarMileageRequest> httpEntity = new HttpEntity<>(request, headers);
+        HttpEntity<CarUpdateMileageRequest> httpEntity = new HttpEntity<>(request, headers);
 
         ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 updateMileageUrl,
@@ -116,7 +115,7 @@ public class UpdateCarDataTest {
         final float mileageBeforeUpdate = baseCarRepository.findById(carId).orElseThrow().getMileage();
         final float mileageToAdd = 123.45F;
 
-        UpdateCarMileageRequest request = new UpdateCarMileageRequest(
+        CarUpdateMileageRequest request = new CarUpdateMileageRequest(
                 carId,
                 mileageToAdd
         );
@@ -124,7 +123,7 @@ public class UpdateCarDataTest {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
 
-        HttpEntity<UpdateCarMileageRequest> httpEntity = new HttpEntity<>(request, headers);
+        HttpEntity<CarUpdateMileageRequest> httpEntity = new HttpEntity<>(request, headers);
 
         ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 updateMileageUrl,
@@ -147,7 +146,7 @@ public class UpdateCarDataTest {
 
         final float mileageToAdd = 123.45F;
 
-        UpdateCarMileageRequest request = new UpdateCarMileageRequest(
+        CarUpdateMileageRequest request = new CarUpdateMileageRequest(
                 carId,
                 mileageToAdd
         );
@@ -156,7 +155,7 @@ public class UpdateCarDataTest {
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<UpdateCarMileageRequest> httpEntity = new HttpEntity<>(request, headers);
+        HttpEntity<CarUpdateMileageRequest> httpEntity = new HttpEntity<>(request, headers);
 
         ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
                 updateMileageUrl,
@@ -164,7 +163,7 @@ public class UpdateCarDataTest {
                 CarResponse.class
         );
 
-        Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
+        Assertions.assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
     }
 
 
@@ -174,7 +173,7 @@ public class UpdateCarDataTest {
             final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
             final String token = getToken("adam@kowalski.pl");
 
-            CreateCarRequest createCarRequest = new CreateCarRequest(
+            CarCreateRequest createCarRequest = new CarCreateRequest(
                     "Polonez",
                     "Caro Plus",
                     1999,
@@ -191,7 +190,7 @@ public class UpdateCarDataTest {
             createCarHeaders.set("X-COM-PERSIST", "true");
             createCarHeaders.set("Authorization", "Bearer " + token);
 
-            HttpEntity<CreateCarRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+            HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
 
             ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
                     createCarUrl,

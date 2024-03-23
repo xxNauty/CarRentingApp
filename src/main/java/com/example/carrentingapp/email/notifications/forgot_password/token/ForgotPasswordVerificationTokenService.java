@@ -1,6 +1,6 @@
 package com.example.carrentingapp.email.notifications.forgot_password.token;
 
-import com.example.carrentingapp.user.BaseUser;
+import com.example.carrentingapp.user.UserBase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class ForgotPasswordVerificationTokenService {
 
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
 
-    public String createToken(BaseUser user){
+    public String createToken(UserBase user){
         ForgotPasswordVerificationToken token = new ForgotPasswordVerificationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now().plusMinutes(15),

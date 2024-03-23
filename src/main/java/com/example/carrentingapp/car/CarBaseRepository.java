@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface BaseCarRepository extends JpaRepository<BaseCar, UUID> {
+public interface CarBaseRepository extends JpaRepository<CarBase, UUID> {
 
-    @Query(value = "select c from BaseCar c where c.status = :status")
-    List<BaseCar> findByStatus(BaseCar.CarStatus status);
+    @Query(value = "select c from CarBase c where c.status = :status")
+    List<CarBase> findByStatus(CarBase.CarStatus status);
 
 }

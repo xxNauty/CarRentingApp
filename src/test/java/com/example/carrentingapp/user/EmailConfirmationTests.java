@@ -7,10 +7,6 @@ import com.example.carrentingapp.email.notifications.confirm_email.token.Confirm
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -38,7 +34,7 @@ public class EmailConfirmationTests {
     private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
-    private BaseUserRepository baseUserRepository;
+    private UserBaseRepository baseUserRepository;
 
     @LocalServerPort
     int randomServerPort;
@@ -67,13 +63,13 @@ public class EmailConfirmationTests {
                 AuthenticationResponse.class
         );
 
-        BaseUser userAfterRegistration = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
+        UserBase userAfterRegistration = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
         Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
-        Assertions.assertEquals(BaseUser.UserStatus.USER_CREATED, userAfterRegistration.getStatus());
-        Assertions.assertEquals(BaseUser.Role.USER, userAfterRegistration.getRole());
+        Assertions.assertEquals(UserBase.UserStatus.USER_CREATED, userAfterRegistration.getStatus());
+        Assertions.assertEquals(UserBase.Role.USER, userAfterRegistration.getRole());
 
         //potwierdzenie adresu email
 
@@ -99,11 +95,11 @@ public class EmailConfirmationTests {
         Assertions.assertNotNull(confirmationResponse.getBody());
         Assertions.assertEquals("Email verified, your account is now enabled", confirmationResponse.getBody().getMessage());
 
-        BaseUser userAfterEmailConfirmation = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
+        UserBase userAfterEmailConfirmation = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new UserNotFoundException("User not found"));
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
-        Assertions.assertEquals(BaseUser.UserStatus.USER_READY, userAfterEmailConfirmation.getStatus());
+        Assertions.assertEquals(UserBase.UserStatus.USER_READY, userAfterEmailConfirmation.getStatus());
     }
 
 }

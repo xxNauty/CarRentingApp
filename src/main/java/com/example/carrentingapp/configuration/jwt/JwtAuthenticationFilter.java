@@ -1,17 +1,13 @@
 package com.example.carrentingapp.configuration.jwt;
 
-import com.example.carrentingapp.exception.exception.http_error_403.AccessDeniedException;
-import com.example.carrentingapp.exception.exception.http_error_403.UserAccountLockedException;
-import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
-import com.example.carrentingapp.user.BaseUserRepository;
+import com.example.carrentingapp.user.UserBaseRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenRepository tokenRepository;
-    private final BaseUserRepository userRepository;
+    private final UserBaseRepository userRepository;
 
     @Override
     protected void doFilterInternal(

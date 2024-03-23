@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Integer> {
-    @Query(value = "select t from Token t inner join BaseUser u on t.user.id = u.id where u.id = :id and t.status = :status ")
+    @Query(value = "select t from Token t inner join UserBase u on t.user.id = u.id where u.id = :id and t.status = :status ")
     List<Token> findAllValidTokenByUser(UUID id, Token.JwtTokenStatus status);
 
     Optional<Token> findByToken(String token);

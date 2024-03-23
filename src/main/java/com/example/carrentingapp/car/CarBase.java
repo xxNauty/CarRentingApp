@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "car_base")
-public class BaseCar {
+public class CarBase {
 
     @Id
     @GeneratedValue
@@ -80,7 +80,7 @@ public class BaseCar {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseCar car = (BaseCar) o;
+        CarBase car = (CarBase) o;
         return Objects.equals(id, car.id) &&
                 Objects.equals(brand, car.brand) &&
                 Objects.equals(model, car.model) &&

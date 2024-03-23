@@ -1,7 +1,7 @@
 package com.example.carrentingapp.rent.service;
 
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
+import com.example.carrentingapp.car.CarBase;
+import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.configuration.service.SecurityService;
 import com.example.carrentingapp.email.notifications.NotificationSender;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
@@ -22,8 +22,17 @@ import com.example.carrentingapp.user.BaseUserRepository;
 import com.example.carrentingapp.user.UserLock;
 import com.example.carrentingapp.user.request.LockRequest;
 import com.example.carrentingapp.user.service.UserLockService;
+import com.example.carrentingapp.rent.request.CarReadyToCollectRequest;
+import com.example.carrentingapp.rent.request.CarCollectRequest;
+import com.example.carrentingapp.rent.request.CarReturnRequest;
+import com.example.carrentingapp.rent.response.CarReadyToCollectResponse;
+import com.example.carrentingapp.rent.response.CarRentResponse;
+import com.example.carrentingapp.rent.request.CarRentRequest;
+import com.example.carrentingapp.rent.response.CarCollectResponse;
+import com.example.carrentingapp.rent.response.CarReturnResponse;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,17 +47,17 @@ import java.util.UUID;
 public class CarRentService {
 
     private final CarRentRepository carRentRepository;
-    private final BaseCarRepository baseCarRepository;
-    private final BaseUserRepository baseUserRepository;
+    private final CarBaseRepository baseCarRepository;
+    private final UserBaseRepository baseUserRepository;
     private final SecurityService securityService;
     private final NotificationSender notificationSender;
     private final UserLockService userLockService;
 
     @Transactional
     public CarRentResponse rentCar(CarRentRequest request){
-        BaseCar carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
+        CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        BaseUser user = securityService.getLoggedInUser();
+        UserBase user = securityService.getLoggedInUser();
 
         if(Period.between(request.getRentedFrom(), request.getRentedTo()).getDays() > 14){
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
@@ -64,7 +73,7 @@ public class CarRentService {
                 request.getRentedTo(),
                 collectionDate
         );
-        carToRent.setStatus(BaseCar.CarStatus.CAR_RENTED);
+        carToRent.setStatus(CarBase.CarStatus.CAR_RENTED);
 
 
         carRentRepository.save(rent);
@@ -85,9 +94,9 @@ public class CarRentService {
     }
 
     @Transactional
-    public CollectCarResponse collectCar(CollectCarRequest request){
+    public CarCollectResponse collectCar(CarCollectRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
-        BaseUser user = rent.getUser();
+        UserBase user = rent.getUser();
 
         if(rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED)){
             throw new CarAlreadyCollectedException("You have already collected this car");
@@ -98,18 +107,18 @@ public class CarRentService {
         }
 
         rent.setStatus(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED);
-        user.setStatus(BaseUser.UserStatus.USER_HAS_CAR);
+        user.setStatus(UserBase.UserStatus.USER_HAS_CAR);
 
         carRentRepository.save(rent);
         baseUserRepository.save(user);
 
         notificationSender.sendCarCollectedNotification(new CarCollectedRequest(rent));
 
-        return new CollectCarResponse("Car collected, enjoy your ride");
+        return new CarCollectResponse("Car collected, enjoy your ride");
     }
 
     @Transactional
-    public ReturnCarResponse returnCar(ReturnCarRequest request){
+    public CarReturnResponse returnCar(CarReturnRequest request){
         CarRent rent = carRentRepository.findById(request.getCarRentId())
                 .orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
 
@@ -123,8 +132,8 @@ public class CarRentService {
             throw new CarAlreadyReturnedException("You cannot return already returned car");
         }
 
-        BaseUser user = rent.getUser();
-        BaseCar car = rent.getCar();
+        UserBase user = rent.getUser();
+        CarBase car = rent.getCar();
         float userRank = user.getRank();
 
         //modyfikowanie oceny użytkownika na podstawie czasu zwrotu samochodu
@@ -159,7 +168,7 @@ public class CarRentService {
 
         notificationSender.sendCarReturnedNotification(new CarReturnedRequest());
 
-        return new ReturnCarResponse("Car returned successfully");
+        return new CarReturnResponse("Car returned successfully");
     }
 
     @Transactional

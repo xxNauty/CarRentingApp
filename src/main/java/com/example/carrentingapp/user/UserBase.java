@@ -21,7 +21,7 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @Table(name = "user_base")
-public class BaseUser implements UserDetails {
+public class UserBase implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -61,7 +61,7 @@ public class BaseUser implements UserDetails {
     public void carReturnDelaysIncrement(){
         this.carReturnDelays++;
     }
-    public BaseUser(
+    public UserBase(
             String firstName,
             String lastName,
             String email,
@@ -139,7 +139,7 @@ public class BaseUser implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseUser baseUser = (BaseUser) o;
+        UserBase baseUser = (UserBase) o;
         return Objects.equals(id, baseUser.id) &&
                 Objects.equals(firstName, baseUser.firstName) &&
                 Objects.equals(lastName, baseUser.lastName) &&

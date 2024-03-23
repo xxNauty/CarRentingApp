@@ -2,24 +2,13 @@ package com.example.carrentingapp.car;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.car.BaseCar;
-import com.example.carrentingapp.car.BaseCarRepository;
-import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.request.CarUnlockRequest;
-import com.example.carrentingapp.car.request.CreateCarRequest;
+import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.car.response.CarResponse;
 import com.example.carrentingapp.car.service.CarLockService;
-import com.example.carrentingapp.user.BaseUser;
-import com.example.carrentingapp.user.BaseUserRepository;
-import com.example.carrentingapp.user.request.UnlockRequest;
-import com.example.carrentingapp.user.service.UserCreateService;
-import org.checkerframework.checker.units.qual.A;
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +36,7 @@ public class LockCarTests {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private BaseCarRepository baseCarRepository;
+    private CarBaseRepository baseCarRepository;
 
     @Autowired
     private CarLockService carLockService;
@@ -88,9 +77,9 @@ public class LockCarTests {
 
         //sprawdzenie czy napewno samochód został zablokowany
 
-        BaseCar carAfterLock = baseCarRepository.findById(carId).orElseThrow();
+        CarBase carAfterLock = baseCarRepository.findById(carId).orElseThrow();
 
-        Assertions.assertEquals(BaseCar.CarStatus.CAR_LOCKED, carAfterLock.getStatus());
+        Assertions.assertEquals(CarBase.CarStatus.CAR_LOCKED, carAfterLock.getStatus());
 
         CarLock lock = carAfterLock.getActiveLock();
 
@@ -127,9 +116,9 @@ public class LockCarTests {
 
         //sprawdzenie czy samochód nie został zablokowany
 
-        BaseCar carAfterLock = baseCarRepository.findById(carId).orElseThrow();
+        CarBase carAfterLock = baseCarRepository.findById(carId).orElseThrow();
 
-        Assertions.assertEquals(BaseCar.CarStatus.CAR_READY, carAfterLock.getStatus());
+        Assertions.assertEquals(CarBase.CarStatus.CAR_READY, carAfterLock.getStatus());
 
         CarLock lock = carAfterLock.getActiveLock();
 
@@ -162,9 +151,9 @@ public class LockCarTests {
 
         //sprawdzenie czy samochód nie został zablokowany
 
-        BaseCar carAfterLock = baseCarRepository.findById(carId).orElseThrow();
+        CarBase carAfterLock = baseCarRepository.findById(carId).orElseThrow();
 
-        Assertions.assertEquals(BaseCar.CarStatus.CAR_READY, carAfterLock.getStatus());
+        Assertions.assertEquals(CarBase.CarStatus.CAR_READY, carAfterLock.getStatus());
 
         CarLock lock = carAfterLock.getActiveLock();
 
@@ -332,7 +321,7 @@ public class LockCarTests {
             final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
             final String token = getToken("adam@kowalski.pl");
 
-            CreateCarRequest createCarRequest = new CreateCarRequest(
+            CarCreateRequest createCarRequest = new CarCreateRequest(
                     "Polonez",
                     "Caro Plus",
                     1999,
@@ -349,7 +338,7 @@ public class LockCarTests {
             createCarHeaders.set("X-COM-PERSIST", "true");
             createCarHeaders.set("Authorization", "Bearer " + token);
 
-            HttpEntity<CreateCarRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+            HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
 
             ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
                     createCarUrl,

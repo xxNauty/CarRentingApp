@@ -27,3 +27,13 @@ Authorization: Bearer {{auth-token}}
   "carRentId": "4ddb39d5-fe94-4732-857b-ba23d6df712f",
   "kilometersTraveled": 443.45
 }
+
+### Verify car after rent
+POST http://localhost:8080/api/v1/car/rent/return/check
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carRentId": "",
+  "isDamaged": false
+}

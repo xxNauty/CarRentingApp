@@ -56,6 +56,11 @@ public class BaseUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    private int carReturnDelays;
+
+    public void carReturnDelaysIncrement(){
+        this.carReturnDelays++;
+    }
     public BaseUser(
             String firstName,
             String lastName,
@@ -71,6 +76,7 @@ public class BaseUser implements UserDetails {
         this.rank = 5.0F;
         this.role = Role.USER;
         this.status = UserStatus.USER_CREATED;
+        this.carReturnDelays = 0;
     }
 
     public void updateRank(float valueToAdd){

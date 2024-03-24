@@ -49,7 +49,6 @@ public class CarRentingAppApplication {
             System.out.println("Login: " + user.getEmail());
             System.out.println("Password: Qwerty123!");
 
-            //todo wymyślić lepiej
             user.setStatus(UserBase.UserStatus.USER_READY);
             baseUserRepository.save(user);
 
@@ -71,6 +70,7 @@ public class CarRentingAppApplication {
        25. Dodać do wszystkich float'ów precyzję do 2 miejsc po przecinku, również w bazie danych
        26. Pobieranie danych samochodu po id: w przypadku błędnego id 404 error
        27. Przerobić wszystkie requesty na wzór z CarRentRequest, dodać walidację danych
+       28. Przygotowywanie danych do testów
  */
 /*
     Do doczytania:

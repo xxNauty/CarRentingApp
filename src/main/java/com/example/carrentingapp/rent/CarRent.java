@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Data
@@ -54,6 +55,12 @@ public class CarRent {
         CAR_RENT_WAITING_FOR_REVIEW,
         CAR_RENT_END_OF_RENT_OK,
         CAR_RENT_END_OF_RENT_DAMAGED_CAR,
-        CAR_RENT_END_OF_RENT_LATE
+        CAR_RENT_END_OF_RENT_LATE;
+
+        public boolean isIn(final CarRentStatus... statuses){
+            return Arrays.asList(statuses).contains(this);
+        }
     }
+
+
 }

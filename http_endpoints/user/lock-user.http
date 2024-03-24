@@ -4,8 +4,17 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "lockType": "TEMPORARY",
-  "expirationDate": "2024-04-04",
+  "lockType": "FOREVER",
+  "expirationDate": "2024-05-04",
   "reason": "OTHER",
-  "userid": "5773c2c7-e62a-4699-9677-82efb1f15704"
+  "userid": "caebf99b-1aef-42fa-b110-736c8c73dcf9"
+}
+
+### Unlock user account
+POST http://localhost:8080/api/v1/user/unlock
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "userid": "caebf99b-1aef-42fa-b110-736c8c73dcf9"
 }

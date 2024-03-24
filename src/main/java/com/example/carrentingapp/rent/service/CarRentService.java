@@ -49,17 +49,17 @@ public class CarRentService {
     private final UserLockService userLockService;
 
     @Transactional
-    public CarRentResponse rentCar(CarRentRequest request){
+    public CarRentResponse rentCar(CarRentRequest request) {
         CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
         UserBase user = securityService.getLoggedInUser();
 
-        if(Period.between(request.getRentedFrom(), request.getRentedTo()).getDays() > 14){
+        if (Period.between(request.getRentedFrom(), request.getRentedTo()).getDays() > 14) {
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
         }
 
         boolean isActive = carToRent.getStatus().equals(CarBase.CarStatus.CAR_READY);
-        LocalDateTime collectionDate  = LocalDateTime.now().plusDays(1);
+        LocalDateTime collectionDate = LocalDateTime.now().plusDays(1);
 
         CarRent rent = new CarRent(
                 carToRent,
@@ -89,15 +89,15 @@ public class CarRentService {
     }
 
     @Transactional
-    public CarCollectResponse collectCar(CarCollectRequest request){
+    public CarCollectResponse collectCar(CarCollectRequest request) {
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
         UserBase user = rent.getUser();
 
-        if(rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED)){
+        if (rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED)) {
             throw new CarAlreadyCollectedException("You have already collected this car");
         }
 
-        if(rent.getCollectionDate().isAfter(LocalDateTime.now())){
+        if (rent.getCollectionDate().isAfter(LocalDateTime.now())) {
             throw new CarNotReadyException("Your car is not ready to collect yet");
         }
 
@@ -113,17 +113,16 @@ public class CarRentService {
     }
 
     @Transactional
-    public CarReturnResponse returnCar(CarReturnRequest request){
+    public CarReturnResponse returnCar(CarReturnRequest request) {
         CarRent rent = carRentRepository.findById(request.getCarRentId())
                 .orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
 
-        if(
-                rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_OK) ||
-                rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_DAMAGED_CAR) ||
-                rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_LATE) ||
-                rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_WAITING_FOR_REVIEW)
-
-        ){
+        if (rent.getStatus().isIn(
+                CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_OK,
+                CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_DAMAGED_CAR,
+                CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_LATE,
+                CarRent.CarRentStatus.CAR_RENT_WAITING_FOR_REVIEW
+        )) {
             throw new CarAlreadyReturnedException("You cannot return already returned car");
         }
 
@@ -132,15 +131,15 @@ public class CarRentService {
         float userRank = user.getRank();
 
         //modyfikowanie oceny użytkownika na podstawie czasu zwrotu samochodu
-        if(rent.getRentedTo().isBefore(LocalDate.now())){
+        if (rent.getRentedTo().isBefore(LocalDate.now())) {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_LATE);
             int daysOfDelay = Period.between(rent.getRentedTo(), LocalDate.now()).getDays();
-            if(daysOfDelay > 1){
+            if (daysOfDelay > 1) {
                 userRank -= daysOfDelay * 0.2F;
             }
             user.carReturnDelaysIncrement();
             //blokowanie na miesiąc przy 5 opóźnieniu
-            if (user.getCarReturnDelays() > 4){
+            if (user.getCarReturnDelays() > 4) {
                 userLockService.lockUser(new LockRequest(
                         user.getId(),
                         UserLock.LockType.TEMPORARY.name(),
@@ -148,8 +147,7 @@ public class CarRentService {
                         LocalDate.now().plusMonths(1)
                 ));
             }
-        }
-        else{
+        } else {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_WAITING_FOR_REVIEW);
         }
 
@@ -167,14 +165,13 @@ public class CarRentService {
     }
 
     @Transactional
-    public CarCheckAfterRentResponse checkCarAfterRent(CarCheckAfterRentRequest request){
+    public CarCheckAfterRentResponse checkCarAfterRent(CarCheckAfterRentRequest request) {
         CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("Invalid car rent id"));
         UserBase user = rent.getUser();
 
-        if(request.isDamaged()){
+        if (request.isDamaged()) {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_DAMAGED_CAR);
-        }
-        else{
+        } else {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_OK);
             user.updateRank(0.5F);
         }

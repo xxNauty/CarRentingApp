@@ -30,7 +30,7 @@ public class ForgotPasswordService {
 
     public ForgotPasswordResponse sendEmail(ForgotPasswordVerificationRequest request){
         UserBase user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new UserNotFoundException("There is no user with given Id"));
+                () -> new UserNotFoundException("There is no user with given email"));
 
         //sprawdzenie czy są w bazie jakieś niewykorzystane tokeny dla danego użytkownika, jeśli tak to ustawiamy ich status na EXPIRED
 

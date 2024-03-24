@@ -25,23 +25,23 @@ public class CarRentController {
     private final CarRentService carRentService;
 
     @PostMapping("/request")
-    public ResponseEntity<CarRentResponse> rentCar(
-            @RequestBody CarRentRequest request
-    ){
+    public ResponseEntity<CarRentResponse> rentCar(@RequestBody CarRentRequest request) {
+//        request.checkInput();
+
         return ResponseEntity.ok(carRentService.rentCar(request));
     }
 
     @PostMapping("/collect")
     public ResponseEntity<CarCollectResponse> collectRentedCar(
             @RequestBody CarCollectRequest request
-    ){
+    ) {
         return ResponseEntity.ok(carRentService.collectCar(request));
     }
 
     @PostMapping("/return")
     public ResponseEntity<CarReturnResponse> returnCar(
             @RequestBody CarReturnRequest request
-    ){
+    ) {
         return ResponseEntity.ok(carRentService.returnCar(request));
     }
 
@@ -49,7 +49,7 @@ public class CarRentController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CarCheckAfterRentResponse> checkCarAfterRent(
             @RequestBody CarCheckAfterRentRequest request
-    ){
+    ) {
         return ResponseEntity.ok(carRentService.checkCarAfterRent(request));
     }
 }

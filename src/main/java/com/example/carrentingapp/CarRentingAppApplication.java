@@ -61,27 +61,16 @@ public class CarRentingAppApplication {
 }
 /*
     Lista zadań:
-       1.
-       2.
-       3.
-       4.
-       5.
-       6.
-       7. Liczenie opóźnień w zwrotach, 5 -> blokada na miesiąc
        8. Przedłużanie blokady samochodu/usera -> stara traci ważność, tylko jedna aktywna w danym momencie
        9. Obsługa błędów UniqueConstraint
-       10. Testy przepisać na nowo
-       12. Usunąć możliwość podwójnego oddania i odebrania samochodu
-       13.
-       14.
-       15.
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
        17. Usystematyzować konstrukcję relacji
-       18.
-       19.
-       20. Zwrot samochodu, ocena przez admina przebiegu wypożyczenia
-       21.
        22. Wynajęcie samochodu conajmniej 7 dni przed
+       23. Naprawić status tokenu weryfikacyjnego dla emaila, dodać status resent przy ponownym wysłaniu maila weryfikacyjnego
+       24. Poprawić powiadomienie o blokadzie na zawsze: "Your account has been locked forever..."
+       25. Dodać do wszystkich float'ów precyzję do 2 miejsc po przecinku, również w bazie danych
+       26. Pobieranie danych samochodu po id: w przypadku błędnego id 404 error
+       27. Przerobić wszystkie requesty na wzór z CarRentRequest, dodać walidację danych
  */
 /*
     Do doczytania:
@@ -101,4 +90,3 @@ public class CarRentingAppApplication {
         14. REGEX
         15. Async
  */
-

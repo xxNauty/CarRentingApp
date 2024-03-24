@@ -139,20 +139,12 @@ public class UserBase implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserBase baseUser = (UserBase) o;
-        return Objects.equals(id, baseUser.id) &&
-                Objects.equals(firstName, baseUser.firstName) &&
-                Objects.equals(lastName, baseUser.lastName) &&
-                Objects.equals(email, baseUser.email) &&
-                Objects.equals(dateOfBirth, baseUser.dateOfBirth) &&
-                role == baseUser.role &&
-                Objects.equals(rank, baseUser.rank) &&
-                status == baseUser.status;
+        return Objects.equals(id, baseUser.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, dateOfBirth,
-                role, rank, status);
+        return Objects.hash(id);
     }
 
     public enum Role {

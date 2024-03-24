@@ -26,6 +26,7 @@ public class ConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
+    @Enumerated(EnumType.STRING)
     private ConfirmationTokenStatus status;
 
     @ManyToOne

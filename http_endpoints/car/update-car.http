@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "id": "1bc28b46-7837-4d7c-bb4a-e110698c34d3",
+  "id": "506defb4-ccd6-4b6d-a71d-6a5a91b404a9",
   "brand": "Lotus",
   "model": "Omega",
   "yearOfProduction": 2000,
@@ -14,4 +14,14 @@ Authorization: Bearer {{auth-token}}
   "averageFuelConsumption": 12.5,
   "minRankOfUser": 6.5,
   "pricePerDay": 230
+}
+
+### Update mileage
+POST http://localhost:8080/api/v1/car/update/mileage
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "carId": "506defb4-ccd6-4b6d-a71d-6a5a91b404a9",
+  "mileageToAdd": 500.7
 }

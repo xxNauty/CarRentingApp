@@ -7,6 +7,7 @@ import com.example.carrentingapp.car.CarLockRepository;
 import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
+import com.example.carrentingapp.exception.exception.http_error_404.CarLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_500.CarNotLockedException;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,15 @@ public class CarLockService {
     private final CarLockRepository carLockRepository;
 
     public CarLockResponse lockCar(CarLockRequest request){
-        CarBase car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
+        CarBase car = baseCarRepository.findById(request.getCarId())
+                .orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
+
+        if(car.getStatus().equals(CarBase.CarStatus.CAR_LOCKED)){
+            CarLock lock = carLockRepository.findActiveLockForCar(car.getId())
+                    .orElseThrow(() -> new CarLockNotFoundException("Car lock not found"));
+            lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_EXTENDED);
+            carLockRepository.save(lock);
+        }
 
         CarLock lock = new CarLock(
                 car,
@@ -42,9 +51,8 @@ public class CarLockService {
     public CarLockResponse unlockCar(CarUnlockRequest request){
         CarBase car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
-        CarLock lock = carLockRepository.findAllActiveLocksForCar(
-                request.getCarId(),
-                CarLock.CarLockStatus.CAR_LOCK_ACTIVE
+        CarLock lock = carLockRepository.findActiveLockForCar(
+                request.getCarId()
         ).orElseThrow(() -> new CarNotLockedException("Car with given id is not locked"));
 
         lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);

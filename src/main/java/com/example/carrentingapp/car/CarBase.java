@@ -25,18 +25,25 @@ public class CarBase {
 
     private Integer yearOfProduction;
 
+    @Column(precision = 2)
     private Float mileage;
 
+    @Column(precision = 1)
     private Float power;
 
+    @Column(precision = 1)
     private Float torque;
 
+    @Column(precision = 2)
     private Float engineSize;
 
+    @Column(precision = 1)
     private Float averageFuelConsumption;
 
+    @Column(precision = 1)
     private Float minRankOfUser;
 
+    @Column(precision = 2)
     private Float pricePerDay;
 
     private Boolean hasActiveSale;

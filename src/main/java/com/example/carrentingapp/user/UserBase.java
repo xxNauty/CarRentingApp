@@ -41,6 +41,7 @@ public class UserBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(precision = 1)
     private Float rank;
 
     @OneToMany(targetEntity = Token.class, mappedBy = "user", fetch = FetchType.EAGER)
@@ -55,7 +56,7 @@ public class UserBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    private int carReturnDelays;
+    private Integer carReturnDelays;
 
     public void carReturnDelaysIncrement(){
         this.carReturnDelays++;

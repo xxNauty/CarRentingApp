@@ -24,16 +24,20 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserLockService {
 
-    private final UserLockRepository repository;
-    private final UserBaseRepository userRepository;
+    private final UserLockRepository userLockRepository;
+    private final UserBaseRepository userBaseRepository;
     private final NotificationSender notificationSender;
 
     public LockResponse lockUser(LockRequest request) {
-        UserBase user = userRepository.findById(request.getUserid())
+        UserBase user = userBaseRepository.findById(request.getUserid())
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
         if(!user.isAccountNonLocked()){
-            throw new AccountAlreadyLockedException("You can not lock already locked account");
+            UserLock lock = userLockRepository.findActiveForUser(
+                    request.getUserid()
+            ).orElseThrow(() -> new UserLockNotFoundException("User lock not found"));
+            lock.setStatus(UserLock.UserLockStatus.USER_LOCK_EXTENDED);
+            userLockRepository.save(lock);
         }
 
         UserLock lock = new UserLock(
@@ -50,8 +54,8 @@ public class UserLockService {
             user.setStatus(UserBase.UserStatus.USER_LOCKED_FOREVER);
         }
 
-        userRepository.save(user);
-        repository.save(lock);
+        userBaseRepository.save(user);
+        userLockRepository.save(lock);
 
         notificationSender.sendAccountLockedNotification(new AccountLockedRequest(lock));
 
@@ -59,14 +63,14 @@ public class UserLockService {
     }
 
     public LockResponse unlockUser(UnlockRequest request) {
-        UserBase user = userRepository.findById(request.getUserid())
+        UserBase user = userBaseRepository.findById(request.getUserid())
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
         if(user.isAccountNonLocked()){
             throw new UserNotLockedException("This user is not locked");
         }
 
-        UserLock lock = repository.findAllByStatusAndUser(request.getUserid(), UserLock.UserLockStatus.USER_LOCK_ACTIVE)
+        UserLock lock = userLockRepository.findActiveForUser(request.getUserid())
                 .orElseThrow(() -> new UserLockNotFoundException("There is no active locks for this user"));
 
         if(lock.getType().equals(UserLock.LockType.FOREVER)){
@@ -76,8 +80,8 @@ public class UserLockService {
         user.setStatus(UserBase.UserStatus.USER_READY);
         lock.setStatus(UserLock.UserLockStatus.USER_LOCK_NOT_ACTIVE);
 
-        userRepository.save(user);
-        repository.save(lock);
+        userBaseRepository.save(user);
+        userLockRepository.save(lock);
 
         notificationSender.sendAccountUnlockedNotification(new AccountUnlockedRequest(user));
 

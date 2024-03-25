@@ -26,6 +26,7 @@ public class ForgotPasswordVerificationToken {
 
     private LocalDateTime usedAt;
 
+    @Enumerated(EnumType.STRING)
     private ForgotPasswordTokenStatus status;
 
     @ManyToOne

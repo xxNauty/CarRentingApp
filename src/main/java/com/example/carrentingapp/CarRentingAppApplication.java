@@ -18,10 +18,7 @@ public class CarRentingAppApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(
-            UserCreateService userCreateService,
-            UserBaseRepository baseUserRepository
-    ){
+    public CommandLineRunner commandLineRunner(UserCreateService userCreateService, UserBaseRepository baseUserRepository){
         return args -> {
             System.out.println("\n--------------------------------\n");
 
@@ -60,10 +57,8 @@ public class CarRentingAppApplication {
 }
 /*
     Lista zadań:
-       8. Przedłużanie blokady samochodu/usera -> stara traci ważność, tylko jedna aktywna w danym momencie
        9. Obsługa błędów UniqueConstraint
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
-       17. Usystematyzować konstrukcję relacji
        22. Wynajęcie samochodu conajmniej 7 dni przed
        23. Naprawić status tokenu weryfikacyjnego dla emaila, dodać status resent przy ponownym wysłaniu maila weryfikacyjnego
        24. Poprawić powiadomienie o blokadzie na zawsze: "Your account has been locked forever..."
@@ -71,6 +66,7 @@ public class CarRentingAppApplication {
        26. Pobieranie danych samochodu po id: w przypadku błędnego id 404 error
        27. Przerobić wszystkie requesty na wzór z CarRentRequest, dodać walidację danych
        28. Przygotowywanie danych do testów
+       29. Resetowanie liczby opóźnionych zwrotów po odblokowaniu konta
  */
 /*
     Do doczytania:

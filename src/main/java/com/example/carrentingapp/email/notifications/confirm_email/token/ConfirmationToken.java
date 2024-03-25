@@ -47,6 +47,6 @@ public class ConfirmationToken {
     public enum ConfirmationTokenStatus{
         CONFIRMATION_TOKEN_SENT,
         CONFIRMATION_TOKEN_CONFIRMED,
-        CONFIRMATION_TOKEN_RESENT
+        CONFIRMATION_TOKEN_EXPIRED
     }
 }

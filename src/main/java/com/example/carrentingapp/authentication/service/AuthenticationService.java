@@ -144,6 +144,11 @@ public class AuthenticationService {
                 request.getEmail(),
                 UUID.fromString(request.getUserId())
         ).orElseThrow(() -> new UserNotFoundException("There is no such user"));
+        List<ConfirmationToken> oldTokens = confirmationTokenRepository.findAllUnusedForUser(UUID.fromString(request.getUserId()));
+        for(ConfirmationToken token : oldTokens){
+            token.setStatus(ConfirmationToken.ConfirmationTokenStatus.CONFIRMATION_TOKEN_EXPIRED);
+            confirmationTokenRepository.save(token);
+        }
         if (user.isEnabled()){
             throw new AccountAlreadyEnabledException("Your account is already enabled");
         }

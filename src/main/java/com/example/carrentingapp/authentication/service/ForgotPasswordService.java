@@ -26,10 +26,10 @@ public class ForgotPasswordService {
     private final NotificationSender notificationSender;
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
     private final UserPasswordService passwordService;
-    private final UserDataValidationService userDataValidationService;
 
     public ForgotPasswordResponse sendEmail(ForgotPasswordVerificationRequest request){
-        UserBase user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
+        request.checkInput();
+        UserBase user = baseUserRepository.findByEmail(request.email.get()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given email"));
 
         //sprawdzenie czy są w bazie jakieś niewykorzystane tokeny dla danego użytkownika, jeśli tak to ustawiamy ich status na EXPIRED
@@ -49,17 +49,18 @@ public class ForgotPasswordService {
     }
 
     public ForgotPasswordResponse changePassword(NewPasswordRequest request){
+        request.checkInput();
         ForgotPasswordVerificationToken token = forgotPasswordVerificationTokenRepository
-                .findByToken(request.getToken()).orElseThrow(
+                .findByToken(request.token.get()).orElseThrow(
                         () -> new TokenNotFoundException("Invalid verification token")
                 );
-        UserBase user = baseUserRepository.findByEmail(request.getEmail()).orElseThrow(
+        UserBase user = baseUserRepository.findByEmail(request.email.get()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given Id"));
 
         if(!token.getUser().equals(user)){
             throw new AccessDeniedException("It is not your token");
         }
-        passwordService.changePassword(user, userDataValidationService.isPasswordStrongEnough(request.getPassword()));
+        passwordService.changePassword(user, request.password.get());
 
         token.setStatus(ForgotPasswordVerificationToken.ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_USED);
         forgotPasswordVerificationTokenRepository.save(token);

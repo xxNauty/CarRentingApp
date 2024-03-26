@@ -2,11 +2,9 @@ package com.example.carrentingapp.rent.controller;
 
 import com.example.carrentingapp.rent.request.*;
 import com.example.carrentingapp.rent.response.*;
-import com.example.carrentingapp.rent.request.CarReadyToCollectRequest;
 import com.example.carrentingapp.rent.request.CarRentRequest;
 import com.example.carrentingapp.rent.request.CarCollectRequest;
 import com.example.carrentingapp.rent.request.CarReturnRequest;
-import com.example.carrentingapp.rent.response.CarReadyToCollectResponse;
 import com.example.carrentingapp.rent.response.CarRentResponse;
 import com.example.carrentingapp.rent.response.CarCollectResponse;
 import com.example.carrentingapp.rent.response.CarReturnResponse;
@@ -26,7 +24,6 @@ public class CarRentController {
 
     @PostMapping("/request")
     public ResponseEntity<CarRentResponse> rentCar(@RequestBody CarRentRequest request) {
-//        request.checkInput();
 
         return ResponseEntity.ok(carRentService.rentCar(request));
     }

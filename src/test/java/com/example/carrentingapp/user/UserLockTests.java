@@ -22,6 +22,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -60,10 +61,10 @@ public class UserLockTests {
         //blokowanie użytkownika
 
         LockRequest lockRequest = new LockRequest(
-                id,
-                UserLock.LockType.FOREVER.name(),
-                UserLock.Reason.DAMAGED_CAR.name(),
-                null
+                Optional.of(id.toString()),
+                Optional.of(UserLock.LockType.FOREVER.name()),
+                Optional.of(UserLock.Reason.DAMAGED_CAR.name()),
+                Optional.empty()
         );
 
         HttpHeaders lockHeaders = new HttpHeaders();
@@ -101,8 +102,8 @@ public class UserLockTests {
         //sprawdzenie czy użytkownik może zalogować się na swoje konto po blokadzie
 
         LoginRequest lockedUserLoginRequest = new LoginRequest(
-                "jan@nowak.pl",
-                "Qwerty123!"
+                Optional.of("jan@nowak.pl"),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders lockedUserLoginHeaders = new HttpHeaders();
@@ -135,10 +136,10 @@ public class UserLockTests {
         //nieudane blokowanie użytkownika
 
         LockRequest lockRequest = new LockRequest(
-                id,
-                UserLock.LockType.FOREVER.name(),
-                UserLock.Reason.DAMAGED_CAR.name(),
-                null
+                Optional.of(id.toString()),
+                Optional.of(UserLock.LockType.FOREVER.name()),
+                Optional.of(UserLock.Reason.DAMAGED_CAR.name()),
+                Optional.empty()
         );
 
         HttpHeaders lockHeaders = new HttpHeaders();
@@ -250,7 +251,7 @@ public class UserLockTests {
 
         //odblokowywanie
 
-        UnlockRequest unlockRequest = new UnlockRequest(userID);
+        UnlockRequest unlockRequest = new UnlockRequest(Optional.of(userID.toString()));
 
         HttpHeaders unlockHeaders = new HttpHeaders();
         unlockHeaders.set("X-COM-PERSIST", "true");
@@ -271,8 +272,8 @@ public class UserLockTests {
         //sprawdzenie czy użytkownik może się spowrotem logować
 
         LoginRequest loginRequest = new LoginRequest(
-                "jan@nowak.pl",
-                "Qwerty123!"
+                Optional.of("jan@nowak.pl"),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();
@@ -304,7 +305,7 @@ public class UserLockTests {
 
         //odblokowywanie
 
-        UnlockRequest unlockRequest = new UnlockRequest(userID);
+        UnlockRequest unlockRequest = new UnlockRequest(Optional.ofNullable(userID.toString()));
 
         HttpHeaders unlockHeaders = new HttpHeaders();
         unlockHeaders.set("X-COM-PERSIST", "true");
@@ -323,8 +324,8 @@ public class UserLockTests {
         //sprawdzenie czy użytkownik napewno nie został odblokowany
 
         LoginRequest loginRequest = new LoginRequest(
-                "adam@kowalski.pl",
-                "Qwerty123!"
+                Optional.of("adam@kowalski.pl"),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();
@@ -356,7 +357,7 @@ public class UserLockTests {
 
         //odblokowywanie
 
-        UnlockRequest unlockRequest = new UnlockRequest(userID);
+        UnlockRequest unlockRequest = new UnlockRequest(Optional.ofNullable(userID.toString()));
 
         HttpHeaders unlockHeaders = new HttpHeaders();
         unlockHeaders.set("X-COM-PERSIST", "true");
@@ -384,10 +385,10 @@ public class UserLockTests {
         Assertions.assertDoesNotThrow(() -> new UserNotFoundException("User not found"));
 
         LockRequest lockRequest = new LockRequest(
-                id,
-                UserLock.LockType.TEMPORARY.name(),
-                UserLock.Reason.DAMAGED_CAR.name(),
-                LocalDate.now().plusMonths(1)
+                Optional.of(id.toString()),
+                Optional.of(UserLock.LockType.TEMPORARY.name()),
+                Optional.of(UserLock.Reason.DAMAGED_CAR.name()),
+                Optional.of(LocalDate.now().plusMonths(1))
         );
 
         HttpHeaders lockHeaders = new HttpHeaders();
@@ -409,8 +410,8 @@ public class UserLockTests {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(
-                email,
-                "Qwerty123!"
+                Optional.of(email),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();

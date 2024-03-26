@@ -19,6 +19,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -29,28 +31,29 @@ public class UserLockService {
     private final NotificationSender notificationSender;
 
     public LockResponse lockUser(LockRequest request) {
-        UserBase user = userBaseRepository.findById(request.getUserid())
+        request.checkInput();
+        UserBase user = userBaseRepository.findById(UUID.fromString(request.userid.get()))
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
         if(!user.isAccountNonLocked()){
             UserLock lock = userLockRepository.findActiveForUser(
-                    request.getUserid()
+                    UUID.fromString(request.userid.get())
             ).orElseThrow(() -> new UserLockNotFoundException("User lock not found"));
             lock.setStatus(UserLock.UserLockStatus.USER_LOCK_EXTENDED);
             userLockRepository.save(lock);
         }
 
         UserLock lock = new UserLock(
-                UserLock.Reason.valueOf(request.getReason()),
-                UserLock.LockType.valueOf(request.getLockType()),
-                request.getLockType().equals(UserLock.LockType.TEMPORARY.name()) ? request.getExpirationDate() : null,
+                UserLock.Reason.valueOf(request.reason.get()),
+                UserLock.LockType.valueOf(request.lockType.get()),
+                request.lockType.get().equals(UserLock.LockType.TEMPORARY.name()) ? request.expirationDate.get() : null,
                 user
         );
 
-        if (request.getLockType().equals(UserLock.LockType.TEMPORARY.name())){
+        if (request.lockType.get().equals(UserLock.LockType.TEMPORARY.name())){
             user.setStatus(UserBase.UserStatus.USER_LOCKED_TEMPORARY);
         }
-        else if (request.getLockType().equals(UserLock.LockType.FOREVER.name())){
+        else if (request.lockType.get().equals(UserLock.LockType.FOREVER.name())){
             user.setStatus(UserBase.UserStatus.USER_LOCKED_FOREVER);
         }
 
@@ -63,14 +66,15 @@ public class UserLockService {
     }
 
     public LockResponse unlockUser(UnlockRequest request) {
-        UserBase user = userBaseRepository.findById(request.getUserid())
+        request.checkInput();
+        UserBase user = userBaseRepository.findById(UUID.fromString(request.userid.get()))
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
         if(user.isAccountNonLocked()){
             throw new UserNotLockedException("This user is not locked");
         }
 
-        UserLock lock = userLockRepository.findActiveForUser(request.getUserid())
+        UserLock lock = userLockRepository.findActiveForUser(UUID.fromString(request.userid.get()))
                 .orElseThrow(() -> new UserLockNotFoundException("There is no active locks for this user"));
 
         if(lock.getType().equals(UserLock.LockType.FOREVER)){

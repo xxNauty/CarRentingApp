@@ -46,18 +46,18 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserDataValidationService validationService;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserCreateService userCreateService;
     private final NotificationSender notificationSender;
 
-    public AuthenticationResponse  register(RegistrationRequest request) {
+    public AuthenticationResponse register(RegistrationRequest request) {
+        request.checkInput();
         UserBase user = userCreateService.createUser(
-                validationService.dataMatchesRequirements(request.getFirstName(), "first name"),
-                validationService.dataMatchesRequirements(request.getLastName(), "last name"),
-                validationService.isEmailCorrect(request.getEmail()),
-                passwordEncoder.encode(validationService.isPasswordStrongEnough(request.getPassword())),
-                validationService.isUserOldEnough(request.getDateOfBirth())
+                request.firstName.get(),
+                request.lastName.get(),
+                request.email.get(),
+                request.password.get(),
+                request.dateOfBirth.get()
         );
         UserBase savedUser = repository.save(user);
         String jwtToken = jwtService.generateToken(user);
@@ -70,13 +70,14 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(LoginRequest request){
+        request.checkInput();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        request.email.get(),
+                        request.password.get()
                 )
         );
-        UserBase user = repository.findByEmail(request.getEmail())
+        UserBase user = repository.findByEmail(request.email.get())
                 .orElseThrow(() -> new UserNotFoundException("There is no user with given Id"));
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -140,11 +141,12 @@ public class AuthenticationService {
     }
 
     public EmailVerificationResponse sendVerifyingTokenAgain(SendVerifyingTokenAgainRequest request){
+        request.checkInput();
         UserBase user = repository.findByEmailAndId(
-                request.getEmail(),
-                UUID.fromString(request.getUserId())
+                request.email.get(),
+                UUID.fromString(request.userId.get())
         ).orElseThrow(() -> new UserNotFoundException("There is no such user"));
-        List<ConfirmationToken> oldTokens = confirmationTokenRepository.findAllUnusedForUser(UUID.fromString(request.getUserId()));
+        List<ConfirmationToken> oldTokens = confirmationTokenRepository.findAllUnusedForUser(UUID.fromString(request.userId.get()));
         for(ConfirmationToken token : oldTokens){
             token.setStatus(ConfirmationToken.ConfirmationTokenStatus.CONFIRMATION_TOKEN_EXPIRED);
             confirmationTokenRepository.save(token);

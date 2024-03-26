@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class CarUnlockService {
         List<CarLock> locks = carLockRepository.findAllByStatus(CarLock.CarLockStatus.CAR_LOCK_ACTIVE);
         for (CarLock lock : locks){
             if (lock.getLockedTo().equals(LocalDate.now())){
-                carLockService.unlockCar(new CarUnlockRequest(lock.getId()));
+                carLockService.unlockCar(new CarUnlockRequest(Optional.of(lock.getId().toString())));
             }
         }
     }

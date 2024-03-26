@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -47,11 +48,11 @@ public class AuthorizationTests {
         URI uri = new URI(url);
 
         RegistrationRequest request = new RegistrationRequest(
-                "Jan",
-                "Kowalski",
-                "jan@kowalski.pl",
-                "Qwerty123!",
-                LocalDate.now().minusYears(20)
+                Optional.of("Jan"),
+                Optional.of("Kowalski"),
+                Optional.of("jan@kowalski.pl"),
+                Optional.of("Qwerty123!"),
+                Optional.of(LocalDate.now().minusYears(20))
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -78,8 +79,8 @@ public class AuthorizationTests {
         URI uri = new URI(url);
 
         LoginRequest request = new LoginRequest(
-                "adam@kowalski.pl",
-                "Qwerty123!"
+                Optional.of("adam@kowalski.pl"),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -106,8 +107,8 @@ public class AuthorizationTests {
         URI uri = new URI(baseURL);
 
         LoginRequest request = new LoginRequest(
-                "jan@kowalski.pl",
-                "Qwerty123!"
+                Optional.of("jan@kowalski.pl"),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -131,8 +132,8 @@ public class AuthorizationTests {
         URI uri = new URI(baseURL);
 
         LoginRequest request = new LoginRequest(
-                "jan@nowak.pl",
-                "Qwerty123!!"
+                Optional.of("jan@nowak.pl"),
+                Optional.of("Qwerty123!!")
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -158,11 +159,11 @@ public class AuthorizationTests {
         int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
-                "Adam",
-                "Kowalski",
-                "adam123kowalski.pl",
-                "Qwerty123!",
-                LocalDate.now().minusYears(20)
+                Optional.of("Adam"),
+                Optional.of("Kowalski"),
+                Optional.of("adam123kowalski.pl"),
+                Optional.of("Qwerty123!"),
+                Optional.of(LocalDate.now().minusYears(20))
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -191,11 +192,11 @@ public class AuthorizationTests {
         int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
-                "Adam!@#",
-                "Kowalski",
-                "adam123@kowalski.pl",
-                "Qwerty123!",
-                LocalDate.now().minusYears(20)
+                Optional.of("Adam!@#"),
+                Optional.of("Kowalski"),
+                Optional.of("adam123@kowalski.pl"),
+                Optional.of("Qwerty123!"),
+                Optional.of(LocalDate.now().minusYears(20))
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -224,11 +225,11 @@ public class AuthorizationTests {
         int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
-                "Adam!@#",
-                "Kowalski",
-                "adam123@kowalski.pl",
-                "Qwerty123!",
-                LocalDate.now().minusYears(20)
+                Optional.of("Adam!@#"),
+                Optional.of("Kowalski"),
+                Optional.of("adam123@kowalski.pl"),
+                Optional.of("Qwerty123!"),
+                Optional.of(LocalDate.now().minusYears(20))
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -257,11 +258,11 @@ public class AuthorizationTests {
         int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
-                "Adam",
-                "Kowalski",
-                "adam123@kowalski.pl",
-                "qwerty",
-                LocalDate.now().minusYears(20)
+                Optional.of("Adam"),
+                Optional.of("Kowalski"),
+                Optional.of("adam123@kowalski.pl"),
+                Optional.of("qwerty"),
+                Optional.of(LocalDate.now().minusYears(20))
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -290,11 +291,11 @@ public class AuthorizationTests {
         int userCountBefore = baseUserRepository.findAll().size();
 
         RegistrationRequest request = new RegistrationRequest(
-                "Adam",
-                "Kowalski",
-                "adam123@kowalski.pl",
-                "Qwerty123!",
-                LocalDate.now()
+                Optional.of("Adam"),
+                Optional.of("Kowalski"),
+                Optional.of("adam123@kowalski.pl"),
+                Optional.of("Qwerty123!"),
+                Optional.of(LocalDate.now())
         );
 
         HttpHeaders headers = new HttpHeaders();

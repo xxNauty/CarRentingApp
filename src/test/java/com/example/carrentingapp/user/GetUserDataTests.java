@@ -14,6 +14,7 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -187,8 +188,8 @@ public class GetUserDataTests {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(
-                email,
-                "Qwerty123!"
+                Optional.of(email),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();

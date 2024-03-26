@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -147,14 +148,14 @@ public class GetCarDataTests {
 
         List<UUID> carIds = createCarsForTesting(5);
         carLockService.lockCar(new CarLockRequest(
-                carIds.get(3),
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(2)
+                Optional.of(carIds.get(3).toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(2))
         ));
         carLockService.lockCar(new CarLockRequest(
-                carIds.get(1),
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(2)
+                Optional.of(carIds.get(1).toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(2))
         ));
 
         final String getSimplifiedCarListUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/simple/available";
@@ -224,14 +225,14 @@ public class GetCarDataTests {
 
         List<UUID> carIds = createCarsForTesting(5);
         carLockService.lockCar(new CarLockRequest(
-                carIds.get(3),
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(2)
+                Optional.of(carIds.get(3).toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(2))
         ));
         carLockService.lockCar(new CarLockRequest(
-                carIds.get(1),
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(2)
+                Optional.of(carIds.get(1).toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(2))
         ));
 
         final String getFullCarListUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/full/available";
@@ -298,16 +299,16 @@ public class GetCarDataTests {
             final String token = getToken("adam@kowalski.pl");
 
             CarCreateRequest createCarRequest = new CarCreateRequest(
-                    "Polonez",
-                    "Caro Plus",
-                    1999,
-                    300_000F,
-                    104F,
-                    140F,
-                    1.4F,
-                    8F,
-                    6.5F,
-                    300.99F
+                    Optional.of("Polonez"),
+                    Optional.of("Caro Plus"),
+                    Optional.of(1999),
+                    Optional.of(300_000F),
+                    Optional.of(104F),
+                    Optional.of(140F),
+                    Optional.of(1.4F),
+                    Optional.of(8F),
+                    Optional.of(6.5F),
+                    Optional.of(300.99F)
             );
 
             HttpHeaders createCarHeaders = new HttpHeaders();
@@ -323,7 +324,7 @@ public class GetCarDataTests {
             );
             Assertions.assertNotNull(carResponse.getBody());
 
-            ids.add(carResponse.getBody().getId());
+            ids.add(UUID.fromString(carResponse.getBody().getId()));
         }
 
         return ids;
@@ -333,8 +334,8 @@ public class GetCarDataTests {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(
-                email,
-                "Qwerty123!"
+                Optional.of(email),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();

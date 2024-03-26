@@ -3,7 +3,7 @@ package com.example.carrentingapp.rent.service;
 import com.example.carrentingapp.car.CarBase;
 import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.configuration.service.SecurityService;
-import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
 import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest;
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
@@ -46,7 +46,7 @@ public class CarRentService {
     private final CarBaseRepository baseCarRepository;
     private final UserBaseRepository baseUserRepository;
     private final SecurityService securityService;
-    private final NotificationSender notificationSender;
+    private final EmailNotificationSender notificationSender;
     private final UserLockService userLockService;
 
     @Transactional

@@ -1,7 +1,5 @@
 package com.example.carrentingapp.user.service;
 
-import com.example.carrentingapp.email.notifications.NotificationSender;
-import com.example.carrentingapp.email.notifications.account_unlocked.AccountUnlockedRequest;
 import com.example.carrentingapp.user.UserLock;
 import com.example.carrentingapp.user.UserLockRepository;
 import com.example.carrentingapp.user.request.UnlockRequest;

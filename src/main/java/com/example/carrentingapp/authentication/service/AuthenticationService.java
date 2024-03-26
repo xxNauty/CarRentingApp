@@ -6,13 +6,14 @@ import com.example.carrentingapp.authentication.request.SendVerifyingTokenAgainR
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
 import com.example.carrentingapp.configuration.jwt.JwtService;
-import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationToken;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
 import com.example.carrentingapp.exception.exception.http_error_500.AccountAlreadyEnabledException;
 import com.example.carrentingapp.exception.exception.http_error_500.EmailAlreadyVerifiedException;
-import com.example.carrentingapp.exception.exception.http_error_403.TokenExpiredException;
+import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
+import com.example.carrentingapp.exception.exception.http_error_500.TokenExpiredException;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.token.Token;
@@ -48,10 +49,15 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserCreateService userCreateService;
-    private final NotificationSender notificationSender;
+    private final EmailNotificationSender notificationSender;
 
     public AuthenticationResponse register(RegistrationRequest request) {
         request.checkInput();
+
+        if(repository.findByEmail(request.email.get()).isPresent()){
+            throw new InvalidArgumentException("This email is already used");
+        }
+
         UserBase user = userCreateService.createUser(
                 request.firstName.get(),
                 request.lastName.get(),

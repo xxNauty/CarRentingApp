@@ -3,7 +3,7 @@ package com.example.carrentingapp.authentication.service;
 import com.example.carrentingapp.authentication.request.ForgotPasswordVerificationRequest;
 import com.example.carrentingapp.authentication.request.NewPasswordRequest;
 import com.example.carrentingapp.authentication.response.ForgotPasswordResponse;
-import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.forgot_password.ForgotPasswordRequest;
 import com.example.carrentingapp.email.notifications.forgot_password.token.ForgotPasswordVerificationToken;
 import com.example.carrentingapp.email.notifications.forgot_password.token.ForgotPasswordVerificationTokenRepository;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ForgotPasswordService {
 
     private final UserBaseRepository baseUserRepository;
-    private final NotificationSender notificationSender;
+    private final EmailNotificationSender notificationSender;
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
     private final UserPasswordService passwordService;
 

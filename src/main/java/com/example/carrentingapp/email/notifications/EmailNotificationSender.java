@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class NotificationSender {
+public class EmailNotificationSender {
 
     private final AccountLockedNotificationSender accountLockedNotificationSender;
     private final AccountUnlockedNotificationSender accountUnlockedNotificationSender;

@@ -61,12 +61,9 @@ public class CarRentingAppApplication {
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
        22. Wynajęcie samochodu conajmniej 7 dni przed
        26. Pobieranie danych samochodu po id: w przypadku błędnego id 404 error
-       27. Przerobić wszystkie requesty na wzór z CarRentRequest, dodać walidację danych
        28. Przygotowywanie danych do testów
        29. Resetowanie liczby opóźnionych zwrotów po odblokowaniu konta
        30. Automatyczne odblokowywanie usera do poprawy
-       31. Usunąć słowo "interface" z nazw interfejsów
-       32. Usunąć nieużywane wyjątki, zredukować liczbę pozostałych do minimum
  */
 /*
     Do doczytania:

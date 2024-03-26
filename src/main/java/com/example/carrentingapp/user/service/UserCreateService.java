@@ -1,6 +1,6 @@
 package com.example.carrentingapp.user.service;
 
-import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
@@ -17,7 +17,7 @@ public class UserCreateService {
 
     private final UserBaseRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final NotificationSender notificationSender;
+    private final EmailNotificationSender notificationSender;
 
     //todo: przerobić na UserCreateResponse
     @Transactional

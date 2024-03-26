@@ -1,9 +1,8 @@
 package com.example.carrentingapp.user.service;
 
-import com.example.carrentingapp.email.notifications.NotificationSender;
+import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.account_locked.AccountLockedRequest;
 import com.example.carrentingapp.email.notifications.account_unlocked.AccountUnlockedRequest;
-import com.example.carrentingapp.exception.exception.http_error_500.AccountAlreadyLockedException;
 import com.example.carrentingapp.exception.exception.http_error_500.AccountUnlockImpossibleException;
 import com.example.carrentingapp.exception.exception.http_error_500.UserNotLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserLockNotFoundException;
@@ -28,7 +27,7 @@ public class UserLockService {
 
     private final UserLockRepository userLockRepository;
     private final UserBaseRepository userBaseRepository;
-    private final NotificationSender notificationSender;
+    private final EmailNotificationSender notificationSender;
 
     public LockResponse lockUser(LockRequest request) {
         request.checkInput();

@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,11 +51,12 @@ public class CarRentService {
 
     @Transactional
     public CarRentResponse rentCar(CarRentRequest request) {
-        CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.getCarId())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
+        request.checkInput();
+        CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.carId.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
         UserBase user = securityService.getLoggedInUser();
 
-        if (Period.between(request.getRentedFrom(), request.getRentedTo()).getDays() > 14) {
+        if (Period.between(request.rentedFrom.get(), request.rentedTo.get()).getDays() > 14) {
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
         }
 
@@ -64,8 +66,8 @@ public class CarRentService {
         CarRent rent = new CarRent(
                 carToRent,
                 user,
-                request.getRentedFrom(),
-                request.getRentedTo(),
+                request.rentedFrom.get(),
+                request.rentedTo.get(),
                 collectionDate
         );
         carToRent.setStatus(CarBase.CarStatus.CAR_RENTED);
@@ -90,7 +92,8 @@ public class CarRentService {
 
     @Transactional
     public CarCollectResponse collectCar(CarCollectRequest request) {
-        CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
+        request.checkInput();
+        CarRent rent = carRentRepository.findById(UUID.fromString(request.carRentId.get())).orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
         UserBase user = rent.getUser();
 
         if (rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED)) {
@@ -114,7 +117,8 @@ public class CarRentService {
 
     @Transactional
     public CarReturnResponse returnCar(CarReturnRequest request) {
-        CarRent rent = carRentRepository.findById(request.getCarRentId())
+        request.checkInput();
+        CarRent rent = carRentRepository.findById(UUID.fromString(request.carRentId.get()))
                 .orElseThrow(() -> new CarRentNotFoundException("CarRent not found"));
 
         if (rent.getStatus().isIn(
@@ -141,10 +145,10 @@ public class CarRentService {
             //blokowanie na miesiąc przy 5 opóźnieniu
             if (user.getCarReturnDelays() > 4) {
                 userLockService.lockUser(new LockRequest(
-                        user.getId(),
-                        UserLock.LockType.TEMPORARY.name(),
-                        UserLock.Reason.FREQUENT_DELAYED_RETURNS.name(),
-                        LocalDate.now().plusMonths(1)
+                        Optional.of(user.getId().toString()),
+                        Optional.of(UserLock.LockType.TEMPORARY.name()),
+                        Optional.of(UserLock.Reason.FREQUENT_DELAYED_RETURNS.name()),
+                        Optional.of(LocalDate.now().plusMonths(1))
                 ));
             }
         } else {
@@ -153,7 +157,7 @@ public class CarRentService {
 
         user.setRank(userRank);
         car.setStatus(CarBase.CarStatus.CAR_READY);
-        car.setMileage(car.getMileage() + request.getKilometersTraveled());
+        car.setMileage(car.getMileage() + request.kilometersTraveled.get());
 
         carRentRepository.save(rent);
         baseCarRepository.save(car);
@@ -166,10 +170,11 @@ public class CarRentService {
 
     @Transactional
     public CarCheckAfterRentResponse checkCarAfterRent(CarCheckAfterRentRequest request) {
-        CarRent rent = carRentRepository.findById(request.getCarRentId()).orElseThrow(() -> new CarRentNotFoundException("Invalid car rent id"));
+        request.checkInput();
+        CarRent rent = carRentRepository.findById(UUID.fromString(request.carRentId.get())).orElseThrow(() -> new CarRentNotFoundException("Invalid car rent id"));
         UserBase user = rent.getUser();
 
-        if (request.isDamaged()) {
+        if (request.isDamaged.get()) {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_DAMAGED_CAR);
         } else {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_OK);

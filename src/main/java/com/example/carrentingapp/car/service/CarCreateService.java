@@ -14,17 +14,18 @@ public class CarCreateService {
     private final CarBaseRepository carRepository;
 
     public CarResponse createCar(CarCreateRequest request){
+        request.checkInput();
         CarBase car = CarBase.builder()
-                .brand(request.getBrand())
-                .model(request.getModel())
-                .yearOfProduction(request.getYearOfProduction())
-                .mileage(request.getMileage())
-                .power(request.getPower())
-                .torque(request.getTorque())
-                .engineSize(request.getEngineSize())
-                .averageFuelConsumption(request.getAverageFuelConsumption())
-                .minRankOfUser(request.getMinRankOfUser())
-                .pricePerDay(request.getPricePerDay())
+                .brand(request.brand.get())
+                .model(request.model.get())
+                .yearOfProduction(request.yearOfProduction.get())
+                .mileage(request.mileage.get())
+                .power(request.power.get())
+                .torque(request.torque.get())
+                .engineSize(request.engineSize.get())
+                .averageFuelConsumption(request.averageFuelConsumption.get())
+                .minRankOfUser(request.mileage.get())
+                .pricePerDay(request.pricePerDay.get())
                 .hasActiveSale(false)
                 .status(CarBase.CarStatus.CAR_READY)
                 .build();
@@ -32,7 +33,7 @@ public class CarCreateService {
         carRepository.save(car);
 
         return new CarResponse(
-                car.getId(),
+                car.getId().toString(),
                 "Car created"
         );
     }

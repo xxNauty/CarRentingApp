@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -40,16 +41,16 @@ public class CreateCarTests {
         final String token = getToken("adam@kowalski.pl");
 
         CarCreateRequest createCarRequest = new CarCreateRequest(
-                "Polonez",
-                "Caro Plus",
-                1999,
-                300_000F,
-                104F,
-                140F,
-                1.4F,
-                8F,
-                6.5F,
-                300.99F
+                Optional.of("Polonez"),
+                Optional.of("Caro Plus"),
+                Optional.of(1999),
+                Optional.of(300_000F),
+                Optional.of(104F),
+                Optional.of(140F),
+                Optional.of(1.4F),
+                Optional.of(8F),
+                Optional.of(6.5F),
+                Optional.of(300.99F)
         );
 
         HttpHeaders createCarHeaders = new HttpHeaders();
@@ -68,7 +69,7 @@ public class CreateCarTests {
         Assertions.assertNotNull(carResponse.getBody());
         Assertions.assertEquals("Car created", carResponse.getBody().getMessage());
 
-        UUID carId = carResponse.getBody().getId();
+        UUID carId = UUID.fromString(carResponse.getBody().getId());
 
         CarBase car = baseCarRepository.findById(carId).orElseThrow();
 
@@ -85,16 +86,16 @@ public class CreateCarTests {
         final String token = getToken("jan@nowak.pl");
 
         CarCreateRequest createCarRequest = new CarCreateRequest(
-                "Polonez",
-                "Caro Plus",
-                1999,
-                300_000F,
-                104F,
-                140F,
-                1.4F,
-                8F,
-                6.5F,
-                300.99F
+                Optional.of("Polonez"),
+                Optional.of("Caro Plus"),
+                Optional.of(1999),
+                Optional.of(300_000F),
+                Optional.of(104F),
+                Optional.of(140F),
+                Optional.of(1.4F),
+                Optional.of(8F),
+                Optional.of(6.5F),
+                Optional.of(300.99F)
         );
 
         HttpHeaders createCarHeaders = new HttpHeaders();
@@ -122,16 +123,16 @@ public class CreateCarTests {
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
 
         CarCreateRequest createCarRequest = new CarCreateRequest(
-                "Polonez",
-                "Caro Plus",
-                1999,
-                300_000F,
-                104F,
-                140F,
-                1.4F,
-                8F,
-                6.5F,
-                300.99F
+                Optional.of("Polonez"),
+                Optional.of("Caro Plus"),
+                Optional.of(1999),
+                Optional.of(300_000F),
+                Optional.of(104F),
+                Optional.of(140F),
+                Optional.of(1.4F),
+                Optional.of(8F),
+                Optional.of(6.5F),
+                Optional.of(300.99F)
         );
 
         HttpHeaders createCarHeaders = new HttpHeaders();
@@ -156,8 +157,8 @@ public class CreateCarTests {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(
-                email,
-                "Qwerty123!"
+                Optional.of(email),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();

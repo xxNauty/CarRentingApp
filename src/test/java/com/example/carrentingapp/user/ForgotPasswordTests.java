@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -50,7 +51,7 @@ public class ForgotPasswordTests {
 
         //wysłanie maila z kodem weryfikacyjnym
 
-        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest("adam@kowalski.pl");
+        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest(Optional.of("adam@kowalski.pl"));
 
         HttpHeaders forgotPasswordVerificationHeaders = new HttpHeaders();
         forgotPasswordVerificationHeaders.set("X-COM-PERSIST", "true");
@@ -80,9 +81,9 @@ public class ForgotPasswordTests {
         //ustawianie nowego hasła
 
         NewPasswordRequest newPasswordRequest = new NewPasswordRequest(
-                "adam@kowalski.pl",
-                verificationToken.getToken(),
-                "Qwerty123321!!"
+                Optional.of("adam@kowalski.pl"),
+                Optional.of(verificationToken.getToken()),
+                Optional.of("Qwerty123321!!")
         );
 
         HttpHeaders newPasswordHeaders = new HttpHeaders();
@@ -103,8 +104,8 @@ public class ForgotPasswordTests {
         //sprawdzenie czy nowe hasło pozwala na zalogowanie się
 
         LoginRequest loginRequest = new LoginRequest(
-                "adam@kowalski.pl",
-                "Qwerty123321!!"
+                Optional.of("adam@kowalski.pl"),
+                Optional.of("Qwerty123321!!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();
@@ -126,7 +127,7 @@ public class ForgotPasswordTests {
     public void emailNotExistInDatabaseForgotPasswordTest(){
         final String sendEmailURL = "http://localhost:" + randomServerPort + "/api/v1/auth/forgot-password/email";
 
-        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest("adam@nowak.pl");
+        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest(Optional.of("adam@nowak.pl"));
 
         HttpHeaders forgotPasswordVerificationHeaders = new HttpHeaders();
         forgotPasswordVerificationHeaders.set("X-COM-PERSIST", "true");
@@ -149,7 +150,7 @@ public class ForgotPasswordTests {
 
         //poprawne wysłanie maila z kodem weryfikacyjnym
 
-        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest("adam@kowalski.pl");
+        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest(Optional.of("adam@kowalski.pl"));
 
         HttpHeaders forgotPasswordVerificationHeaders = new HttpHeaders();
         forgotPasswordVerificationHeaders.set("X-COM-PERSIST", "true");
@@ -179,9 +180,9 @@ public class ForgotPasswordTests {
         //ustawianie nowego hasła przy użyciu błędnego tokenu
 
         NewPasswordRequest newPasswordRequest = new NewPasswordRequest(
-                "adam@kowalski.pl",
-                UUID.randomUUID().toString(),
-                "Qwerty123321!!"
+                Optional.of("adam@kowalski.pl"),
+                Optional.of(UUID.randomUUID().toString()),
+                Optional.of("Qwerty123321!!")
         );
 
         HttpHeaders newPasswordHeaders = new HttpHeaders();
@@ -205,7 +206,7 @@ public class ForgotPasswordTests {
 
         //poprawne wysłanie maila z kodem weryfikacyjnym
 
-        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest("adam@kowalski.pl");
+        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest(Optional.of("adam@kowalski.pl"));
 
         HttpHeaders forgotPasswordVerificationHeaders = new HttpHeaders();
         forgotPasswordVerificationHeaders.set("X-COM-PERSIST", "true");
@@ -235,9 +236,9 @@ public class ForgotPasswordTests {
         //ustawianie zbyt słabego hasła jako nowe
 
         NewPasswordRequest newPasswordRequest = new NewPasswordRequest(
-                "adam@kowalski.pl",
-                verificationToken.getToken(),
-                "Qwerty"
+                Optional.of("adam@kowalski.pl"),
+                Optional.of(verificationToken.getToken()),
+                Optional.of("Qwerty")
         );
 
         HttpHeaders newPasswordHeaders = new HttpHeaders();
@@ -261,7 +262,7 @@ public class ForgotPasswordTests {
 
         //poprawne wysłanie maila z kodem weryfikacyjnym
 
-        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest("adam@kowalski.pl");
+        ForgotPasswordVerificationRequest forgotPasswordVerificationRequest = new ForgotPasswordVerificationRequest(Optional.of("adam@kowalski.pl"));
 
         HttpHeaders forgotPasswordVerificationHeaders = new HttpHeaders();
         forgotPasswordVerificationHeaders.set("X-COM-PERSIST", "true");
@@ -291,9 +292,9 @@ public class ForgotPasswordTests {
         //błędny adres email w formularzu ustawiania nowego hasła
 
         NewPasswordRequest newPasswordRequest = new NewPasswordRequest(
-                "adam@kowal.pl",
-                verificationToken.getToken(),
-                "Qwerty123!!@"
+                Optional.of("adam@kowal.pl"),
+                Optional.of(verificationToken.getToken()),
+                Optional.of("Qwerty123!!@")
         );
 
         HttpHeaders newPasswordHeaders = new HttpHeaders();

@@ -23,11 +23,12 @@ public class ContactFormService {
     private final SecurityService securityService;
 
     public ContactFormResponse sendMessageToAdminAsNotAuthorized(ContactFormRequest request){
+        request.checkInput();
         ContactFormMessage message = new ContactFormMessage(
-                request.getEmail(),
+                request.email.get(),
                 "adam@kowalski.pl",
-                request.getSubject(),
-                request.getBody()
+                request.subject.get(),
+                request.body.get()
         );
 
         contactFormMessageRepository.save(message);
@@ -43,12 +44,12 @@ public class ContactFormService {
     }
 
     public ContactFormResponse sendMessageToAdminAsAuthorized(AuthorizedContactFormRequest request){
-
+        request.checkInput();
         ContactFormMessage message = new ContactFormMessage(
                 securityService.getLoggedInUser().getEmail(),
                 "adam@kowalski.pl",
-                request.getSubject(),
-                request.getBody()
+                request.subject.get(),
+                request.body.get()
         );
 
         contactFormMessageRepository.save(message);

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class UserUnlockService {
         List<UserLock> locks = userLockRepository.findAllByStatus(UserLock.UserLockStatus.USER_LOCK_ACTIVE);
         for (UserLock lock : locks){
             if (lock.getExpirationDate().equals(LocalDate.now())){
-                userLockService.unlockUser(new UnlockRequest(lock.getUser().getId()));
+                userLockService.unlockUser(new UnlockRequest(Optional.of(lock.getUser().getId().toString())));
             }
         }
     }

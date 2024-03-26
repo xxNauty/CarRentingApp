@@ -7,7 +7,6 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class CarResponse {
-    private UUID id;
-
+    private String id;
     private String message;
 }

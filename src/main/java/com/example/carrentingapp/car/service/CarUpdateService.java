@@ -9,6 +9,8 @@ import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundE
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class CarUpdateService {
@@ -16,31 +18,33 @@ public class CarUpdateService {
     private final CarBaseRepository carRepository;
 
     public CarResponse updateMileageFromRequest(CarUpdateMileageRequest request){
-        CarBase car = carRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
+        request.checkInput();
+        CarBase car = carRepository.findById(UUID.fromString(request.carId.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        car.setMileage(car.getMileage() + request.getMileageToAdd());
+        car.setMileage(car.getMileage() + request.mileageToAdd.get());
 
         carRepository.save(car);
 
-        return new CarResponse(car.getId(), "Car mileage updated, actual mileage: " + car.getMileage());
+        return new CarResponse(car.getId().toString(), "Car mileage updated, actual mileage: " + car.getMileage());
     }
 
     public CarResponse updateCarDataResponse(CarUpdateDataRequest request){
-        CarBase carToUpdate = carRepository.findById(request.getId()).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
+        request.checkInput();
+        CarBase carToUpdate = carRepository.findById(UUID.fromString(request.id.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        carToUpdate.setBrand(request.getBrand());
-        carToUpdate.setModel(request.getModel());
-        carToUpdate.setYearOfProduction(request.getYearOfProduction());
-        carToUpdate.setPower(request.getPower());
-        carToUpdate.setTorque(request.getTorque());
-        carToUpdate.setEngineSize(request.getEngineSize());
-        carToUpdate.setAverageFuelConsumption(request.getAverageFuelConsumption());
-        carToUpdate.setMinRankOfUser(request.getMinRankOfUser());
-        carToUpdate.setPricePerDay(request.getPricePerDay());
+        carToUpdate.setBrand(request.brand.get());
+        carToUpdate.setModel(request.model.get());
+        carToUpdate.setYearOfProduction(request.yearOfProduction.get());
+        carToUpdate.setPower(request.power.get());
+        carToUpdate.setTorque(request.torque.get());
+        carToUpdate.setEngineSize(request.engineSize.get());
+        carToUpdate.setAverageFuelConsumption(request.averageFuelConsumption.get());
+        carToUpdate.setMinRankOfUser(request.minRankOfUser.get());
+        carToUpdate.setPricePerDay(request.power.get());
 
         carRepository.save(carToUpdate);
 
-        return new CarResponse(request.getId(), "Car updated");
+        return new CarResponse(request.id.get(), "Car updated");
     }
 
 }

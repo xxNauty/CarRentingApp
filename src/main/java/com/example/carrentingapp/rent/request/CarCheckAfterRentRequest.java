@@ -1,15 +1,26 @@
 package com.example.carrentingapp.rent.request;
 
+import com.example.carrentingapp.authentication.service.RequestValidationService;
+import com.example.carrentingapp.configuration.common_interfaces.Request;
+import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.util.Optional;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CarCheckAfterRentRequest {
-    private UUID carRentId;
-    private boolean isDamaged;
+public class CarCheckAfterRentRequest implements Request {
+
+    public Optional<String> carRentId;
+    public Optional<Boolean> isDamaged;
+
+    @Override
+    public void checkInput() {
+        if (this.carRentId.isPresent() && this.isDamaged.isPresent()){
+            RequestValidationService.validateToken(this.carRentId.get());
+            RequestValidationService.validateParameter(this.isDamaged.get());
+        }
+        else {
+            throw new InvalidArgumentException("You have to pass both values in order to verify car after rent");
+        }
+    }
 }

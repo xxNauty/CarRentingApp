@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -52,9 +53,9 @@ public class LockCarTests {
         final UUID carId = createCarsForTesting(1).get(0);
 
         CarLockRequest lockRequest = new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(3)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         );
 
         final String token = getToken("adam@kowalski.pl");
@@ -93,9 +94,9 @@ public class LockCarTests {
         final UUID carId = createCarsForTesting(1).get(0);
 
         CarLockRequest lockRequest = new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(3)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         );
 
         final String token = getToken("jan@nowak.pl");
@@ -131,9 +132,9 @@ public class LockCarTests {
         final UUID carId = createCarsForTesting(1).get(0);
 
         CarLockRequest lockRequest = new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(3)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         );
 
         HttpHeaders lockHeaders = new HttpHeaders();
@@ -166,9 +167,9 @@ public class LockCarTests {
         final UUID carId = UUID.randomUUID();
 
         CarLockRequest lockRequest = new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(3)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         );
 
         final String token = getToken("adam@kowalski.pl");
@@ -198,14 +199,14 @@ public class LockCarTests {
         //blokowanie samochodu do odblokowania
 
         carLockService.lockCar(new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(1)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         ));
 
         //odblokowywanie
 
-        CarUnlockRequest unlockRequest = new CarUnlockRequest(carId);
+        CarUnlockRequest unlockRequest = new CarUnlockRequest(Optional.ofNullable(carId.toString()));
 
         final String adminToken = getToken("adam@kowalski.pl");
 
@@ -234,14 +235,14 @@ public class LockCarTests {
         //blokowanie samochodu do odblokowania
 
         carLockService.lockCar(new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(1)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         ));
 
         //odblokowywanie
 
-        CarUnlockRequest unlockRequest = new CarUnlockRequest(carId);
+        CarUnlockRequest unlockRequest = new CarUnlockRequest(Optional.ofNullable(carId.toString()));
 
         final String userToken = getToken("jan@nowak.pl");
 
@@ -268,14 +269,14 @@ public class LockCarTests {
         //blokowanie samochodu do odblokowania
 
         carLockService.lockCar(new CarLockRequest(
-                carId,
-                CarLock.CarLockReason.TUNING.name(),
-                LocalDate.now().plusMonths(1)
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
         ));
 
         //odblokowywanie
 
-        CarUnlockRequest unlockRequest = new CarUnlockRequest(carId);
+        CarUnlockRequest unlockRequest = new CarUnlockRequest(Optional.ofNullable(carId.toString()));
 
         HttpHeaders unlockHeaders = new HttpHeaders();
         unlockHeaders.set("X-COM-PERSIST", "true");
@@ -296,7 +297,7 @@ public class LockCarTests {
         final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
         final UUID carId = createCarsForTesting(1).get(0);
 
-        CarUnlockRequest unlockRequest = new CarUnlockRequest(carId);
+        CarUnlockRequest unlockRequest = new CarUnlockRequest(Optional.ofNullable(carId.toString()));
 
         final String adminToken = getToken("adam@kowalski.pl");
 
@@ -322,16 +323,16 @@ public class LockCarTests {
             final String token = getToken("adam@kowalski.pl");
 
             CarCreateRequest createCarRequest = new CarCreateRequest(
-                    "Polonez",
-                    "Caro Plus",
-                    1999,
-                    300_000F,
-                    104F,
-                    140F,
-                    1.4F,
-                    8F,
-                    6.5F,
-                    300.99F
+                    Optional.of("Polonez"),
+                    Optional.of("Caro Plus"),
+                    Optional.of(1999),
+                    Optional.of(300_000F),
+                    Optional.of(104F),
+                    Optional.of(140F),
+                    Optional.of(1.4F),
+                    Optional.of(8F),
+                    Optional.of(6.5F),
+                    Optional.of(300.99F)
             );
 
             HttpHeaders createCarHeaders = new HttpHeaders();
@@ -347,7 +348,7 @@ public class LockCarTests {
             );
             Assertions.assertNotNull(carResponse.getBody());
 
-            ids.add(carResponse.getBody().getId());
+            ids.add(UUID.fromString(carResponse.getBody().getId()));
         }
 
         return ids;
@@ -357,8 +358,8 @@ public class LockCarTests {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(
-                email,
-                "Qwerty123!"
+                Optional.of(email),
+                Optional.of("Qwerty123!")
         );
 
         HttpHeaders loginHeaders = new HttpHeaders();

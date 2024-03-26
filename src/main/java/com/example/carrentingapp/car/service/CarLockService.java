@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -24,7 +26,8 @@ public class CarLockService {
     private final CarLockRepository carLockRepository;
 
     public CarLockResponse lockCar(CarLockRequest request){
-        CarBase car = baseCarRepository.findById(request.getCarId())
+        request.checkInput();
+        CarBase car = baseCarRepository.findById(UUID.fromString(request.carId.get()))
                 .orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
         if(car.getStatus().equals(CarBase.CarStatus.CAR_LOCKED)){
@@ -36,8 +39,8 @@ public class CarLockService {
 
         CarLock lock = new CarLock(
                 car,
-                CarLock.CarLockReason.valueOf(request.getReason()),
-                request.getLockedTo()
+                CarLock.CarLockReason.valueOf(request.reason.get()),
+                request.lockedTo.get()
         );
 
         car.setStatus(CarBase.CarStatus.CAR_LOCKED);
@@ -49,10 +52,12 @@ public class CarLockService {
     }
 
     public CarLockResponse unlockCar(CarUnlockRequest request){
-        CarBase car = baseCarRepository.findById(request.getCarId()).orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
+        request.checkInput();
+        CarBase car = baseCarRepository.findById(UUID.fromString(request.carId.get()))
+                .orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
         CarLock lock = carLockRepository.findActiveLockForCar(
-                request.getCarId()
+                UUID.fromString(request.carId.get())
         ).orElseThrow(() -> new CarNotLockedException("Car with given id is not locked"));
 
         lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);

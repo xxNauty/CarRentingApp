@@ -57,13 +57,9 @@ public class CarRentingAppApplication {
 }
 /*
     Lista zadań:
-       9. Obsługa błędów UniqueConstraint
        16. Do listy wszystkich samochodów dodać wyświetlanie informacji przy niedostępnych o powodzie i dacie dostępności
        22. Wynajęcie samochodu conajmniej 7 dni przed
-       26. Pobieranie danych samochodu po id: w przypadku błędnego id 404 error
        28. Przygotowywanie danych do testów
-       29. Resetowanie liczby opóźnionych zwrotów po odblokowaniu konta
-       30. Automatyczne odblokowywanie usera do poprawy
  */
 /*
     Do doczytania:

@@ -14,6 +14,6 @@ public interface UserLockRepository extends JpaRepository<UserLock, UUID> {
     @Query(value = "select l from UserLock l where l.user.id = :id and l.status = 'USER_LOCK_ACTIVE'")
     Optional<UserLock> findActiveForUser(UUID id);
 
-    List<UserLock> findAllByStatus(UserLock.UserLockStatus status);
+    List<UserLock> findAllByStatusAndType(UserLock.UserLockStatus status, UserLock.LockType type);
 
 }

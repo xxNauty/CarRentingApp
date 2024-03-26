@@ -6,6 +6,7 @@ import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.response.CarGetResponse;
 import com.example.carrentingapp.car.response.CarGetFullListResponse;
 import com.example.carrentingapp.car.response.CarGetSimpleListResponse;
+import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class CarGetService {
     private final CarBaseRepository repository;
 
     public CarGetResponse getCarById(UUID id){
-        return new CarGetResponse(repository.findById(id).orElseThrow());
+        return new CarGetResponse(repository.findById(id).orElseThrow(() -> new CarNotFoundException("There is no car with given Id")));
     }
 
     public CarGetSimpleListResponse getSimpleCarList(Boolean onlyAvailable){

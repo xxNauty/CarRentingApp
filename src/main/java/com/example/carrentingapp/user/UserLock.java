@@ -56,7 +56,7 @@ public class UserLock {
     public enum UserLockStatus{
         USER_LOCK_ACTIVE,
         USER_LOCK_NOT_ACTIVE,
-        USER_LOCK_EXTENDED
+        USER_LOCK_TIME_CHANGED
     }
 
 

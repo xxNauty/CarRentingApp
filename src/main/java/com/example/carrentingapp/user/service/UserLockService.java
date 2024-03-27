@@ -3,8 +3,8 @@ package com.example.carrentingapp.user.service;
 import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.account_locked.AccountLockedRequest;
 import com.example.carrentingapp.email.notifications.account_unlocked.AccountUnlockedRequest;
-import com.example.carrentingapp.exception.exception.http_error_500.AccountUnlockImpossibleException;
-import com.example.carrentingapp.exception.exception.http_error_500.UserNotLockedException;
+import com.example.carrentingapp.exception.exception.http_error_409.AccountUnlockImpossibleException;
+import com.example.carrentingapp.exception.exception.http_error_409.UserNotLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.UserBase;
@@ -38,7 +38,7 @@ public class UserLockService {
             UserLock lock = userLockRepository.findActiveForUser(
                     UUID.fromString(request.userid.get())
             ).orElseThrow(() -> new UserLockNotFoundException("User lock not found"));
-            lock.setStatus(UserLock.UserLockStatus.USER_LOCK_EXTENDED);
+            lock.setStatus(UserLock.UserLockStatus.USER_LOCK_TIME_CHANGED);
             userLockRepository.save(lock);
         }
 

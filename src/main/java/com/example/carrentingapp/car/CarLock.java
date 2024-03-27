@@ -46,7 +46,7 @@ public class CarLock {
     public enum CarLockStatus{
         CAR_LOCK_ACTIVE,
         CAR_LOCK_NOT_ACTIVE,
-        CAR_LOCK_EXTENDED
+        CAR_LOCK_TIME_CHANGED
     }
 
 }

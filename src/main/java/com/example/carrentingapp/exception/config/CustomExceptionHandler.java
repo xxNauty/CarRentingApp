@@ -1,6 +1,7 @@
 package com.example.carrentingapp.exception.config;
 
 import com.example.carrentingapp.exception.exception.http_error_403.BaseAccessDeniedException;
+import com.example.carrentingapp.exception.exception.http_error_409.BaseConflictException;
 import com.example.carrentingapp.exception.exception.http_error_500.BaseInternalErrorException;
 import com.example.carrentingapp.exception.exception.http_error_404.BaseNotFoundException;
 import org.springframework.http.ProblemDetail;
@@ -20,6 +21,16 @@ class CustomExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatus(500);
         problemDetail.setType(URI.create(exception.getClass().getSimpleName()));
         problemDetail.setTitle("An error occurred");
+        problemDetail.setDetail(exception.getMessage());
+
+        return ResponseEntity.of(problemDetail).build();
+    }
+
+    @ExceptionHandler(value = BaseConflictException.class) //409
+    public ResponseEntity<ProblemDetail> handleInternalServerErrorExceptions(BaseConflictException exception){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(409);
+        problemDetail.setType(URI.create(exception.getClass().getSimpleName()));
+        problemDetail.setTitle("Conflicted");
         problemDetail.setDetail(exception.getMessage());
 
         return ResponseEntity.of(problemDetail).build();

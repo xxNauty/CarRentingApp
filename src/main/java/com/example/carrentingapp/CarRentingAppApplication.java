@@ -58,7 +58,6 @@ public class CarRentingAppApplication {
 /*
     Lista zadań:
        28. Przygotowywanie danych do testów
-       30. Endpoint z pobieraniem aktywnej blokady usera, dostępny dla admina
        31. Endpoint z możliwością edycji danych usera
        33. GetAllCars -> dodać informacje przy wynajętych do kiedy wynajęty
        36. Dzień przed zwrotem przypomnienie mailowe

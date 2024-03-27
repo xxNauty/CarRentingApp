@@ -30,5 +30,4 @@ public class GetUserDataController {
     ){
         return ResponseEntity.ok(gerUserDataService.getUserData(id));
     }
-
 }

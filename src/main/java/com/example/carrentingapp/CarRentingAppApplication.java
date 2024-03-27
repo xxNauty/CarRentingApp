@@ -57,18 +57,16 @@ public class CarRentingAppApplication {
 }
 /*
     Lista zadań:
-       22. Wynajęcie samochodu conajmniej 7 dni przed
        28. Przygotowywanie danych do testów
        29. Rozróżnienie przedłużenia blokady i skrócenia, dodać status USER_LOCK_SHORTENED
        30. Endpoint z pobieraniem aktywnej blokady usera, dostępny dla admina
        31. Endpoint z możliwością edycji danych usera
        32. Usunąć osobny endpoint z edycją przebiegu samochodu
        33. GetAllCars -> dodać informacje przy wynajętych do kiedy wynajęty
-       34. Brak możliwości wynajęcia zablokowanego lub wynajętego samochodu samochodu
-       35. CarRent -> CollectionDate usunąć, datę odbioru ustawić jako RentedFrom
        36. Dzień przed zwrotem przypomnienie mailowe
        37. Automatyczne zmiany statusów
        38. Poprawki zabezpieczeń
+       39. Zredukować liczbę wyjątków do minimum
  */
 /*
     Do doczytania:

@@ -7,9 +7,11 @@ import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
 import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest;
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
+import com.example.carrentingapp.exception.exception.http_error_403.CarNotAvailableException;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
 import com.example.carrentingapp.exception.exception.http_error_500.CarAlreadyCollectedException;
 import com.example.carrentingapp.exception.exception.http_error_500.CarAlreadyReturnedException;
+import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.exception.exception.http_error_500.RentPeriodTooLongException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
@@ -52,7 +54,16 @@ public class CarRentService {
     @Transactional
     public CarRentResponse rentCar(CarRentRequest request) {
         request.checkInput();
+
+        if(Period.between(request.rentedFrom.get(), LocalDate.now()).getYears() < 7){
+            throw new InvalidArgumentException("You have to make a reservation at least 7 days earlier");
+        }
+
         CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.carId.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
+
+        if(!carToRent.getStatus().equals(CarBase.CarStatus.CAR_READY)){
+            throw new CarNotAvailableException("This car is currently not available to rent");
+        }
 
         UserBase user = securityService.getLoggedInUser();
 
@@ -60,15 +71,11 @@ public class CarRentService {
             throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
         }
 
-        boolean isActive = carToRent.getStatus().equals(CarBase.CarStatus.CAR_READY);
-        LocalDateTime collectionDate = LocalDateTime.now().plusDays(1);
-
         CarRent rent = new CarRent(
                 carToRent,
                 user,
                 request.rentedFrom.get(),
-                request.rentedTo.get(),
-                collectionDate
+                request.rentedTo.get()
         );
         carToRent.setStatus(CarBase.CarStatus.CAR_RENTED);
 
@@ -79,13 +86,8 @@ public class CarRentService {
         notificationSender.sendCarRentedNotification(new CarRentedRequest(carToRent, user));
 
 
-        String returnMessage = isActive
-                ? "Car rented successfully, you can collect your car at: " + collectionDate
-                : "Car rented successfully, we will give you an email information when the car will be ready to collect";
-
         return new CarRentResponse(
-                returnMessage,
-                isActive,
+                "Car rented successfully, we will give you an email information when the car will be ready to collect",
                 rent.getId()
         );
     }
@@ -100,7 +102,7 @@ public class CarRentService {
             throw new CarAlreadyCollectedException("You have already collected this car");
         }
 
-        if (rent.getCollectionDate().isAfter(LocalDateTime.now())) {
+        if (rent.getRentedFrom().isAfter(LocalDate.now())) {
             throw new CarNotReadyException("Your car is not ready to collect yet");
         }
 

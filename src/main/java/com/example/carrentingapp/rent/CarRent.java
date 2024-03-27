@@ -33,23 +33,19 @@ public class CarRent {
 
     private LocalDate rentedTo;
 
-    private LocalDateTime collectionDate;
-
     @Enumerated(EnumType.STRING)
     private CarRentStatus status;
 
-    public CarRent(CarBase car, UserBase user, LocalDate rentedFrom, LocalDate rentedTo, LocalDateTime collectionDate) {
+    public CarRent(CarBase car, UserBase user, LocalDate rentedFrom, LocalDate rentedTo) {
         this.car = car;
         this.user = user;
         this.rentedFrom = rentedFrom;
         this.rentedTo = rentedTo;
-        this.collectionDate = collectionDate;
         this.status = CarRentStatus.CAR_RENT_CREATED;
     }
 
     public enum CarRentStatus{
         CAR_RENT_CREATED,
-        CAR_RENT_CAR_WAITING,
         CAR_RENT_CAR_READY_TO_COLLECT,
         CAR_RENT_CAR_COLLECTED,
         CAR_RENT_WAITING_FOR_REVIEW,

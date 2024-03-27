@@ -3,10 +3,10 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "firstName": "Aqwe",
-  "lastName": "Boua",
+  "firstName": "Aqqweq",
+  "lastName": "Bodas",
   "email":  "alibou@21mail.com",
-  "password": "pa13123123@Q",
+  "password": "pa12!Qsdfdfsdf",
   "dateOfBirth": "2006-03-18"
 }
 
@@ -18,5 +18,5 @@ Content-Type: application/json
 
 {
   "email": "alibou@21mail.com",
-  "userId": "329433af-e237-4637-a693-92d5ddabde99"
+  "userId": "0c8ee7ad-65e2-435a-a191-d88edcb77635"
 }

@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "id": "506defb4-ccd6-4b6d-a71d-6a5a91b404a9",
+  "id": "7ca1bd10-360c-4447-895b-1d709a0259dd",
   "brand": "Lotus",
   "model": "Omega",
   "yearOfProduction": 2000,
@@ -22,6 +22,6 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "carId": "506defb4-ccd6-4b6d-a71d-6a5a91b404a9",
-  "mileageToAdd": 500.7
+  "carId": "7ca1bd10-360c-4447-895b-1d709a0259dd",
+  "mileageToAdd": 50.7
 }

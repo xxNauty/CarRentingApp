@@ -5,9 +5,9 @@ Authorization: Bearer {{auth-token}}
 
 {
   "lockType": "TEMPORARY",
-  "expirationDate": "2024-12-04",
+  "expirationDate": "2028-12-04",
   "reason": "OTHER",
-  "userid": "697bac1e-57de-4f5b-880a-5528cc4f7165"
+  "userid": "8223dc2d-441d-4886-9512-997d6cc2b163"
 }
 
 ### Unlock user account

@@ -1,5 +1,5 @@
 ### Get user by admin
-GET http://localhost:8080/api/v1/user/get/id?id=98d60076-77fb-4a51-a190-e7275cfddff5
+GET http://localhost:8080/api/v1/user/get/id?id=8223dc2d-441d-4886-9512-997d6cc2b163
 Authorization: Bearer {{auth-token}}
 
 ### Get user by user

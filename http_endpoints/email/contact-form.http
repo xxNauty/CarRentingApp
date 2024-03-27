@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "email": "jan@kowalski.pl",
   "subject": "subject",
-  "body": "<h1>Body Body</h1><h5>asddas</h5>"
+  "body": "<P>Body <B>Bold</B></P><h5>asddas</h5>"
 }
 
 ### Contact form for authorized

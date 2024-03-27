@@ -33,6 +33,9 @@ public class EmailMessage {
     @Enumerated(EnumType.STRING)
     private EmailMessageStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private EmailMessageType type;
+
     public EmailMessage(
             String emailFrom,
             String emailTo,

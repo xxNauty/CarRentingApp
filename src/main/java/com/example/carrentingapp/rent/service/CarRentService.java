@@ -9,10 +9,9 @@ import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotAvailableException;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
-import com.example.carrentingapp.exception.exception.http_error_500.CarAlreadyCollectedException;
-import com.example.carrentingapp.exception.exception.http_error_500.CarAlreadyReturnedException;
+import com.example.carrentingapp.exception.exception.http_error_409.CarAlreadyCollectedException;
+import com.example.carrentingapp.exception.exception.http_error_409.CarAlreadyReturnedException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
-import com.example.carrentingapp.exception.exception.http_error_500.RentPeriodTooLongException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
 import com.example.carrentingapp.rent.CarRent;
@@ -35,7 +34,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Optional;
 import java.util.UUID;
@@ -68,7 +66,7 @@ public class CarRentService {
         UserBase user = securityService.getLoggedInUser();
 
         if (Period.between(request.rentedFrom.get(), request.rentedTo.get()).getDays() > 14) {
-            throw new RentPeriodTooLongException("You cannot rent a car for such a long period");
+            throw new InvalidArgumentException("You cannot rent a car for such a long period");
         }
 
         CarRent rent = new CarRent(

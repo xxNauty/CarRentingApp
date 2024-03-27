@@ -31,4 +31,9 @@ public class ScheduledActionsConfiguration {
     public void checkIfThereIsAnyCarToUnlock(){
         carUnlockService.check();
     }
+
+    @Scheduled(cron = "0 30 8 * * *") //raz dziennie, przez cały tydzień, o 8:30 rano
+    public void checkIfAnyRentIsGoingToFinish(){
+
+    }
 }

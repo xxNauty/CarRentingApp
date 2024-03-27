@@ -63,6 +63,7 @@ public class CarRentingAppApplication {
        33. GetAllCars -> dodać informacje przy wynajętych do kiedy wynajęty
        36. Dzień przed zwrotem przypomnienie mailowe
        37. Automatyczne zmiany statusów
+       38. Informacja mailowa po zatwierdzeniu zwrotu przez admina
  */
 /*
     Do doczytania:

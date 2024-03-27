@@ -9,6 +9,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CarRentResponse {
     private String message;
-    private Boolean isActive;
     private UUID carRentId;
 }

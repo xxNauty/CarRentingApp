@@ -18,7 +18,7 @@ public class GetUserDataController {
     private final UserGetDataService gerUserDataService;
 
     @GetMapping("/get")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<UserGetDataResponse> getUserDataAsUser(){
         return ResponseEntity.ok(gerUserDataService.getUserData());
     }

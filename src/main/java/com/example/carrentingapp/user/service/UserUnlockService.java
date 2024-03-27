@@ -1,5 +1,6 @@
 package com.example.carrentingapp.user.service;
 
+import com.example.carrentingapp.configuration.common_interfaces.ScheduledAction;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
 import com.example.carrentingapp.user.UserLock;
@@ -14,12 +15,13 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserUnlockService {
+public class UserUnlockService implements ScheduledAction {
 
     private final UserLockRepository userLockRepository;
     private final UserBaseRepository userBaseRepository;
     private final UserLockService userLockService;
 
+    @Override
     public void check(){
         List<UserLock> locks = userLockRepository.findAllByStatusAndType(UserLock.UserLockStatus.USER_LOCK_ACTIVE, UserLock.LockType.TEMPORARY);
         for (UserLock lock : locks){

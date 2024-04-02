@@ -163,7 +163,7 @@ public class CarRentService {
         baseCarRepository.save(car);
         baseUserRepository.save(user);
 
-        notificationSender.sendCarReturnedNotification(new CarReturnedRequest());
+        notificationSender.sendCarReturnedNotification(new CarReturnedRequest(user));
 
         return new CarReturnResponse("Car returned successfully");
     }

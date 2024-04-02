@@ -1,6 +1,5 @@
 package com.example.carrentingapp.email.notifications.confirm_email.token;
 
-import com.example.carrentingapp.user.UserBase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,7 +13,8 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
 
     Optional<ConfirmationToken> findByToken(String token);
 
-    Optional<ConfirmationToken> findByUser(UserBase user);
+    @Query(value = "select t from ConfirmationToken t where t.user.id = :userId and t.status = 'CONFIRMATION_TOKEN_SENT'")
+    Optional<ConfirmationToken> findByUser(UUID userId);
 
     @Query(value = "select t from ConfirmationToken t where t.user.id = :userId and t.status = 'CONFIRMATION_TOKEN_SENT'")
     List<ConfirmationToken> findAllUnusedForUser(UUID userId);

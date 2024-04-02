@@ -2,7 +2,6 @@ package com.example.carrentingapp.configuration.jwt;
 
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
-import com.example.carrentingapp.user.UserBaseRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +25,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenRepository tokenRepository;
-    private final UserBaseRepository userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -46,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(7);
-        if(jwt.equals("null")){ //todo: zbadać zachowanie
+        if(jwt.equals("null")){
             filterChain.doFilter(request, response);
             return;
         }

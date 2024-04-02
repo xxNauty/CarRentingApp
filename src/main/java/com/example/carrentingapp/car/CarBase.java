@@ -54,7 +54,6 @@ public class CarBase {
     @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
     private List<CarLock> locks;
 
-    //todo: mechanizm pilnujący by w danym momencie była tylko jedna aktywna blokada
     public CarLock getActiveLock(){
         for(CarLock lock : locks){
             if (lock.getStatus().equals(CarLock.CarLockStatus.CAR_LOCK_ACTIVE)){

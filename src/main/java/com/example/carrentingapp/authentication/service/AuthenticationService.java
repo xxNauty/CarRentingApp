@@ -55,13 +55,7 @@ public class AuthenticationService {
             throw new InvalidArgumentException("This email is already used");
         }
 
-        UserBase user = userCreateService.createUser(
-                request.firstName.get(),
-                request.lastName.get(),
-                request.email.get(),
-                request.password.get(),
-                request.dateOfBirth.get()
-        );
+        UserBase user = userCreateService.createUser(request).getUserBase();
         UserBase savedUser = repository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);

@@ -7,7 +7,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +22,7 @@ public class LockRequest implements Request {
             RequestValidationService.validateToken(this.userid.get());
             RequestValidationService.validateParameter(this.lockType.get());
             RequestValidationService.validateParameter(this.reason.get());
-            this.expirationDate.ifPresent(RequestValidationService::validateParameter); //todo: doczytać temat
+            this.expirationDate.ifPresent(RequestValidationService::validateParameter);
         }
         else {
             throw new InvalidArgumentException("You have to pass all values in order to lock user");

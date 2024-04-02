@@ -1,9 +1,11 @@
 package com.example.carrentingapp.user.service;
 
+import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
+import com.example.carrentingapp.user.response.UserCreateResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,28 +21,21 @@ public class UserCreateService {
     private final PasswordEncoder passwordEncoder;
     private final EmailNotificationSender notificationSender;
 
-    //todo: przerobić na UserCreateResponse
     @Transactional
-    public UserBase createUser(
-            String firstName,
-            String lastName,
-            String email,
-            String password,
-            LocalDate dateOfBirth
-    ){
+    public UserCreateResponse createUser(RegistrationRequest request){
         UserBase user = new UserBase(
-                firstName,
-                lastName,
-                email,
-                passwordEncoder.encode(password),
-                dateOfBirth
+                request.firstName.get(),
+                request.lastName.get(),
+                request.email.get(),
+                passwordEncoder.encode(request.password.get()),
+                request.dateOfBirth.get()
         );
 
         notificationSender.sendConfirmEmailNotification(new ConfirmEmailRequest(user));
 
         userRepository.save(user);
 
-        return user;
+        return new UserCreateResponse("User created successfully", user);
     }
 
     public UserBase createAdmin(

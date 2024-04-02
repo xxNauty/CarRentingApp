@@ -74,8 +74,7 @@ public class EmailConfirmationTests {
 
         //potwierdzenie adresu email
 
-        //todo: uwzględnić status tokenu
-        final ConfirmationToken confirmationToken = confirmationTokenRepository.findByUser(userAfterRegistration).orElseThrow(
+        final ConfirmationToken confirmationToken = confirmationTokenRepository.findByUser(userAfterRegistration.getId()).orElseThrow(
                 () -> new TokenNotFoundException("Token not found"));
 
         Assertions.assertDoesNotThrow(() -> new TokenNotFoundException("Token not found"));

@@ -1,5 +1,6 @@
 package com.example.carrentingapp;
 
+import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
 import com.example.carrentingapp.user.service.UserCreateService;
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @SpringBootApplication
 public class CarRentingAppApplication {
@@ -35,13 +37,13 @@ public class CarRentingAppApplication {
 
             System.out.println("\n--------------------------------\n");
 
-            UserBase user = userCreateService.createUser(
-                    "Jan",
-                    "Nowak",
-                    "jan@nowak.pl",
-                    "Qwerty123!",
-                    LocalDate.now()
-            );
+            UserBase user = userCreateService.createUser(new RegistrationRequest(
+                    Optional.of("Jan"),
+                    Optional.of("Nowak"),
+                    Optional.of("jan@nowak.pl"),
+                    Optional.of("Qwerty123!"),
+                    Optional.of(LocalDate.now())
+            )).getUserBase();
             System.out.println("User created");
             System.out.println("Login: " + user.getEmail());
             System.out.println("Password: Qwerty123!");
@@ -57,9 +59,7 @@ public class CarRentingAppApplication {
 }
 /*
     Lista zadań:
-       28. Przygotowywanie danych do testów
-       31. Endpoint z możliwością edycji danych usera
-       33. GetAllCars -> dodać informacje przy wynajętych do kiedy wynajęty
+
  */
 /*
     Do doczytania:
@@ -78,4 +78,5 @@ public class CarRentingAppApplication {
         13. Http header X-COM-PERSIST, co to
         14. REGEX
         15. Async
+        16. Consumer
  */

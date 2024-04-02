@@ -42,7 +42,7 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        extraClaims.put("rand", Math.random() * 100); //todo: zweryfikować bezpieczeństwo takiego rozwiązania
+        extraClaims.put("rand", Math.random() * 100);
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 

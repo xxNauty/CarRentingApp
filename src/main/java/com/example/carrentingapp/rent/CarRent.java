@@ -36,12 +36,15 @@ public class CarRent {
     @Enumerated(EnumType.STRING)
     private CarRentStatus status;
 
+    private Integer daysOfDelay;
+
     public CarRent(CarBase car, UserBase user, LocalDate rentedFrom, LocalDate rentedTo) {
         this.car = car;
         this.user = user;
         this.rentedFrom = rentedFrom;
         this.rentedTo = rentedTo;
         this.status = CarRentStatus.CAR_RENT_CREATED;
+        this.daysOfDelay = 0;
     }
 
     public enum CarRentStatus{

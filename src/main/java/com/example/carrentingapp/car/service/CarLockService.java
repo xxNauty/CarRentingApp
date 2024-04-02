@@ -44,6 +44,7 @@ public class CarLockService {
         );
 
         car.setStatus(CarBase.CarStatus.CAR_LOCKED);
+        car.setUnavailableTo(lock.getLockedTo());
 
         baseCarRepository.save(car);
         carLockRepository.save(lock);
@@ -62,6 +63,7 @@ public class CarLockService {
 
         lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);
         car.setStatus(CarBase.CarStatus.CAR_READY);
+        car.setUnavailableTo(null);
 
         baseCarRepository.save(car);
         carLockRepository.save(lock);

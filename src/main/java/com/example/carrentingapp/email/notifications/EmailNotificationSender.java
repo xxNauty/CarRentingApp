@@ -16,6 +16,8 @@ import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailN
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.email.notifications.forgot_password.ForgotPasswordNotificationSender;
 import com.example.carrentingapp.email.notifications.forgot_password.ForgotPasswordRequest;
+import com.example.carrentingapp.email.notifications.rent_checked.RentCheckedNotificationSender;
+import com.example.carrentingapp.email.notifications.rent_checked.RentCheckedRequest;
 import com.example.carrentingapp.email.notifications.rent_going_to_finish.RentGoingToFinishNotificationSender;
 import com.example.carrentingapp.email.notifications.rent_going_to_finish.RentGoingToFinishRequest;
 import lombok.AllArgsConstructor;
@@ -34,6 +36,7 @@ public class EmailNotificationSender {
     private final ConfirmEmailNotificationSender confirmEmailNotificationSender;
     private final ForgotPasswordNotificationSender forgotPasswordNotificationSender;
     private final RentGoingToFinishNotificationSender rentGoingToFinishNotificationSender;
+    private final RentCheckedNotificationSender rentCheckedNotificationSender;
 
     public void sendAccountLockedNotification(AccountLockedRequest request){
         accountLockedNotificationSender.sendEmail(request);
@@ -55,7 +58,6 @@ public class EmailNotificationSender {
         carRentedNotificationSender.sendEmail(request);
     }
 
-    //todo: do dokończenia
     public void sendCarReturnedNotification(CarReturnedRequest request){
         carReturnedNotificationSender.sendEmail(request);
     }
@@ -70,5 +72,9 @@ public class EmailNotificationSender {
 
     public void sendRentGoingToFinishNotification(RentGoingToFinishRequest request){
         rentGoingToFinishNotificationSender.sendEmail(request);
+    }
+
+    public void sendRentCheckedNotification(RentCheckedRequest request){
+        rentCheckedNotificationSender.sendEmail(request);
     }
 }

@@ -9,6 +9,8 @@ import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
 import com.example.carrentingapp.exception.exception.http_error_409.CarNotAvailableException;
 import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
+import com.example.carrentingapp.email.notifications.rent_checked.RentCheckedRequest;
+import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
@@ -174,10 +176,13 @@ public class CarRentService {
 
         if (request.isDamaged.get()) {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_DAMAGED_CAR);
+            user.updateRank(-1F);
         } else {
             rent.setStatus(CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_OK);
             user.updateRank(0.5F);
         }
+
+        notificationSender.sendRentCheckedNotification(new RentCheckedRequest(rent));
 
         carRentRepository.save(rent);
         baseUserRepository.save(user);

@@ -60,7 +60,6 @@ public class CarRentingAppApplication {
        28. Przygotowywanie danych do testów
        31. Endpoint z możliwością edycji danych usera
        33. GetAllCars -> dodać informacje przy wynajętych do kiedy wynajęty
-       37. Automatyczne zmiany statusów
  */
 /*
     Do doczytania:

@@ -9,7 +9,7 @@ import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.CarLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
-import com.example.carrentingapp.exception.exception.http_error_409.CarNotLockedException;
+import com.example.carrentingapp.exception.exception.http_error_409.NotLockedException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +59,7 @@ public class CarLockService {
 
         CarLock lock = carLockRepository.findActiveLockForCar(
                 UUID.fromString(request.carId.get())
-        ).orElseThrow(() -> new CarNotLockedException("Car with given id is not locked"));
+        ).orElseThrow(() -> new NotLockedException("Car with given id is not locked"));
 
         lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_NOT_ACTIVE);
         car.setStatus(CarBase.CarStatus.CAR_READY);

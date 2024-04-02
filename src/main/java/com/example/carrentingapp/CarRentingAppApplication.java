@@ -58,7 +58,6 @@ public class CarRentingAppApplication {
 /*
     Lista zadań:
        31. Endpoint z możliwością edycji danych usera
-       37. Automatyczne zmiany statusów
  */
 /*
     Do doczytania:

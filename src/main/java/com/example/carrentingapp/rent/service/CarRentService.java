@@ -7,11 +7,10 @@ import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
 import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest;
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
+import com.example.carrentingapp.exception.exception.http_error_409.CarNotAvailableException;
+import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
 import com.example.carrentingapp.email.notifications.rent_checked.RentCheckedRequest;
-import com.example.carrentingapp.exception.exception.http_error_403.CarNotAvailableException;
 import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
-import com.example.carrentingapp.exception.exception.http_error_409.CarAlreadyCollectedException;
-import com.example.carrentingapp.exception.exception.http_error_409.CarAlreadyReturnedException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
@@ -99,11 +98,11 @@ public class CarRentService {
         UserBase user = rent.getUser();
 
         if (rent.getStatus().equals(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED)) {
-            throw new CarAlreadyCollectedException("You have already collected this car");
+            throw new AlreadyDoneException("You have already collected this car");
         }
 
         if (rent.getRentedFrom().isAfter(LocalDate.now())) {
-            throw new CarNotReadyException("Your car is not ready to collect yet");
+            throw new CarNotAvailableException("Your car is not ready to collect yet");
         }
 
         rent.setStatus(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED);
@@ -129,7 +128,7 @@ public class CarRentService {
                 CarRent.CarRentStatus.CAR_RENT_END_OF_RENT_LATE,
                 CarRent.CarRentStatus.CAR_RENT_WAITING_FOR_REVIEW
         )) {
-            throw new CarAlreadyReturnedException("You cannot return already returned car");
+            throw new AlreadyDoneException("You cannot return already returned car");
         }
 
         UserBase user = rent.getUser();

@@ -10,8 +10,7 @@ import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationToken;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
-import com.example.carrentingapp.exception.exception.http_error_409.AccountAlreadyEnabledException;
-import com.example.carrentingapp.exception.exception.http_error_409.EmailAlreadyVerifiedException;
+import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.exception.exception.http_error_500.TokenExpiredException;
 import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
@@ -28,7 +27,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -126,7 +124,7 @@ public class AuthenticationService {
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token).orElseThrow(() -> new TokenNotFoundException("There is no token for this user"));
 
         if(confirmationToken.getConfirmedAt() != null){
-            throw new EmailAlreadyVerifiedException("You already verified your email");
+            throw new AlreadyDoneException("You already verified your email");
         }
 
         if(confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())){
@@ -157,7 +155,7 @@ public class AuthenticationService {
             confirmationTokenRepository.save(token);
         }
         if (user.isEnabled()){
-            throw new AccountAlreadyEnabledException("Your account is already enabled");
+            throw new AlreadyDoneException("Your account is already enabled");
         }
         notificationSender.sendConfirmEmailNotification(new ConfirmEmailRequest(user));
         return new EmailVerificationResponse("Email verification token sent again");
@@ -172,9 +170,7 @@ public class AuthenticationService {
         List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId(), Token.JwtTokenStatus.JWT_TOKEN_ACTIVE);
         if (validUserTokens.isEmpty())
             return;
-        validUserTokens.forEach(token -> {
-            token.setStatus(Token.JwtTokenStatus.JWT_TOKEN_EXPIRED);
-        });
+        validUserTokens.forEach(token -> token.setStatus(Token.JwtTokenStatus.JWT_TOKEN_EXPIRED));
         tokenRepository.saveAll(validUserTokens);
     }
 }

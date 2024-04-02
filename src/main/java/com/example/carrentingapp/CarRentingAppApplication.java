@@ -60,9 +60,7 @@ public class CarRentingAppApplication {
        28. Przygotowywanie danych do testów
        31. Endpoint z możliwością edycji danych usera
        33. GetAllCars -> dodać informacje przy wynajętych do kiedy wynajęty
-       36. Dzień przed zwrotem przypomnienie mailowe
        37. Automatyczne zmiany statusów
-       38. Informacja mailowa po zatwierdzeniu zwrotu przez admina
  */
 /*
     Do doczytania:

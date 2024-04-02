@@ -44,7 +44,7 @@ public class ForgotPasswordVerificationToken {
         this.status = ForgotPasswordTokenStatus.CONFIRMATION_TOKEN_SENT;
     }
 
-    public enum ForgotPasswordTokenStatus{
+    public enum ForgotPasswordTokenStatus {
         CONFIRMATION_TOKEN_SENT,
         CONFIRMATION_TOKEN_USED,
         CONFIRMATION_TOKEN_EXPIRED

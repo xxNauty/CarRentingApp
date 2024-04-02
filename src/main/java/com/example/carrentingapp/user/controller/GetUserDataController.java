@@ -19,7 +19,7 @@ public class GetUserDataController {
 
     @GetMapping("/get")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<UserGetDataResponse> getUserDataAsUser(){
+    public ResponseEntity<UserGetDataResponse> getUserDataAsUser() {
         return ResponseEntity.ok(gerUserDataService.getUserData());
     }
 
@@ -27,7 +27,7 @@ public class GetUserDataController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserGetDataResponse> getUserDataAsAdmin(
             @RequestParam String id
-    ){
+    ) {
         return ResponseEntity.ok(gerUserDataService.getUserData(id));
     }
 }

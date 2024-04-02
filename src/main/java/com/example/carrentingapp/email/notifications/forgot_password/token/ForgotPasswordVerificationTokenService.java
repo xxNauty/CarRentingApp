@@ -13,7 +13,7 @@ public class ForgotPasswordVerificationTokenService {
 
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
 
-    public String createToken(UserBase user){
+    public String createToken(UserBase user) {
         ForgotPasswordVerificationToken token = new ForgotPasswordVerificationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now().plusMinutes(15),

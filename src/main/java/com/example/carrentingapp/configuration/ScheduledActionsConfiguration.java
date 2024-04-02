@@ -18,22 +18,22 @@ public class ScheduledActionsConfiguration {
     private final CarUnlockService carUnlockService;
 
     @Scheduled(cron = "0 0 8 * * 1-5") //raz dziennie, od poniedziałku do piątku, o 8:00 rano
-    public void checkIfThereIsAnyCarReadyToCollect(){
+    public void checkIfThereIsAnyCarReadyToCollect() {
         carReadyToRentService.check();
     }
 
     @Scheduled(cron = "0 10 8 * * 1-5") //raz dziennie, od poniedziałku do piątku, o 8:10 rano
-    public void checkIfThereIsAnyUserToUnlock(){
+    public void checkIfThereIsAnyUserToUnlock() {
         userUnlockService.check();
     }
 
     @Scheduled(cron = "0 20 8 * * 1-5") //raz dziennie, od poniedziałku do piątku, o 8:20 rano
-    public void checkIfThereIsAnyCarToUnlock(){
+    public void checkIfThereIsAnyCarToUnlock() {
         carUnlockService.check();
     }
 
     @Scheduled(cron = "0 30 8 * * *") //raz dziennie, przez cały tydzień, o 8:30 rano
-    public void checkIfAnyRentIsGoingToFinish(){
+    public void checkIfAnyRentIsGoingToFinish() {
 
     }
 }

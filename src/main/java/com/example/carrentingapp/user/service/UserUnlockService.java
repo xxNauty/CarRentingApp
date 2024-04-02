@@ -22,12 +22,12 @@ public class UserUnlockService implements ScheduledAction {
     private final UserLockService userLockService;
 
     @Override
-    public void check(){
+    public void check() {
         List<UserLock> locks = userLockRepository.findAllByStatusAndType(UserLock.UserLockStatus.USER_LOCK_ACTIVE, UserLock.LockType.TEMPORARY);
-        for (UserLock lock : locks){
-            if (lock.getExpirationDate().equals(LocalDate.now())){
+        for (UserLock lock : locks) {
+            if (lock.getExpirationDate().equals(LocalDate.now())) {
                 userLockService.unlockUser(new UnlockRequest(Optional.of(lock.getUser().getId().toString())));
-                if(lock.getReason().equals(UserLock.Reason.FREQUENT_DELAYED_RETURNS)){
+                if (lock.getReason().equals(UserLock.Reason.FREQUENT_DELAYED_RETURNS)) {
                     UserBase user = lock.getUser();
                     user.setCarReturnDelays(0);
                     userBaseRepository.save(user);

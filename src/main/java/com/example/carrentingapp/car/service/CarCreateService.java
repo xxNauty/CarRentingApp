@@ -13,7 +13,7 @@ public class CarCreateService {
 
     private final CarBaseRepository carRepository;
 
-    public CarResponse createCar(CarCreateRequest request){
+    public CarResponse createCar(CarCreateRequest request) {
         request.checkInput();
         CarBase car = CarBase.builder()
                 .brand(request.brand.get())

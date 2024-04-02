@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
-public class EmailService implements EmailSender{
+public class EmailService implements EmailSender {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender javaMailSender;
@@ -25,7 +25,7 @@ public class EmailService implements EmailSender{
     @Override
     @Async
     public void send(String to, String from, String subject, String email, EmailMessage.EmailMessageType type) {
-        EmailMessage emailMessage = new EmailMessage(from, to, subject, email);
+        EmailMessage emailMessage = new EmailMessage(from, to, subject, email, type);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
@@ -38,15 +38,13 @@ public class EmailService implements EmailSender{
 
             emailMessage.setStatus(EmailMessage.EmailMessageStatus.EMAIL_SENT);
             emailMessage.setSentAt(LocalDateTime.now());
-        }
-        catch (MessagingException e){
+        } catch (MessagingException e) {
             emailMessage.setStatus(EmailMessage.EmailMessageStatus.EMAIL_ERROR);
             emailMessage.setSentAt(null);
 
             LOGGER.error("Failed to send email, error details: ", e);
-            throw new IllegalStateException("Failed to send email");
-        }
-        finally {
+//            throw new IllegalStateException("Failed to send email");
+        } finally {
             emailMessageRepository.save(emailMessage);
         }
     }

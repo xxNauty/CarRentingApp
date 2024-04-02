@@ -15,10 +15,9 @@ public class CarCollectRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(this.carRentId.isPresent()){
+        if (this.carRentId.isPresent()) {
             RequestValidationService.validateToken(this.carRentId.get());
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("You have to pass id of car you want to collect");
         }
     }

@@ -20,14 +20,13 @@ public class UserDataUpdateRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(this.userId.isPresent()){
+        if (this.userId.isPresent()) {
             RequestValidationService.validateToken(this.userId.get());
             this.firstName.ifPresent(RequestValidationService::validateName);
             this.lastName.ifPresent(RequestValidationService::validateName);
             this.email.ifPresent(RequestValidationService::validateEmail);
             this.dateOfBirth.ifPresent(RequestValidationService::validateAge);
-        }
-        else{
+        } else {
             throw new InvalidArgumentException("You have to pass id of user you want to update");
         }
 

@@ -17,11 +17,11 @@ public class UserGetDataService {
     private final SecurityService securityService;
     private final UserBaseRepository baseUserRepository;
 
-    public UserGetDataResponse getUserData(){
+    public UserGetDataResponse getUserData() {
         return new UserGetDataResponse(securityService.getLoggedInUser());
     }
 
-    public UserGetDataResponse getUserData(String id){
+    public UserGetDataResponse getUserData(String id) {
         UserBase user = baseUserRepository.findById(UUID.fromString(id)).orElseThrow(() -> new UserNotFoundException("There is no user with given id"));
         return new UserGetDataResponse(user);
     }

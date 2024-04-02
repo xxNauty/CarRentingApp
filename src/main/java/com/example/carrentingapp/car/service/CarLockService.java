@@ -25,12 +25,12 @@ public class CarLockService {
 
     private final CarLockRepository carLockRepository;
 
-    public CarLockResponse lockCar(CarLockRequest request){
+    public CarLockResponse lockCar(CarLockRequest request) {
         request.checkInput();
         CarBase car = baseCarRepository.findById(UUID.fromString(request.carId.get()))
                 .orElseThrow(() -> new CarNotFoundException("Car with given id not found"));
 
-        if(car.getStatus().equals(CarBase.CarStatus.CAR_LOCKED)){
+        if (car.getStatus().equals(CarBase.CarStatus.CAR_LOCKED)) {
             CarLock lock = carLockRepository.findActiveLockForCar(car.getId())
                     .orElseThrow(() -> new CarLockNotFoundException("Car lock not found"));
             lock.setStatus(CarLock.CarLockStatus.CAR_LOCK_TIME_CHANGED);
@@ -52,7 +52,7 @@ public class CarLockService {
         return new CarLockResponse("Car is now unavailable to rent");
     }
 
-    public CarLockResponse unlockCar(CarUnlockRequest request){
+    public CarLockResponse unlockCar(CarUnlockRequest request) {
         request.checkInput();
         CarBase car = baseCarRepository.findById(UUID.fromString(request.carId.get()))
                 .orElseThrow(() -> new CarNotFoundException("Car with given id not found"));

@@ -3,7 +3,7 @@ package com.example.carrentingapp.authentication.request;
 import com.example.carrentingapp.authentication.service.RequestValidationService;
 import com.example.carrentingapp.configuration.common_interfaces.Request;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
@@ -15,11 +15,10 @@ public class LoginRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(email.isPresent() && password.isPresent()){
+        if (email.isPresent() && password.isPresent()) {
             RequestValidationService.validateParameter(this.email.get());
             RequestValidationService.validateParameter(this.password.get());
-        }
-        else{
+        } else {
             throw new InvalidArgumentException("You have to pass both email and password to log in");
         }
     }

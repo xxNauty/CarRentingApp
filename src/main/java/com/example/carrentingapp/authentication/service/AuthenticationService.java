@@ -10,11 +10,11 @@ import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationToken;
 import com.example.carrentingapp.email.notifications.confirm_email.token.ConfirmationTokenRepository;
+import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
+import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.exception.exception.http_error_500.TokenExpiredException;
-import com.example.carrentingapp.exception.exception.http_error_404.TokenNotFoundException;
-import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.token.Token;
 import com.example.carrentingapp.token.TokenRepository;
 import com.example.carrentingapp.user.UserBase;
@@ -51,7 +51,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegistrationRequest request) {
         request.checkInput();
 
-        if(repository.findByEmail(request.email.get()).isPresent()){
+        if (repository.findByEmail(request.email.get()).isPresent()) {
             throw new InvalidArgumentException("This email is already used");
         }
 
@@ -66,7 +66,7 @@ public class AuthenticationService {
         );
     }
 
-    public AuthenticationResponse login(LoginRequest request){
+    public AuthenticationResponse login(LoginRequest request) {
         request.checkInput();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -93,7 +93,7 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
@@ -114,14 +114,15 @@ public class AuthenticationService {
         }
     }
 
-    public EmailVerificationResponse verifyEmail(String token){
+    public EmailVerificationResponse verifyEmail(String token) {
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token).orElseThrow(() -> new TokenNotFoundException("There is no token for this user"));
 
-        if(confirmationToken.getConfirmedAt() != null){
+        if (confirmationToken.getConfirmedAt() != null) {
             throw new AlreadyDoneException("You already verified your email");
         }
 
-        if(confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())){
+        if (confirmationToken.getExpiredAt().isBefore(LocalDateTime.now()) ||
+                confirmationToken.getStatus().equals(ConfirmationToken.ConfirmationTokenStatus.CONFIRMATION_TOKEN_EXPIRED)) {
             throw new TokenExpiredException("Given token already expired");
         }
 
@@ -137,18 +138,18 @@ public class AuthenticationService {
         return new EmailVerificationResponse("Email verified, your account is now enabled");
     }
 
-    public EmailVerificationResponse sendVerifyingTokenAgain(SendVerifyingTokenAgainRequest request){
+    public EmailVerificationResponse sendVerifyingTokenAgain(SendVerifyingTokenAgainRequest request) {
         request.checkInput();
         UserBase user = repository.findByEmailAndId(
                 request.email.get(),
                 UUID.fromString(request.userId.get())
         ).orElseThrow(() -> new UserNotFoundException("There is no such user"));
         List<ConfirmationToken> oldTokens = confirmationTokenRepository.findAllUnusedForUser(UUID.fromString(request.userId.get()));
-        for(ConfirmationToken token : oldTokens){
+        for (ConfirmationToken token : oldTokens) {
             token.setStatus(ConfirmationToken.ConfirmationTokenStatus.CONFIRMATION_TOKEN_EXPIRED);
             confirmationTokenRepository.save(token);
         }
-        if (user.isEnabled()){
+        if (user.isEnabled()) {
             throw new AlreadyDoneException("Your account is already enabled");
         }
         notificationSender.sendConfirmEmailNotification(new ConfirmEmailRequest(user));

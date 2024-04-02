@@ -13,14 +13,14 @@ public class UserPasswordService {
     private final PasswordEncoder passwordEncoder;
     private final UserBaseRepository baseUserRepository;
 
-    public void changePassword(UserBase user, String oldPassword, String newPassword){
-        if(passwordEncoder.matches(oldPassword, user.getPassword())){
-            user.setPassword(passwordEncoder.encode(newPassword));
-        }
-        baseUserRepository.save(user);
-    }
+//    public void changePassword(UserBase user, String oldPassword, String newPassword) {
+//        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+//            user.setPassword(passwordEncoder.encode(newPassword));
+//        }
+//        baseUserRepository.save(user);
+//    }
 
-    public void changePassword(UserBase user, String newPassword){
+    public void changePassword(UserBase user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         baseUserRepository.save(user);
     }

@@ -1,8 +1,8 @@
 package com.example.carrentingapp.car.controller;
 
+import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarResponse;
 import com.example.carrentingapp.car.service.CarCreateService;
-import com.example.carrentingapp.car.request.CarCreateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +22,7 @@ public class CarCreateController {
     @PostMapping("/base")
     public ResponseEntity<CarResponse> createCar(
             @RequestBody CarCreateRequest request
-    ){
+    ) {
         return ResponseEntity.ok(carCreateService.createCar(request));
     }
 

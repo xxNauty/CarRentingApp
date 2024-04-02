@@ -38,43 +38,43 @@ public class EmailNotificationSender {
     private final RentGoingToFinishNotificationSender rentGoingToFinishNotificationSender;
     private final RentCheckedNotificationSender rentCheckedNotificationSender;
 
-    public void sendAccountLockedNotification(AccountLockedRequest request){
+    public void sendAccountLockedNotification(AccountLockedRequest request) {
         accountLockedNotificationSender.sendEmail(request);
     }
 
-    public void sendAccountUnlockedNotification(AccountUnlockedRequest request){
+    public void sendAccountUnlockedNotification(AccountUnlockedRequest request) {
         accountUnlockedNotificationSender.sendEmail(request);
     }
 
-    public void sendCarCollectedNotification(CarCollectedRequest request){
+    public void sendCarCollectedNotification(CarCollectedRequest request) {
         carCollectedNotificationSender.sendEmail(request);
     }
 
-    public void sendCarReadyToCollectNotification(CarReadyToCollectRequest request){
+    public void sendCarReadyToCollectNotification(CarReadyToCollectRequest request) {
         carReadyToCollectNotificationSender.sendEmail(request);
     }
 
-    public void sendCarRentedNotification(CarRentedRequest request){
+    public void sendCarRentedNotification(CarRentedRequest request) {
         carRentedNotificationSender.sendEmail(request);
     }
 
-    public void sendCarReturnedNotification(CarReturnedRequest request){
+    public void sendCarReturnedNotification(CarReturnedRequest request) {
         carReturnedNotificationSender.sendEmail(request);
     }
 
-    public void sendConfirmEmailNotification(ConfirmEmailRequest request){
+    public void sendConfirmEmailNotification(ConfirmEmailRequest request) {
         confirmEmailNotificationSender.sendEmail(request);
     }
 
-    public void sendForgotPasswordNotification(ForgotPasswordRequest request){
+    public void sendForgotPasswordNotification(ForgotPasswordRequest request) {
         forgotPasswordNotificationSender.sendEmail(request);
     }
 
-    public void sendRentGoingToFinishNotification(RentGoingToFinishRequest request){
+    public void sendRentGoingToFinishNotification(RentGoingToFinishRequest request) {
         rentGoingToFinishNotificationSender.sendEmail(request);
     }
 
-    public void sendRentCheckedNotification(RentCheckedRequest request){
+    public void sendRentCheckedNotification(RentCheckedRequest request) {
         rentCheckedNotificationSender.sendEmail(request);
     }
 }

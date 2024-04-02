@@ -20,7 +20,7 @@ public class CarRentingAppApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserCreateService userCreateService, UserBaseRepository baseUserRepository){
+    public CommandLineRunner commandLineRunner(UserCreateService userCreateService, UserBaseRepository baseUserRepository) {
         return args -> {
             System.out.println("\n--------------------------------\n");
 
@@ -59,7 +59,7 @@ public class CarRentingAppApplication {
 }
 /*
     Lista zadań:
-
+        1. Endpoint zmiana hasła
  */
 /*
     Do doczytania:

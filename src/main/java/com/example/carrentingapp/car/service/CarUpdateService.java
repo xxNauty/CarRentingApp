@@ -17,7 +17,7 @@ public class CarUpdateService {
 
     private final CarBaseRepository carRepository;
 
-    public CarResponse updateMileageFromRequest(CarUpdateMileageRequest request){
+    public CarResponse updateMileageFromRequest(CarUpdateMileageRequest request) {
         request.checkInput();
         CarBase car = carRepository.findById(UUID.fromString(request.carId.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
@@ -28,7 +28,7 @@ public class CarUpdateService {
         return new CarResponse(car.getId().toString(), "Car mileage updated, actual mileage: " + car.getMileage());
     }
 
-    public CarResponse updateCarDataResponse(CarUpdateDataRequest request){
+    public CarResponse updateCarDataResponse(CarUpdateDataRequest request) {
         request.checkInput();
         CarBase carToUpdate = carRepository.findById(UUID.fromString(request.id.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 

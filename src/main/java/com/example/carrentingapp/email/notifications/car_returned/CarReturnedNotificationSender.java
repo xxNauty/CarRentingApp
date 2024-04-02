@@ -3,8 +3,6 @@ package com.example.carrentingapp.email.notifications.car_returned;
 import com.example.carrentingapp.email.message_history.EmailMessage;
 import com.example.carrentingapp.email.notifications.NotificationRequest;
 import com.example.carrentingapp.email.notifications.NotificationSender;
-import com.example.carrentingapp.email.notifications.rent_going_to_finish.RentGoingToFinishRequest;
-import com.example.carrentingapp.email.notifications.rent_going_to_finish.RentGoingToFinishTemplate;
 import com.example.carrentingapp.email.sender.EmailSender;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

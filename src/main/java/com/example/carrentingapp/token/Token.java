@@ -34,7 +34,7 @@ public class Token {
         this.user = user;
     }
 
-    public enum JwtTokenStatus{
+    public enum JwtTokenStatus {
         JWT_TOKEN_ACTIVE,
         JWT_TOKEN_EXPIRED
     }

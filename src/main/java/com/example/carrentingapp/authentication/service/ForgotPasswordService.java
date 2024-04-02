@@ -27,7 +27,7 @@ public class ForgotPasswordService {
     private final ForgotPasswordVerificationTokenRepository forgotPasswordVerificationTokenRepository;
     private final UserPasswordService passwordService;
 
-    public ForgotPasswordResponse sendEmail(ForgotPasswordVerificationRequest request){
+    public ForgotPasswordResponse sendEmail(ForgotPasswordVerificationRequest request) {
         request.checkInput();
         UserBase user = baseUserRepository.findByEmail(request.email.get()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given email"));
@@ -48,7 +48,7 @@ public class ForgotPasswordService {
         return new ForgotPasswordResponse("An email sent, check your inbox and follow the instructions given in message");
     }
 
-    public ForgotPasswordResponse changePassword(NewPasswordRequest request){
+    public ForgotPasswordResponse changePassword(NewPasswordRequest request) {
         request.checkInput();
         ForgotPasswordVerificationToken token = forgotPasswordVerificationTokenRepository
                 .findByToken(request.token.get()).orElseThrow(
@@ -57,7 +57,7 @@ public class ForgotPasswordService {
         UserBase user = baseUserRepository.findByEmail(request.email.get()).orElseThrow(
                 () -> new UserNotFoundException("There is no user with given Id"));
 
-        if(!token.getUser().equals(user)){
+        if (!token.getUser().equals(user)) {
             throw new AccessDeniedException("It is not your token");
         }
         passwordService.changePassword(user, request.password.get());

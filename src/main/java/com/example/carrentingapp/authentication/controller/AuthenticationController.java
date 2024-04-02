@@ -9,7 +9,6 @@ import com.example.carrentingapp.authentication.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegistrationRequest request
-    ){
+    ) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -47,14 +46,14 @@ public class AuthenticationController {
     @GetMapping("/register/verify")
     public ResponseEntity<EmailVerificationResponse> verifyEmail(
             @RequestParam String token
-    ){
+    ) {
         return ResponseEntity.ok(authenticationService.verifyEmail(token));
     }
 
     @PostMapping("/register/verify/send-again")
     public ResponseEntity<EmailVerificationResponse> sendVerifyingTokenAgain(
             @RequestBody SendVerifyingTokenAgainRequest request
-    ){
+    ) {
         return ResponseEntity.ok(authenticationService.sendVerifyingTokenAgain(request));
     }
 }

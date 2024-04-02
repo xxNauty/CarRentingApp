@@ -5,7 +5,6 @@ import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.car.service.CarLockService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +23,14 @@ public class CarLockController {
     @PostMapping("/lock")
     public ResponseEntity<CarLockResponse> lockCar(
             @RequestBody CarLockRequest request
-    ){
+    ) {
         return ResponseEntity.ok(carLockService.lockCar(request));
     }
 
     @PostMapping("/unlock")
     public ResponseEntity<CarLockResponse> unlockCar(
             @RequestBody CarUnlockRequest request
-    ){
+    ) {
         return ResponseEntity.ok(carLockService.unlockCar(request));
     }
 

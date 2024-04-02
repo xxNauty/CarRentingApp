@@ -1,14 +1,13 @@
 package com.example.carrentingapp.email.notifications.rent_checked;
 
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidInternalArgumentException;
-import com.example.carrentingapp.rent.CarRent;
 
 public class RentCheckedTemplate {
 
-    public static String template(String endOfRentStatus, int daysOfDelay){
+    public static String template(String endOfRentStatus, int daysOfDelay) {
         String template = "<h1>Hello!</h1><h2>We have checked the car you have rented recently. ";
 
-        switch (endOfRentStatus){
+        switch (endOfRentStatus) {
             case "CAR_RENT_END_OF_RENT_OK":
                 template += "Everything is all with it so your rank increases by 0.5 point.<br>Thank you for choosing our site.</h2>";
                 break;

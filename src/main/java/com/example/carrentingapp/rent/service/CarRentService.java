@@ -7,28 +7,27 @@ import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.car_collected.CarCollectedRequest;
 import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest;
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
-import com.example.carrentingapp.exception.exception.http_error_409.CarNotAvailableException;
-import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
 import com.example.carrentingapp.email.notifications.rent_checked.RentCheckedRequest;
-import com.example.carrentingapp.exception.exception.http_error_403.CarNotReadyException;
-import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
+import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
+import com.example.carrentingapp.exception.exception.http_error_409.CarNotAvailableException;
+import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.rent.CarRentRepository;
-import com.example.carrentingapp.rent.request.*;
-import com.example.carrentingapp.rent.response.*;
-import com.example.carrentingapp.user.UserLock;
-import com.example.carrentingapp.user.request.LockRequest;
-import com.example.carrentingapp.user.service.UserLockService;
+import com.example.carrentingapp.rent.request.CarCheckAfterRentRequest;
 import com.example.carrentingapp.rent.request.CarCollectRequest;
-import com.example.carrentingapp.rent.request.CarReturnRequest;
-import com.example.carrentingapp.rent.response.CarRentResponse;
 import com.example.carrentingapp.rent.request.CarRentRequest;
+import com.example.carrentingapp.rent.request.CarReturnRequest;
+import com.example.carrentingapp.rent.response.CarCheckAfterRentResponse;
 import com.example.carrentingapp.rent.response.CarCollectResponse;
+import com.example.carrentingapp.rent.response.CarRentResponse;
 import com.example.carrentingapp.rent.response.CarReturnResponse;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
+import com.example.carrentingapp.user.UserLock;
+import com.example.carrentingapp.user.request.LockRequest;
+import com.example.carrentingapp.user.service.UserLockService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,13 +52,13 @@ public class CarRentService {
     public CarRentResponse rentCar(CarRentRequest request) {
         request.checkInput();
 
-        if(Period.between(request.rentedFrom.get(), LocalDate.now()).getYears() < 7){
+        if (Period.between(request.rentedFrom.get(), LocalDate.now()).getYears() < 7) {
             throw new InvalidArgumentException("You have to make a reservation at least 7 days earlier");
         }
 
         CarBase carToRent = baseCarRepository.findById(UUID.fromString(request.carId.get())).orElseThrow(() -> new CarNotFoundException("There is no car with given id"));
 
-        if(!carToRent.getStatus().equals(CarBase.CarStatus.CAR_READY)){
+        if (!carToRent.getStatus().equals(CarBase.CarStatus.CAR_READY)) {
             throw new CarNotAvailableException("This car is currently not available to rent");
         }
 
@@ -158,7 +157,7 @@ public class CarRentService {
 
         user.setRank(userRank);
         car.setStatus(CarBase.CarStatus.CAR_READY);
-        car.setMileage(car.getMileage() + request.kilometersTraveled.get()); //todo do poprawy
+        car.updateMileage(request.kilometersTraveled.get());
         car.setUnavailableTo(null);
 
         carRentRepository.save(rent);

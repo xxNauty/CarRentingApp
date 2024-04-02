@@ -3,8 +3,6 @@ package com.example.carrentingapp.email.message_history;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.Length;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -40,20 +38,22 @@ public class EmailMessage {
             String emailFrom,
             String emailTo,
             String subject,
-            String body
+            String body,
+            EmailMessageType type
     ) {
         this.emailFrom = emailFrom;
         this.emailTo = emailTo;
         this.subject = subject;
         this.body = body;
+        this.type = type;
     }
 
-    public enum EmailMessageStatus{
+    public enum EmailMessageStatus {
         EMAIL_SENT,
         EMAIL_ERROR
     }
 
-    public enum EmailMessageType{
+    public enum EmailMessageType {
         NOTIFICATION,
         CONTACT_FORM
     }

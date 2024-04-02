@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityService {
 
-    public UserBase getLoggedInUser(){
+    public UserBase getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal.toString().equals("anonymousUser")){
+        if (principal.toString().equals("anonymousUser")) {
             throw new AccessDeniedException("You cannot do this not logged");
         }
         return (UserBase) principal;

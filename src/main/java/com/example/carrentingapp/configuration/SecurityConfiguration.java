@@ -2,7 +2,6 @@ package com.example.carrentingapp.configuration;
 
 import com.example.carrentingapp.configuration.jwt.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

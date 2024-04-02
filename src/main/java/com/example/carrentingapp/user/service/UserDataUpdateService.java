@@ -1,6 +1,5 @@
 package com.example.carrentingapp.user.service;
 
-import com.example.carrentingapp.authentication.service.AuthenticationService;
 import com.example.carrentingapp.configuration.service.SecurityService;
 import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
@@ -25,9 +24,9 @@ public class UserDataUpdateService {
     private final EmailNotificationSender emailNotificationSender;
 
     @Transactional
-    public UserDataUpdateResponse updateData(UserDataUpdateRequest request){
-        if(!securityService.getLoggedInUser().getId().equals(UUID.fromString(request.userId.get())) &&
-                !securityService.getLoggedInUser().getRole().equals(UserBase.Role.ADMIN)){
+    public UserDataUpdateResponse updateData(UserDataUpdateRequest request) {
+        if (!securityService.getLoggedInUser().getId().equals(UUID.fromString(request.userId.get())) &&
+                !securityService.getLoggedInUser().getRole().equals(UserBase.Role.ADMIN)) {
             throw new AccessDeniedException("You cannot modify data of this user");
         }
 

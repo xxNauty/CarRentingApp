@@ -5,7 +5,6 @@ import com.example.carrentingapp.authentication.request.NewPasswordRequest;
 import com.example.carrentingapp.authentication.response.ForgotPasswordResponse;
 import com.example.carrentingapp.authentication.service.ForgotPasswordService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,14 +21,14 @@ public class ForgotPasswordController {
     @PostMapping("/email")
     public ResponseEntity<ForgotPasswordResponse> sendVerificationToken(
             @RequestBody ForgotPasswordVerificationRequest request
-    ){
+    ) {
         return ResponseEntity.ok(forgotPasswordService.sendEmail(request));
     }
 
     @PostMapping("/set-new")
     public ResponseEntity<ForgotPasswordResponse> changePassword(
             @RequestBody NewPasswordRequest request
-    ){
+    ) {
         return ResponseEntity.ok(forgotPasswordService.changePassword(request));
     }
 

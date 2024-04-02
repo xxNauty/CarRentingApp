@@ -5,7 +5,6 @@ import com.example.carrentingapp.user.request.UnlockRequest;
 import com.example.carrentingapp.user.response.LockResponse;
 import com.example.carrentingapp.user.service.UserLockService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +23,14 @@ public class UserLockController {
     @PostMapping("/lock")
     public ResponseEntity<LockResponse> lockUser(
             @RequestBody LockRequest request
-    ){
+    ) {
         return ResponseEntity.ok(userLockService.lockUser(request));
     }
 
     @PostMapping("/unlock")
     public ResponseEntity<LockResponse> unlockUser(
             @RequestBody UnlockRequest request
-    ){
+    ) {
         return ResponseEntity.ok(userLockService.unlockUser(request));
     }
 }

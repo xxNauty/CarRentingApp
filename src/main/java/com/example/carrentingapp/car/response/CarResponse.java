@@ -1,8 +1,7 @@
 package com.example.carrentingapp.car.response;
 
-import lombok.*;
-
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor

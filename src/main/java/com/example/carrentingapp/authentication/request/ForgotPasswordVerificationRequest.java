@@ -16,10 +16,9 @@ public class ForgotPasswordVerificationRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(this.email.isPresent()){
+        if (this.email.isPresent()) {
             RequestValidationService.validateEmail(this.email.get());
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("You have to pass an email in order to reset your password");
         }
 

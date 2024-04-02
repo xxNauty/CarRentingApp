@@ -1,7 +1,10 @@
 package com.example.carrentingapp.car;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -57,9 +60,13 @@ public class CarBase {
 
     private LocalDate unavailableTo;
 
-    public CarLock getActiveLock(){
-        for(CarLock lock : locks){
-            if (lock.getStatus().equals(CarLock.CarLockStatus.CAR_LOCK_ACTIVE)){
+    public void updateMileage(float valueToAdd){
+        this.mileage += valueToAdd;
+    }
+
+    public CarLock getActiveLock() {
+        for (CarLock lock : locks) {
+            if (lock.getStatus().equals(CarLock.CarLockStatus.CAR_LOCK_ACTIVE)) {
                 return lock;
             }
         }
@@ -98,7 +105,7 @@ public class CarBase {
         return Objects.hash(id);
     }
 
-    public enum CarStatus{
+    public enum CarStatus {
         CAR_READY,
         CAR_LOCKED,
         CAR_RENTED

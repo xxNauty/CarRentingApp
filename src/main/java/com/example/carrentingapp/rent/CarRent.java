@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -47,7 +46,7 @@ public class CarRent {
         this.daysOfDelay = 0;
     }
 
-    public enum CarRentStatus{
+    public enum CarRentStatus {
         CAR_RENT_CREATED,
         CAR_RENT_CAR_READY_TO_COLLECT,
         CAR_RENT_CAR_COLLECTED,
@@ -56,7 +55,7 @@ public class CarRent {
         CAR_RENT_END_OF_RENT_DAMAGED_CAR,
         CAR_RENT_END_OF_RENT_LATE;
 
-        public boolean isIn(final CarRentStatus... statuses){
+        public boolean isIn(final CarRentStatus... statuses) {
             return Arrays.asList(statuses).contains(this);
         }
     }

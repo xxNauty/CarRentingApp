@@ -22,7 +22,7 @@ public class UserCreateService {
     private final EmailNotificationSender notificationSender;
 
     @Transactional
-    public UserCreateResponse createUser(RegistrationRequest request){
+    public UserCreateResponse createUser(RegistrationRequest request) {
         UserBase user = new UserBase(
                 request.firstName.get(),
                 request.lastName.get(),
@@ -44,7 +44,7 @@ public class UserCreateService {
             String email,
             String password,
             LocalDate dateOfBirth
-    ){
+    ) {
         UserBase user = new UserBase(
                 firstName,
                 lastName,

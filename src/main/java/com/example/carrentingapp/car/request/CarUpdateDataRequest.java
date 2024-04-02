@@ -3,10 +3,9 @@ package com.example.carrentingapp.car.request;
 import com.example.carrentingapp.authentication.service.RequestValidationService;
 import com.example.carrentingapp.configuration.common_interfaces.Request;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class CarUpdateDataRequest implements Request {
@@ -24,11 +23,11 @@ public class CarUpdateDataRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(this.id.isPresent() &&this.brand.isPresent() && this.model.isPresent() &&
+        if (this.id.isPresent() && this.brand.isPresent() && this.model.isPresent() &&
                 this.yearOfProduction.isPresent() && this.power.isPresent() && this.torque.isPresent() &&
                 this.engineSize.isPresent() && this.averageFuelConsumption.isPresent() &&
                 this.minRankOfUser.isPresent() && this.pricePerDay.isPresent()
-        ){
+        ) {
             RequestValidationService.validateParameter(this.id.get());
             RequestValidationService.validateParameter(this.brand.get());
             RequestValidationService.validateParameter(this.model.get());
@@ -39,8 +38,7 @@ public class CarUpdateDataRequest implements Request {
             RequestValidationService.validateParameter(this.averageFuelConsumption.get());
             RequestValidationService.validateParameter(this.minRankOfUser.get());
             RequestValidationService.validateParameter(this.pricePerDay.get());
-        }
-        else{
+        } else {
             throw new InvalidArgumentException("You have to pass all values in order to update new car");
         }
     }

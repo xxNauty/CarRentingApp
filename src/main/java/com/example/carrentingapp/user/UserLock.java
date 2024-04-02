@@ -2,7 +2,8 @@ package com.example.carrentingapp.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class UserLock {
         FREQUENT_DELAYED_RETURNS,
         DAMAGED_CAR,
         DESTROYED_CAR,
-        OTHER;
+        OTHER
     }
 
     public enum LockType {
@@ -53,7 +54,7 @@ public class UserLock {
         FOREVER
     }
 
-    public enum UserLockStatus{
+    public enum UserLockStatus {
         USER_LOCK_ACTIVE,
         USER_LOCK_NOT_ACTIVE,
         USER_LOCK_TIME_CHANGED

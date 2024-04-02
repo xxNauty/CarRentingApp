@@ -3,10 +3,10 @@ package com.example.carrentingapp.user.service;
 import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.account_locked.AccountLockedRequest;
 import com.example.carrentingapp.email.notifications.account_unlocked.AccountUnlockedRequest;
-import com.example.carrentingapp.exception.exception.http_error_409.AccountUnlockImpossibleException;
-import com.example.carrentingapp.exception.exception.http_error_409.NotLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
+import com.example.carrentingapp.exception.exception.http_error_409.AccountUnlockImpossibleException;
+import com.example.carrentingapp.exception.exception.http_error_409.NotLockedException;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
 import com.example.carrentingapp.user.UserLock;
@@ -34,7 +34,7 @@ public class UserLockService {
         UserBase user = userBaseRepository.findById(UUID.fromString(request.userid.get()))
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
-        if(!user.isAccountNonLocked()){
+        if (!user.isAccountNonLocked()) {
             UserLock lock = userLockRepository.findActiveForUser(
                     UUID.fromString(request.userid.get())
             ).orElseThrow(() -> new UserLockNotFoundException("User lock not found"));
@@ -49,10 +49,9 @@ public class UserLockService {
                 user
         );
 
-        if (request.lockType.get().equals(UserLock.LockType.TEMPORARY.name())){
+        if (request.lockType.get().equals(UserLock.LockType.TEMPORARY.name())) {
             user.setStatus(UserBase.UserStatus.USER_LOCKED_TEMPORARY);
-        }
-        else if (request.lockType.get().equals(UserLock.LockType.FOREVER.name())){
+        } else if (request.lockType.get().equals(UserLock.LockType.FOREVER.name())) {
             user.setStatus(UserBase.UserStatus.USER_LOCKED_FOREVER);
         }
 
@@ -69,14 +68,14 @@ public class UserLockService {
         UserBase user = userBaseRepository.findById(UUID.fromString(request.userid.get()))
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
-        if(user.isAccountNonLocked()){
+        if (user.isAccountNonLocked()) {
             throw new NotLockedException("This user is not locked");
         }
 
         UserLock lock = userLockRepository.findActiveForUser(UUID.fromString(request.userid.get()))
                 .orElseThrow(() -> new UserLockNotFoundException("There is no active locks for this user"));
 
-        if(lock.getType().equals(UserLock.LockType.FOREVER)){
+        if (lock.getType().equals(UserLock.LockType.FOREVER)) {
             throw new AccountUnlockImpossibleException("This account is locked forever");
         }
 

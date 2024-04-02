@@ -3,7 +3,7 @@ package com.example.carrentingapp.car.request;
 import com.example.carrentingapp.authentication.service.RequestValidationService;
 import com.example.carrentingapp.configuration.common_interfaces.Request;
 import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
@@ -22,11 +22,11 @@ public class CarCreateRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(this.brand.isPresent() && this.model.isPresent() && this.yearOfProduction.isPresent() &&
+        if (this.brand.isPresent() && this.model.isPresent() && this.yearOfProduction.isPresent() &&
                 this.mileage.isPresent() && this.power.isPresent() && this.torque.isPresent() &&
                 this.engineSize.isPresent() && this.averageFuelConsumption.isPresent() &&
                 this.minRankOfUser.isPresent() && this.pricePerDay.isPresent()
-        ){
+        ) {
             RequestValidationService.validateParameter(this.brand.get());
             RequestValidationService.validateParameter(this.model.get());
             RequestValidationService.validateParameter(this.yearOfProduction.get());
@@ -37,8 +37,7 @@ public class CarCreateRequest implements Request {
             RequestValidationService.validateParameter(this.averageFuelConsumption.get());
             RequestValidationService.validateParameter(this.minRankOfUser.get());
             RequestValidationService.validateParameter(this.pricePerDay.get());
-        }
-        else{
+        } else {
             throw new InvalidArgumentException("You have to pass all values in order to create new car");
         }
     }

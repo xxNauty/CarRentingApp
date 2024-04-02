@@ -14,11 +14,10 @@ public class AuthorizedContactFormRequest implements Request {
 
     @Override
     public void checkInput() {
-        if(this.subject.isPresent() && this.body.isPresent()){
+        if (this.subject.isPresent() && this.body.isPresent()) {
             RequestValidationService.validateParameter(this.subject.get());
             RequestValidationService.validateParameter(this.body.get());
-        }
-        else{
+        } else {
             throw new InvalidArgumentException("You have to pass both subject and body in order to sent a message to us");
         }
     }

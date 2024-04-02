@@ -15,11 +15,10 @@ public class CarCheckAfterRentRequest implements Request {
 
     @Override
     public void checkInput() {
-        if (this.carRentId.isPresent() && this.isDamaged.isPresent()){
+        if (this.carRentId.isPresent() && this.isDamaged.isPresent()) {
             RequestValidationService.validateToken(this.carRentId.get());
             RequestValidationService.validateParameter(this.isDamaged.get());
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("You have to pass both values in order to verify car after rent");
         }
     }

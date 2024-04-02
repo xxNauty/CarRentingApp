@@ -3,8 +3,8 @@ package com.example.carrentingapp.car.service;
 import com.example.carrentingapp.car.CarBase;
 import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.car.CarLock;
-import com.example.carrentingapp.car.response.CarGetResponse;
 import com.example.carrentingapp.car.response.CarGetFullListResponse;
+import com.example.carrentingapp.car.response.CarGetResponse;
 import com.example.carrentingapp.car.response.CarGetSimpleListResponse;
 import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
 import lombok.AllArgsConstructor;
@@ -21,15 +21,15 @@ public class CarGetService {
 
     private final CarBaseRepository repository;
 
-    public CarGetResponse getCarById(UUID id){
+    public CarGetResponse getCarById(UUID id) {
         return new CarGetResponse(repository.findById(id).orElseThrow(() -> new CarNotFoundException("There is no car with given Id")));
     }
 
-    public CarGetSimpleListResponse getSimpleCarList(Boolean onlyAvailable){
+    public CarGetSimpleListResponse getSimpleCarList(Boolean onlyAvailable) {
         List<CarBase> cars = onlyAvailable ? repository.findByStatus(CarBase.CarStatus.CAR_READY) : repository.findAll();
         List<SimpleCar> output = new ArrayList<>();
 
-        for(CarBase car : cars){
+        for (CarBase car : cars) {
             output.add(
                     new SimpleCar(
                             car.getBrand(),
@@ -43,11 +43,11 @@ public class CarGetService {
         return new CarGetSimpleListResponse(output);
     }
 
-    public CarGetFullListResponse getFullCarList(Boolean onlyAvailable){
-        List<CarBase> cars = onlyAvailable ? repository.findByStatus(CarBase.CarStatus.CAR_READY)  : repository.findAll();
+    public CarGetFullListResponse getFullCarList(Boolean onlyAvailable) {
+        List<CarBase> cars = onlyAvailable ? repository.findByStatus(CarBase.CarStatus.CAR_READY) : repository.findAll();
         List<FullCar> output = new ArrayList<>();
 
-        for(CarBase car : cars){
+        for (CarBase car : cars) {
             output.add(
                     new FullCar(
                             car.getBrand(),
@@ -75,7 +75,8 @@ public class CarGetService {
             Integer yearOfProduction,
             Float power,
             LocalDate unavailableTo
-    ){}
+    ) {
+    }
 
     public record FullCar(
             String brand,
@@ -91,5 +92,6 @@ public class CarGetService {
             CarLock lock,
             LocalDate unavailableTo
 
-    ){}
+    ) {
+    }
 }

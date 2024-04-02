@@ -21,8 +21,8 @@ public class CarReadyToCollectService implements ScheduledAction {
     @Override
     public void check() {
         List<CarRent> rents = carRentRepository.getAllByStatus(CarRent.CarRentStatus.CAR_RENT_CAR_READY_TO_COLLECT);
-        for(CarRent rent : rents){
-            if (rent.getRentedFrom().equals(LocalDate.now())){
+        for (CarRent rent : rents) {
+            if (rent.getRentedFrom().equals(LocalDate.now())) {
                 notificationSender.sendCarReadyToCollectNotification(new CarReadyToCollectRequest(rent.getUser()));
             }
         }

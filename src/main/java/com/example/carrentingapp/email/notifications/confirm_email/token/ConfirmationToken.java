@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "user_email_confirmation_token")
+@Table(name = "email_confirm_verification_token")
 public class ConfirmationToken {
 
     @Id
@@ -44,7 +44,7 @@ public class ConfirmationToken {
         this.status = ConfirmationTokenStatus.CONFIRMATION_TOKEN_SENT;
     }
 
-    public enum ConfirmationTokenStatus{
+    public enum ConfirmationTokenStatus {
         CONFIRMATION_TOKEN_SENT,
         CONFIRMATION_TOKEN_CONFIRMED,
         CONFIRMATION_TOKEN_EXPIRED

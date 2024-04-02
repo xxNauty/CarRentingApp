@@ -170,7 +170,6 @@ public class UserLockTests {
         Assertions.assertEquals(new UserLock(), lock);
     }
 
-    //todo: do poprawy
 //    @Test
 //    public void checkIfIsPossibleToLockSomebodyTwiceTest() {
 //        final String lockURL = "http://localhost:" + randomServerPort + "/api/v1/user/lock";

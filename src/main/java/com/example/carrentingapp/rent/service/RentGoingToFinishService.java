@@ -22,8 +22,8 @@ public class RentGoingToFinishService implements ScheduledAction {
     @Override
     public void check() {
         List<CarRent> rents = carRentRepository.getAllByStatus(CarRent.CarRentStatus.CAR_RENT_CAR_COLLECTED);
-        for (CarRent rent : rents){
-            if(Period.between(rent.getRentedTo(), LocalDate.now()).getDays() < 2){
+        for (CarRent rent : rents) {
+            if (Period.between(rent.getRentedTo(), LocalDate.now()).getDays() < 2) {
                 emailNotificationSender.sendRentGoingToFinishNotification(new RentGoingToFinishRequest(rent.getUser()));
             }
         }

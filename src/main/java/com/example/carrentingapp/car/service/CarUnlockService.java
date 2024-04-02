@@ -4,7 +4,6 @@ import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.CarLockRepository;
 import com.example.carrentingapp.car.request.CarUnlockRequest;
 import com.example.carrentingapp.configuration.common_interfaces.ScheduledAction;
-import com.example.carrentingapp.user.UserLock;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +19,10 @@ public class CarUnlockService implements ScheduledAction {
     private final CarLockService carLockService;
 
     @Override
-    public void check(){
+    public void check() {
         List<CarLock> locks = carLockRepository.findAllByStatus(CarLock.CarLockStatus.CAR_LOCK_ACTIVE);
-        for (CarLock lock : locks){
-            if (lock.getLockedTo().equals(LocalDate.now())){
+        for (CarLock lock : locks) {
+            if (lock.getLockedTo().equals(LocalDate.now())) {
                 carLockService.unlockCar(new CarUnlockRequest(Optional.of(lock.getId().toString())));
             }
         }

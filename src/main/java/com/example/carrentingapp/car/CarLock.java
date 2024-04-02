@@ -2,7 +2,8 @@ package com.example.carrentingapp.car;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class CarLock {
         OTHER
     }
 
-    public enum CarLockStatus{
+    public enum CarLockStatus {
         CAR_LOCK_ACTIVE,
         CAR_LOCK_NOT_ACTIVE,
         CAR_LOCK_TIME_CHANGED

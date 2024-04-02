@@ -4,7 +4,9 @@ import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +32,7 @@ public class UserBase implements UserDetails {
 
     private String lastName;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     @JsonIgnore
@@ -58,9 +60,10 @@ public class UserBase implements UserDetails {
 
     private Integer carReturnDelays;
 
-    public void carReturnDelaysIncrement(){
+    public void carReturnDelaysIncrement() {
         this.carReturnDelays++;
     }
+
     public UserBase(
             String firstName,
             String lastName,
@@ -79,7 +82,7 @@ public class UserBase implements UserDetails {
         this.carReturnDelays = 0;
     }
 
-    public void updateRank(float valueToAdd){
+    public void updateRank(float valueToAdd) {
         this.rank += valueToAdd;
     }
 
@@ -151,12 +154,13 @@ public class UserBase implements UserDetails {
     public enum Role {
         USER,
         ADMIN;
+
         public List<SimpleGrantedAuthority> getAuthorities() {
             return List.of((new SimpleGrantedAuthority("ROLE_" + this.name())));
         }
     }
 
-    public enum UserStatus{
+    public enum UserStatus {
         USER_CREATED,
         USER_READY,
         USER_HAS_CAR,

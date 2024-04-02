@@ -1,7 +1,8 @@
 package com.example.carrentingapp.car.response;
 
 import com.example.carrentingapp.car.service.CarGetService;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 

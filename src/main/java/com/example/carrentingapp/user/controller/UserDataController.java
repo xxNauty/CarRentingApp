@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/user/update")
 @AllArgsConstructor
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class UserDataController {
 
     private final UserDataUpdateService userDataUpdateService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<UserDataUpdateResponse> updateUserData(
             @RequestBody UserDataUpdateRequest request
-    ){
+    ) {
         return ResponseEntity.ok(userDataUpdateService.updateData(request));
     }
 }

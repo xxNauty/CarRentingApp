@@ -5,7 +5,6 @@ import com.example.carrentingapp.email.contact_form.request.ContactFormRequest;
 import com.example.carrentingapp.email.contact_form.response.ContactFormResponse;
 import com.example.carrentingapp.email.contact_form.service.ContactFormService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,7 @@ public class ContactFormController {
     @PostMapping("/no_auth")
     public ResponseEntity<ContactFormResponse> sendMessage(
             @RequestBody ContactFormRequest request
-    ){
+    ) {
         return ResponseEntity.ok(service.sendMessageToAdminAsNotAuthorized(request));
     }
 
@@ -31,7 +30,7 @@ public class ContactFormController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ContactFormResponse> sendMessage(
             @RequestBody AuthorizedContactFormRequest request
-    ){
+    ) {
         return ResponseEntity.ok(service.sendMessageToAdminAsAuthorized(request));
     }
 

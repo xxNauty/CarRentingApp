@@ -4,7 +4,7 @@ import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.account_locked.AccountLockedRequest;
 import com.example.carrentingapp.email.notifications.account_unlocked.AccountUnlockedRequest;
 import com.example.carrentingapp.exception.exception.http_error_409.AccountUnlockImpossibleException;
-import com.example.carrentingapp.exception.exception.http_error_409.UserNotLockedException;
+import com.example.carrentingapp.exception.exception.http_error_409.NotLockedException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserLockNotFoundException;
 import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.UserBase;
@@ -70,7 +70,7 @@ public class UserLockService {
                 .orElseThrow(() -> new UserNotFoundException("User with given ID not found"));
 
         if(user.isAccountNonLocked()){
-            throw new UserNotLockedException("This user is not locked");
+            throw new NotLockedException("This user is not locked");
         }
 
         UserLock lock = userLockRepository.findActiveForUser(UUID.fromString(request.userid.get()))

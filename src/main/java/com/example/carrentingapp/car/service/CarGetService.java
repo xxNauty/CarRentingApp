@@ -10,6 +10,7 @@ import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundE
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class CarGetService {
                             car.getModel(),
                             car.getYearOfProduction(),
                             car.getPower(),
-                            car.getActiveLock()
+                            car.getUnavailableTo()
                     )
             );
         }
@@ -59,7 +60,8 @@ public class CarGetService {
                             car.getPricePerDay(),
                             car.getHasActiveSale(),
                             car.getMileage(),
-                            car.getActiveLock()
+                            car.getActiveLock(),
+                            car.getUnavailableTo()
                     )
             );
         }
@@ -72,7 +74,7 @@ public class CarGetService {
             String model,
             Integer yearOfProduction,
             Float power,
-            CarLock lock
+            LocalDate unavailableTo
     ){}
 
     public record FullCar(
@@ -86,6 +88,8 @@ public class CarGetService {
             Float pricePerDay,
             Boolean hasActiveSale,
             Float mileage,
-            CarLock lock
+            CarLock lock,
+            LocalDate unavailableTo
+
     ){}
 }

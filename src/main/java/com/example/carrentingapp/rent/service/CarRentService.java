@@ -76,6 +76,7 @@ public class CarRentService {
                 request.rentedTo.get()
         );
         carToRent.setStatus(CarBase.CarStatus.CAR_RENTED);
+        carToRent.setUnavailableTo(rent.getRentedTo());
 
 
         carRentRepository.save(rent);
@@ -157,7 +158,8 @@ public class CarRentService {
 
         user.setRank(userRank);
         car.setStatus(CarBase.CarStatus.CAR_READY);
-        car.setMileage(car.getMileage() + request.kilometersTraveled.get());
+        car.setMileage(car.getMileage() + request.kilometersTraveled.get()); //todo do poprawy
+        car.setUnavailableTo(null);
 
         carRentRepository.save(rent);
         baseCarRepository.save(car);

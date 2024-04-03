@@ -1,6 +1,6 @@
 package com.example.carrentingapp.configuration.service;
 
-import com.example.carrentingapp.exception.exception.http_error_403.AccessDeniedException;
+import com.example.carrentingapp.exception.exceptions.http_error_403.AccessDeniedException;
 import com.example.carrentingapp.user.UserBase;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

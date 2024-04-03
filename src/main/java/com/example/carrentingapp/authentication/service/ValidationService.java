@@ -8,7 +8,7 @@ public class ValidationService {
         return email.matches(pattern);
     }
 
-    protected static boolean isAlphaNumericOrContains(String data) {
+    protected static boolean containsOnlyLettersOrHyphen(String data) {
         final String pattern = "[a-zA-Z-]+";
         return data.matches(pattern);
     }

@@ -1,6 +1,6 @@
 package com.example.carrentingapp.email.notifications.rent_checked;
 
-import com.example.carrentingapp.exception.exception.http_error_500.InvalidInternalArgumentException;
+import com.example.carrentingapp.exception.exceptions.http_error_500.InvalidInternalArgumentException;
 
 public class RentCheckedTemplate {
 

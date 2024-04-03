@@ -1,6 +1,6 @@
 package com.example.carrentingapp.authentication.service;
 
-import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
+import com.example.carrentingapp.exception.exceptions.http_error_500.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -41,7 +41,7 @@ public class RequestValidationService extends ValidationService {
 
     //walidacja tokenów opierających się o UUID
     public static void validateToken(String uuid) {
-        UUID.fromString(uuid);
+        UUID id = UUID.fromString(uuid);
     }
 
     public static void validateName(String name) {
@@ -53,7 +53,7 @@ public class RequestValidationService extends ValidationService {
             throw new InvalidArgumentException("Name must be at least 3 character long");
         }
 
-        if (!isAlphaNumericOrContains(name)) {
+        if (!containsOnlyLettersOrHyphen(name)) {
             throw new InvalidArgumentException("Name can contain only alphanumeric characters or hyphen character");
         }
     }
@@ -69,7 +69,6 @@ public class RequestValidationService extends ValidationService {
         }
     }
 
-    //todo: zaimplementować walidację reszty typów
     public static void validateParameter(Integer integerParameter) {
 
     }
@@ -79,7 +78,9 @@ public class RequestValidationService extends ValidationService {
     }
 
     public static void validateParameter(LocalDate localDateParameter) {
-
+        if (localDateParameter.isBefore(LocalDate.of(1900, 1, 1))){
+            throw new InvalidArgumentException("Given date is much too early");
+        }
     }
 
     public static void validateParameter(Boolean booleanParameter) {

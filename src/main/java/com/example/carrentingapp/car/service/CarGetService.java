@@ -6,7 +6,7 @@ import com.example.carrentingapp.car.CarLock;
 import com.example.carrentingapp.car.response.CarGetFullListResponse;
 import com.example.carrentingapp.car.response.CarGetResponse;
 import com.example.carrentingapp.car.response.CarGetSimpleListResponse;
-import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.CarNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

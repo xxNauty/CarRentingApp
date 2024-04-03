@@ -1,9 +1,11 @@
 package com.example.carrentingapp.exception;
 
-import com.example.carrentingapp.exception.exception.http_error_403.BaseAccessDeniedException;
-import com.example.carrentingapp.exception.exception.http_error_404.BaseNotFoundException;
-import com.example.carrentingapp.exception.exception.http_error_409.BaseConflictException;
-import com.example.carrentingapp.exception.exception.http_error_500.BaseInternalErrorException;
+import com.example.carrentingapp.exception.exceptions.http_error_403.BaseAccessDeniedException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.BaseNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_409.BaseConflictException;
+import com.example.carrentingapp.exception.exceptions.http_error_500.BaseInternalErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,12 +16,16 @@ import java.net.URI;
 @RestControllerAdvice
 class CustomExceptionHandler {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+
     @ExceptionHandler(value = BaseInternalErrorException.class) //500
     public ResponseEntity<ProblemDetail> handleInternalServerErrorExceptions(BaseInternalErrorException exception) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(500);
         problemDetail.setType(URI.create(exception.getClass().getSimpleName()));
         problemDetail.setTitle("An error occurred");
         problemDetail.setDetail(exception.getMessage());
+
+        LOGGER.error(problemDetail.getStatus() + " | " + exception.getMessage());
 
         return ResponseEntity.of(problemDetail).build();
     }
@@ -31,6 +37,8 @@ class CustomExceptionHandler {
         problemDetail.setTitle("Conflicted");
         problemDetail.setDetail(exception.getMessage());
 
+        LOGGER.error(problemDetail.getStatus() + " | " + exception.getMessage());
+
         return ResponseEntity.of(problemDetail).build();
     }
 
@@ -41,6 +49,8 @@ class CustomExceptionHandler {
         problemDetail.setTitle("Value not found");
         problemDetail.setDetail(exception.getMessage());
 
+        LOGGER.error(problemDetail.getStatus() + " | " + exception.getMessage());
+
         return ResponseEntity.of(problemDetail).build();
     }
 
@@ -50,6 +60,8 @@ class CustomExceptionHandler {
         problemDetail.setType(URI.create(exception.getClass().getSimpleName()));
         problemDetail.setTitle("Access denied");
         problemDetail.setDetail(exception.getMessage());
+
+        LOGGER.error(problemDetail.getStatus() + " | " + exception.getMessage());
 
         return ResponseEntity.of(problemDetail).build();
     }

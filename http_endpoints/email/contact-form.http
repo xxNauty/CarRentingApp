@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "email": "jan@kowalski.pl",
   "subject": "<b>subject</b>",
-  "body": "<a href='https://www.bing.com/search?pglt=169&q=are+html+tags+case+sensitive&cvid=829be8ce95634c0cb1353e4e6816fb01&gs_lcrp=EgZjaHJvbWUqBggAEAAYQDIGCAAQABhAMgYIARBFGDkyBggCEAAYQDIGCAMQABhAMgYIBBAAGEAyBggFEAAYQDIGCAYQABhAMgYIBxAAGEAyBggIEAAYQNIBCDYyNjVqMGoxqAIAsAIA&FORM=ANNTA1&PC=ASTS'>link</a>"
+  "body": "<a href='https://www.bing.com'>link</a>"
 }
 
 ### Contact form for authorized

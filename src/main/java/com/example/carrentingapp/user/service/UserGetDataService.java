@@ -1,7 +1,7 @@
 package com.example.carrentingapp.user.service;
 
 import com.example.carrentingapp.configuration.service.SecurityService;
-import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.UserBase;
 import com.example.carrentingapp.user.UserBaseRepository;
 import com.example.carrentingapp.user.response.UserGetDataResponse;

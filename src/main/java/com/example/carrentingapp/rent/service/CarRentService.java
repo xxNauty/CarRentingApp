@@ -8,11 +8,11 @@ import com.example.carrentingapp.email.notifications.car_collected.CarCollectedR
 import com.example.carrentingapp.email.notifications.car_rented.CarRentedRequest;
 import com.example.carrentingapp.email.notifications.car_returned.CarReturnedRequest;
 import com.example.carrentingapp.email.notifications.rent_checked.RentCheckedRequest;
-import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
-import com.example.carrentingapp.exception.exception.http_error_404.CarRentNotFoundException;
-import com.example.carrentingapp.exception.exception.http_error_409.AlreadyDoneException;
-import com.example.carrentingapp.exception.exception.http_error_409.CarNotAvailableException;
-import com.example.carrentingapp.exception.exception.http_error_500.InvalidArgumentException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.CarNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.CarRentNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_409.AlreadyDoneException;
+import com.example.carrentingapp.exception.exceptions.http_error_409.CarNotAvailableException;
+import com.example.carrentingapp.exception.exceptions.http_error_500.InvalidArgumentException;
 import com.example.carrentingapp.rent.CarRent;
 import com.example.carrentingapp.rent.CarRentRepository;
 import com.example.carrentingapp.rent.request.CarCheckAfterRentRequest;

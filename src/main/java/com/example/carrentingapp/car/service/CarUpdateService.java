@@ -5,7 +5,7 @@ import com.example.carrentingapp.car.CarBaseRepository;
 import com.example.carrentingapp.car.request.CarUpdateDataRequest;
 import com.example.carrentingapp.car.request.CarUpdateMileageRequest;
 import com.example.carrentingapp.car.response.CarResponse;
-import com.example.carrentingapp.exception.exception.http_error_404.CarNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.CarNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

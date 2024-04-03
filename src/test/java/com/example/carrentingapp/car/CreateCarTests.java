@@ -4,25 +4,34 @@ import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
+import org.apache.catalina.core.ApplicationContext;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class CreateCarTests {
 
@@ -35,8 +44,44 @@ public class CreateCarTests {
     @LocalServerPort
     int randomServerPort;
 
+    @Autowired
+    private UserBaseRepository userBaseRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private static boolean usersCreated = false;
+
+    @Before
+    public void createUsers() {
+        if(!usersCreated){
+            UserBase admin = new UserBase(
+                    "Adam",
+                    "Kowalski",
+                    "adam@kowalski.pl",
+                    passwordEncoder.encode("Qwerty123!"),
+                    LocalDate.now().minusYears(18)
+            );
+            admin.setStatus(UserBase.UserStatus.USER_READY);
+            admin.setRole(UserBase.Role.ADMIN);
+            userBaseRepository.save(admin);
+
+            UserBase user = new UserBase(
+                    "Jan",
+                    "Nowak",
+                    "jan@nowak.pl",
+                    passwordEncoder.encode("Qwerty123!"),
+                    LocalDate.now().minusYears(18)
+            );
+            user.setStatus(UserBase.UserStatus.USER_READY);
+            userBaseRepository.save(user);
+
+            usersCreated = true;
+        }
+    }
+
     @Test
-    public void correctCreateCarTest(){
+    public void testCorrectCreateCar() {
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
         final String token = getToken("adam@kowalski.pl");
 
@@ -79,7 +124,7 @@ public class CreateCarTests {
     }
 
     @Test
-    public void createCarAsNonPrivilegedUserTest(){
+    public void testCreateCarAsNonPrivilegedUser() {
         final int carCountBefore = baseCarRepository.findAll().size();
 
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
@@ -117,7 +162,7 @@ public class CreateCarTests {
     }
 
     @Test
-    public void createCarNotAuthorized(){
+    public void testCreateCarNotAuthorized() {
         final int carCountBefore = baseCarRepository.findAll().size();
 
         final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
@@ -152,8 +197,75 @@ public class CreateCarTests {
         Assertions.assertEquals(carCountBefore, carCountAfter);
     }
 
+    @Test
+    public void testCreateCarWithNullValues() {
+        final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
+        final String token = getToken("adam@kowalski.pl");
 
-    private String getToken(String email){
+        CarCreateRequest createCarRequest = new CarCreateRequest(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        HttpHeaders createCarHeaders = new HttpHeaders();
+        createCarHeaders.set("X-COM-PERSIST", "true");
+        createCarHeaders.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+
+        ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
+                createCarUrl,
+                createCarRequestHttpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), carResponse.getStatusCode());
+    }
+
+    @Test
+    public void testCreateCarWithEmptyValues() {
+        final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
+        final String token = getToken("adam@kowalski.pl");
+
+        CarCreateRequest createCarRequest = new CarCreateRequest(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+        );
+
+        HttpHeaders createCarHeaders = new HttpHeaders();
+        createCarHeaders.set("X-COM-PERSIST", "true");
+        createCarHeaders.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarCreateRequest> createCarRequestHttpEntity = new HttpEntity<>(createCarRequest, createCarHeaders);
+
+        ResponseEntity<CarResponse> carResponse = testRestTemplate.postForEntity(
+                createCarUrl,
+                createCarRequestHttpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), carResponse.getStatusCode());
+    }
+
+    //==================================================================================================================
+
+    private String getToken(String email) {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(

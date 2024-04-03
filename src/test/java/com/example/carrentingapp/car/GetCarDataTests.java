@@ -2,13 +2,15 @@ package com.example.carrentingapp.car;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
-import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.request.CarCreateRequest;
-import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.response.CarGetResponse;
 import com.example.carrentingapp.car.response.CarGetSimpleListResponse;
+import com.example.carrentingapp.car.response.CarResponse;
 import com.example.carrentingapp.car.service.CarLockService;
-import org.junit.After;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,8 +30,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GetCarDataTests {
 
     @Autowired
@@ -38,24 +41,45 @@ public class GetCarDataTests {
     private CarBaseRepository baseCarRepository;
 
     @Autowired
-    private CarLockRepository carLockRepository;
-
-    @Autowired
     private CarLockService carLockService;
 
     @LocalServerPort
     int randomServerPort;
 
-    //pobieranie danych samochodu po jego ID
+    @Autowired
+    private UserBaseRepository userBaseRepository;
 
-    @After //wyraźnie szybsze niż @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-    public void clearDatabase(){
-        carLockRepository.deleteAll();
-        baseCarRepository.deleteAll();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Before
+    public void createUsers() {
+        UserBase admin = new UserBase(
+                "Adam",
+                "Kowalski",
+                "adam@kowalski.pl",
+                passwordEncoder.encode("Qwerty123!"),
+                LocalDate.now().minusYears(18)
+        );
+        admin.setStatus(UserBase.UserStatus.USER_READY);
+        admin.setRole(UserBase.Role.ADMIN);
+        userBaseRepository.save(admin);
+
+        UserBase user = new UserBase(
+                "Jan",
+                "Nowak",
+                "jan@nowak.pl",
+                passwordEncoder.encode("Qwerty123!"),
+                LocalDate.now().minusYears(18)
+        );
+        user.setStatus(UserBase.UserStatus.USER_READY);
+        userBaseRepository.save(user);
     }
 
+    //pobieranie danych samochodu po jego ID
+
     @Test
-    public void getSpecifiedCarAuthorizedTest(){
+    public void testGetSpecifiedCarAuthorized() {
         final UUID carId = createCarsForTesting(1).get(0);
         final String getCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get?id=" + carId;
 
@@ -101,7 +125,7 @@ public class GetCarDataTests {
     }
 
     @Test
-    public void getSpecifiedCarNotAuthorizedTest(){
+    public void testGetSpecifiedCarNotAuthorized() {
         final UUID carId = createCarsForTesting(1).get(0);
         final String getCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get?id=" + carId;
 
@@ -121,7 +145,7 @@ public class GetCarDataTests {
     //pobranie uproszczonej listy wszystkich samochodów
 
     @Test
-    public void getSimplifiedListOfAllCarsTest(){
+    public void testGetSimplifiedListOfAllCars() {
         createCarsForTesting(5);
         final String getSimplifiedCarListUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/simple/all";
 
@@ -143,7 +167,7 @@ public class GetCarDataTests {
     //pobieranie uproszczonej listy dostępnych samochodów
 
     @Test
-    public void getSimplifiedListOfAvailableCarsAuthorizedTest(){
+    public void testGetSimplifiedListOfAvailableCarsAuthorized() {
         //jako admin
 
         List<UUID> carIds = createCarsForTesting(5);
@@ -165,7 +189,6 @@ public class GetCarDataTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
         headers.set("Authorization", "Bearer " + adminToken);
-
 
 
         ResponseEntity<CarGetSimpleListResponse> response = testRestTemplate.exchange(
@@ -200,7 +223,7 @@ public class GetCarDataTests {
     }
 
     @Test
-    public void getSimplifiedListOfAvailableCarsNotAuthorizedTest(){
+    public void testGetSimplifiedListOfAvailableCarsNotAuthorized() {
         createCarsForTesting(5);
         final String getSimplifiedCarListUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/simple/available";
 
@@ -216,11 +239,13 @@ public class GetCarDataTests {
 
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
     }
+
+    //todo: test /full/all
 
     //pobieranie pełnej listy dostępnych samochodów
 
     @Test
-    public void getFullListOfAvailableCarsAuthorizedTest(){
+    public void testGetFullListOfAvailableCarsAuthorized() {
         //jako admin
 
         List<UUID> carIds = createCarsForTesting(5);
@@ -275,7 +300,7 @@ public class GetCarDataTests {
     }
 
     @Test
-    public void getFullListOfAvailableCarsNotAuthorizedTest(){
+    public void testGetFullListOfAvailableCarsNotAuthorized() {
         createCarsForTesting(5);
         final String getFullCarListUrl = "http://localhost:" + randomServerPort + "/api/v1/car/get/full/available";
 
@@ -292,7 +317,7 @@ public class GetCarDataTests {
         Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
     }
 
-    private List<UUID> createCarsForTesting(int numberOfCars){
+    private List<UUID> createCarsForTesting(int numberOfCars) {
         List<UUID> ids = new ArrayList<>();
         for (int i = 0; i < numberOfCars; i++) {
             final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
@@ -330,7 +355,7 @@ public class GetCarDataTests {
         return ids;
     }
 
-    private String getToken(String email){
+    private String getToken(String email) {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(

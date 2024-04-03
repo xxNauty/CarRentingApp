@@ -1,6 +1,6 @@
 package com.example.carrentingapp.configuration;
 
-import com.example.carrentingapp.exception.exception.http_error_404.UserNotFoundException;
+import com.example.carrentingapp.exception.exceptions.http_error_404.UserNotFoundException;
 import com.example.carrentingapp.user.UserBaseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -42,4 +42,5 @@ public class MainAppConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

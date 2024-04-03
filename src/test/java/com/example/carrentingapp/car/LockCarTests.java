@@ -2,12 +2,15 @@ package com.example.carrentingapp.car;
 
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
+import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.request.CarLockRequest;
 import com.example.carrentingapp.car.request.CarUnlockRequest;
-import com.example.carrentingapp.car.request.CarCreateRequest;
 import com.example.carrentingapp.car.response.CarLockResponse;
 import com.example.carrentingapp.car.response.CarResponse;
 import com.example.carrentingapp.car.service.CarLockService;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -19,6 +22,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -29,7 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class LockCarTests {
 
@@ -45,10 +49,46 @@ public class LockCarTests {
     @LocalServerPort
     int randomServerPort;
 
+    @Autowired
+    private UserBaseRepository userBaseRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private static boolean usersCreated = false;
+
+    @Before
+    public void createUsers() {
+        if(!usersCreated){
+            UserBase admin = new UserBase(
+                    "Adam",
+                    "Kowalski",
+                    "adam@kowalski.pl",
+                    passwordEncoder.encode("Qwerty123!"),
+                    LocalDate.now().minusYears(18)
+            );
+            admin.setStatus(UserBase.UserStatus.USER_READY);
+            admin.setRole(UserBase.Role.ADMIN);
+            userBaseRepository.save(admin);
+
+            UserBase user = new UserBase(
+                    "Jan",
+                    "Nowak",
+                    "jan@nowak.pl",
+                    passwordEncoder.encode("Qwerty123!"),
+                    LocalDate.now().minusYears(18)
+            );
+            user.setStatus(UserBase.UserStatus.USER_READY);
+            userBaseRepository.save(user);
+
+            usersCreated = true;
+        }
+    }
+
     //BLOKOWANIE
 
     @Test
-    public void lockCarAsAdminTest(){
+    public void testLockCarAsAdmin() {
         final String lockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/lock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -89,7 +129,7 @@ public class LockCarTests {
     }
 
     @Test
-    public void lockCarAsUserTest(){
+    public void testLockCarAsUser() {
         final String lockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/lock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -127,7 +167,7 @@ public class LockCarTests {
     }
 
     @Test
-    public void lockCarNotAuthorizedTest(){
+    public void testLockCarNotAuthorized() {
         final String lockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/lock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -162,7 +202,7 @@ public class LockCarTests {
     }
 
     @Test
-    public void lockNonExistingCarTest(){
+    public void testLockNonExistingCar() {
         final String lockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/lock";
         final UUID carId = UUID.randomUUID();
 
@@ -189,10 +229,66 @@ public class LockCarTests {
         Assertions.assertEquals(HttpStatusCode.valueOf(404), carLockResponse.getStatusCode());
     }
 
+    @Test
+    public void testLockCarWithNullValues() {
+        final String lockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/lock";
+        final UUID carId = createCarsForTesting(1).get(0);
+
+        CarLockRequest lockRequest = new CarLockRequest(
+                null,
+                null,
+                null
+        );
+
+        final String token = getToken("adam@kowalski.pl");
+
+        HttpHeaders lockHeaders = new HttpHeaders();
+        lockHeaders.set("X-COM-PERSIST", "true");
+        lockHeaders.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarLockRequest> carLockRequestHttpEntity = new HttpEntity<>(lockRequest, lockHeaders);
+
+        ResponseEntity<CarLockResponse> carLockResponse = testRestTemplate.postForEntity(
+                lockUrl,
+                carLockRequestHttpEntity,
+                CarLockResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), carLockResponse.getStatusCode());
+    }
+
+    @Test
+    public void testLockCarWithEmptyValues() {
+        final String lockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/lock";
+        final UUID carId = createCarsForTesting(1).get(0);
+
+        CarLockRequest lockRequest = new CarLockRequest(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+        );
+
+        final String token = getToken("adam@kowalski.pl");
+
+        HttpHeaders lockHeaders = new HttpHeaders();
+        lockHeaders.set("X-COM-PERSIST", "true");
+        lockHeaders.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarLockRequest> carLockRequestHttpEntity = new HttpEntity<>(lockRequest, lockHeaders);
+
+        ResponseEntity<CarLockResponse> carLockResponse = testRestTemplate.postForEntity(
+                lockUrl,
+                carLockRequestHttpEntity,
+                CarLockResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), carLockResponse.getStatusCode());
+    }
+
     //ODBLOKOWYWANIE
 
     @Test
-    public void unlockCarAsAdminTest(){
+    public void testUnlockCarAsAdmin() {
         final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -228,7 +324,7 @@ public class LockCarTests {
     }
 
     @Test
-    public void unlockCarAsUserTest(){
+    public void testUnlockCarAsUser() {
         final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -262,7 +358,7 @@ public class LockCarTests {
     }
 
     @Test
-    public void unlockCarNotAuthorizedTest(){
+    public void testUnlockCarNotAuthorized() {
         final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -293,7 +389,7 @@ public class LockCarTests {
     }
 
     @Test
-    public void unlockNotLockedCarTest(){
+    public void testUnlockNotLockedCar() {
         final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -313,10 +409,80 @@ public class LockCarTests {
                 CarLockResponse.class
         );
 
+        Assertions.assertEquals(HttpStatusCode.valueOf(409), carLockResponse.getStatusCode());
+    }
+
+    @Test
+    public void testUnlockCarWithNullValues() {
+        final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
+        final UUID carId = createCarsForTesting(1).get(0);
+
+        //blokowanie samochodu do odblokowania
+
+        carLockService.lockCar(new CarLockRequest(
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
+        ));
+
+        //odblokowywanie
+
+        CarUnlockRequest unlockRequest = new CarUnlockRequest(null);
+
+        final String adminToken = getToken("adam@kowalski.pl");
+
+        HttpHeaders unlockHeaders = new HttpHeaders();
+        unlockHeaders.set("X-COM-PERSIST", "true");
+        unlockHeaders.set("Authorization", "Bearer " + adminToken);
+
+        HttpEntity<CarUnlockRequest> unlockRequestHttpEntity = new HttpEntity<>(unlockRequest, unlockHeaders);
+
+        ResponseEntity<CarLockResponse> carLockResponse = testRestTemplate.postForEntity(
+                unlockUrl,
+                unlockRequestHttpEntity,
+                CarLockResponse.class
+        );
+
         Assertions.assertEquals(HttpStatusCode.valueOf(500), carLockResponse.getStatusCode());
     }
 
-    private List<UUID> createCarsForTesting(int numberOfCars){
+    @Test
+    public void testUnlockCarWithEmptyValues() {
+        final String unlockUrl = "http://localhost:" + randomServerPort + "/api/v1/car/unlock";
+        final UUID carId = createCarsForTesting(1).get(0);
+
+        //blokowanie samochodu do odblokowania
+
+        carLockService.lockCar(new CarLockRequest(
+                Optional.of(carId.toString()),
+                Optional.of(CarLock.CarLockReason.TUNING.name()),
+                Optional.of(LocalDate.now().plusMonths(3))
+        ));
+
+        //odblokowywanie
+
+        CarUnlockRequest unlockRequest = new CarUnlockRequest(Optional.empty());
+
+        final String adminToken = getToken("adam@kowalski.pl");
+
+        HttpHeaders unlockHeaders = new HttpHeaders();
+        unlockHeaders.set("X-COM-PERSIST", "true");
+        unlockHeaders.set("Authorization", "Bearer " + adminToken);
+
+        HttpEntity<CarUnlockRequest> unlockRequestHttpEntity = new HttpEntity<>(unlockRequest, unlockHeaders);
+
+        ResponseEntity<CarLockResponse> carLockResponse = testRestTemplate.postForEntity(
+                unlockUrl,
+                unlockRequestHttpEntity,
+                CarLockResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), carLockResponse.getStatusCode());
+    }
+
+    //==================================================================================================================
+
+    private List<UUID> createCarsForTesting(int numberOfCars) {
         List<UUID> ids = new ArrayList<>();
         for (int i = 0; i < numberOfCars; i++) {
             final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
@@ -354,7 +520,7 @@ public class LockCarTests {
         return ids;
     }
 
-    private String getToken(String email){
+    private String getToken(String email) {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(

@@ -3,8 +3,13 @@ package com.example.carrentingapp.car;
 import com.example.carrentingapp.authentication.request.LoginRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.car.request.CarCreateRequest;
+import com.example.carrentingapp.car.request.CarUpdateDataRequest;
 import com.example.carrentingapp.car.request.CarUpdateMileageRequest;
 import com.example.carrentingapp.car.response.CarResponse;
+import com.example.carrentingapp.exception.exceptions.http_error_404.CarNotFoundException;
+import com.example.carrentingapp.user.UserBase;
+import com.example.carrentingapp.user.UserBaseRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -16,17 +21,19 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class UpdateCarDataTest {
 
     @Autowired
@@ -38,10 +45,46 @@ public class UpdateCarDataTest {
     @LocalServerPort
     int randomServerPort;
 
-    //aktualizacja przebiegu
+    @Autowired
+    private UserBaseRepository userBaseRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private static boolean usersCreated = false;
+
+    @Before
+    public void createUsers() {
+        if(!usersCreated){
+            UserBase admin = new UserBase(
+                    "Adam",
+                    "Kowalski",
+                    "adam@kowalski.pl",
+                    passwordEncoder.encode("Qwerty123!"),
+                    LocalDate.now().minusYears(18)
+            );
+            admin.setStatus(UserBase.UserStatus.USER_READY);
+            admin.setRole(UserBase.Role.ADMIN);
+            userBaseRepository.save(admin);
+
+            UserBase user = new UserBase(
+                    "Jan",
+                    "Nowak",
+                    "jan@nowak.pl",
+                    passwordEncoder.encode("Qwerty123!"),
+                    LocalDate.now().minusYears(18)
+            );
+            user.setStatus(UserBase.UserStatus.USER_READY);
+            userBaseRepository.save(user);
+
+            usersCreated = true;
+        }
+    }
+
+    //AKTUALIZACJA PRZEBIEGU
 
     @Test
-    public void updateCarMileageAsAdminTest(){
+    public void testUpdateCarMileageAsAdmin() {
         final String updateMileageUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/mileage";
         final UUID carId = createCarsForTesting(1).get(0);
         final String token = getToken("adam@kowalski.pl");
@@ -76,7 +119,7 @@ public class UpdateCarDataTest {
     }
 
     @Test
-    public void updateCarMileageAsUserTest(){
+    public void testUpdateCarMileageAsUser() {
         final String updateMileageUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/mileage";
         final UUID carId = createCarsForTesting(1).get(0);
         final String token = getToken("jan@nowak.pl");
@@ -109,7 +152,7 @@ public class UpdateCarDataTest {
     }
 
     @Test
-    public void updateCarMileageNotAuthorizedTest(){
+    public void testUpdateCarMileageNotAuthorized() {
         final String updateMileageUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/mileage";
         final UUID carId = createCarsForTesting(1).get(0);
 
@@ -140,7 +183,7 @@ public class UpdateCarDataTest {
     }
 
     @Test
-    public void updateNotExistingCarMileageTest(){
+    public void testUpdateNotExistingCarMileage() {
         final String updateMileageUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/mileage";
         final UUID carId = UUID.randomUUID();
         final String token = getToken("adam@kowalski.pl");
@@ -167,8 +210,244 @@ public class UpdateCarDataTest {
         Assertions.assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
     }
 
+    @Test
+    public void testUpdateCarMileageWithNullValues() {
+        final String updateMileageUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/mileage";
+        final String token = getToken("adam@kowalski.pl");
 
-    private List<UUID> createCarsForTesting(int numberOfCars){
+        CarUpdateMileageRequest request = new CarUpdateMileageRequest(
+                null,
+                null
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarUpdateMileageRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateMileageUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateCarMileageWithEmptyValues() {
+        final String updateMileageUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/mileage";
+        final String token = getToken("adam@kowalski.pl");
+
+
+        CarUpdateMileageRequest request = new CarUpdateMileageRequest(
+                Optional.empty(),
+                Optional.empty()
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarUpdateMileageRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateMileageUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
+    }
+
+    //AKTUALIZACJA DANYCH
+
+    @Test
+    public void updateCarDataAsAdmin(){
+        final String updateDataUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/data";
+        final UUID carId = createCarsForTesting(1).get(0);
+        final String token = getToken("adam@kowalski.pl");
+
+        final CarBase carBeforeUpdate = baseCarRepository.findById(carId).orElseThrow();
+
+        CarUpdateDataRequest request = new CarUpdateDataRequest(
+                Optional.ofNullable(carBeforeUpdate.getId().toString()),
+                Optional.ofNullable(carBeforeUpdate.getBrand()),
+                Optional.of("ModelModel"),
+                Optional.ofNullable(carBeforeUpdate.getYearOfProduction()),
+                Optional.of(300F),
+                Optional.ofNullable(carBeforeUpdate.getTorque()),
+                Optional.ofNullable(carBeforeUpdate.getEngineSize()),
+                Optional.ofNullable(carBeforeUpdate.getAverageFuelConsumption()),
+                Optional.ofNullable(carBeforeUpdate.getMinRankOfUser()),
+                Optional.ofNullable(carBeforeUpdate.getPricePerDay())
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarUpdateDataRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateDataUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        final CarBase carAfterUpdate = baseCarRepository.findById(carId).orElseThrow();
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
+        Assertions.assertNotNull(response.getBody());
+
+        System.out.println(carBeforeUpdate);
+        System.out.println(carAfterUpdate);
+
+        Assertions.assertEquals(carBeforeUpdate.getId(), carAfterUpdate.getId());
+        Assertions.assertNotEquals(carBeforeUpdate.getModel(), carAfterUpdate.getModel());
+        Assertions.assertNotEquals(carBeforeUpdate.getPower(), carAfterUpdate.getPower());
+    }
+
+    @Test
+    public void updateCarDataAsUser(){
+        final String updateDataUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/data";
+        final UUID carId = createCarsForTesting(1).get(0);
+        final String token = getToken("jan@nowak.pl");
+
+        final CarBase carBeforeUpdate = baseCarRepository.findById(carId).orElseThrow();
+
+        CarUpdateDataRequest request = new CarUpdateDataRequest(
+                Optional.ofNullable(carBeforeUpdate.getId().toString()),
+                Optional.ofNullable(carBeforeUpdate.getBrand()),
+                Optional.of("ModelModel"),
+                Optional.ofNullable(carBeforeUpdate.getYearOfProduction()),
+                Optional.of(300F),
+                Optional.ofNullable(carBeforeUpdate.getTorque()),
+                Optional.ofNullable(carBeforeUpdate.getEngineSize()),
+                Optional.ofNullable(carBeforeUpdate.getAverageFuelConsumption()),
+                Optional.ofNullable(carBeforeUpdate.getMinRankOfUser()),
+                Optional.ofNullable(carBeforeUpdate.getPricePerDay())
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarUpdateDataRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateDataUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
+    }
+
+    @Test
+    public void updateCarDataNotAuthorized(){
+        final String updateDataUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/data";
+        final UUID carId = createCarsForTesting(1).get(0);
+
+        final CarBase carBeforeUpdate = baseCarRepository.findById(carId).orElseThrow();
+
+        CarUpdateDataRequest request = new CarUpdateDataRequest(
+                Optional.ofNullable(carBeforeUpdate.getId().toString()),
+                Optional.ofNullable(carBeforeUpdate.getBrand()),
+                Optional.of("ModelModel"),
+                Optional.ofNullable(carBeforeUpdate.getYearOfProduction()),
+                Optional.of(300F),
+                Optional.ofNullable(carBeforeUpdate.getTorque()),
+                Optional.ofNullable(carBeforeUpdate.getEngineSize()),
+                Optional.ofNullable(carBeforeUpdate.getAverageFuelConsumption()),
+                Optional.ofNullable(carBeforeUpdate.getMinRankOfUser()),
+                Optional.ofNullable(carBeforeUpdate.getPricePerDay())
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+
+        HttpEntity<CarUpdateDataRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateDataUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(403), response.getStatusCode());
+    }
+
+    @Test
+    public void updateCarDataWithNullValues(){
+        final String updateDataUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/data";
+        final String token = getToken("adam@kowalski.pl");
+
+        CarUpdateDataRequest request = new CarUpdateDataRequest(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarUpdateDataRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateDataUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
+    }
+
+    @Test
+    public void updateCarDataWithEmptyValues(){
+        final String updateDataUrl = "http://localhost:" + randomServerPort + "/api/v1/car/update/data";
+        final String token = getToken("adam@kowalski.pl");
+
+        CarUpdateDataRequest request = new CarUpdateDataRequest(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<CarUpdateDataRequest> httpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<CarResponse> response = testRestTemplate.postForEntity(
+                updateDataUrl,
+                httpEntity,
+                CarResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
+    }
+
+    //==================================================================================================================
+
+    private List<UUID> createCarsForTesting(int numberOfCars) {
         List<UUID> ids = new ArrayList<>();
         for (int i = 0; i < numberOfCars; i++) {
             final String createCarUrl = "http://localhost:" + randomServerPort + "/api/v1/car/create/base";
@@ -206,7 +485,7 @@ public class UpdateCarDataTest {
         return ids;
     }
 
-    private String getToken(String email){
+    private String getToken(String email) {
         final String loginURL = "http://localhost:" + randomServerPort + "/api/v1/auth/login";
 
         LoginRequest loginRequest = new LoginRequest(

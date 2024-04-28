@@ -5,6 +5,7 @@ import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.authentication.request.SendVerifyingTokenAgainRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
+import com.example.carrentingapp.authentication.response.RegistrationResponse;
 import com.example.carrentingapp.configuration.jwt.JwtService;
 import com.example.carrentingapp.email.notifications.EmailNotificationSender;
 import com.example.carrentingapp.email.notifications.confirm_email.ConfirmEmailRequest;
@@ -48,7 +49,7 @@ public class AuthenticationService {
     private final UserCreateService userCreateService;
     private final EmailNotificationSender notificationSender;
 
-    public AuthenticationResponse register(RegistrationRequest request) {
+    public RegistrationResponse register(RegistrationRequest request) {
         request.checkInput();
 
         if (repository.findByEmail(request.email.get()).isPresent()) {
@@ -60,10 +61,7 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        return new AuthenticationResponse(
-                jwtToken,
-                refreshToken
-        );
+        return new RegistrationResponse("Account created, check your email inbox to confirm your email address");
     }
 
     public AuthenticationResponse login(LoginRequest request) {

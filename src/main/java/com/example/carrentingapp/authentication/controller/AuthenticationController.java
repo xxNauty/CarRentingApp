@@ -5,6 +5,7 @@ import com.example.carrentingapp.authentication.request.RegistrationRequest;
 import com.example.carrentingapp.authentication.request.SendVerifyingTokenAgainRequest;
 import com.example.carrentingapp.authentication.response.AuthenticationResponse;
 import com.example.carrentingapp.authentication.response.EmailVerificationResponse;
+import com.example.carrentingapp.authentication.response.RegistrationResponse;
 import com.example.carrentingapp.authentication.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +23,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<RegistrationResponse> register(
             @RequestBody RegistrationRequest request
     ) {
         return ResponseEntity.ok(authenticationService.register(request));

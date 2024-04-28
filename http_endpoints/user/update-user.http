@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth-token}}
 
 {
-  "userId": "",
+  "userId": "5c18493c-1c16-4c96-ab0f-c50817185950",
   "firstName": "Aqqweq",
   "lastName": "Bodas",
   "email":  "alibou@21mail.com",
